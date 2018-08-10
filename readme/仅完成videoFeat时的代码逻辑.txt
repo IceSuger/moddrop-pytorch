@@ -1,0 +1,74 @@
+training_script:
+	classifier = videoFeatureExtractor
+	classifier.build_network()
+	classifier.train_torch()
+
+basicClassifier：# videoFeatureExtractor 的父类
+	__init__:
+		指定一堆参数。其中 seq_per_class 表示每个label类别，取多少个样本出来作为训练集。
+	train_torch:
+		是一个比较标准的网络训练流程：
+			1. 初始化 visdom 的可视化 panel，并加载网络模型
+			2. 通过具体的 Dataset 类和 DataLoader 类，加载相应的训练集、验证集
+			3. 定义评价指标和优化器
+			4. 网络挪到GPU
+			5. 进行若干 epoch 的循环训练：
+				1. 从 DataLoader 读入一个 batch
+				2. 数据上GPU
+				3. 优化器累积梯度归零 self.optimizer.zero_grad()
+				4. 跑一遍模型 score = model(input)
+				5. loss = self.criterion(score, target)
+				6. 反向传播误差 loss.backward()
+				7. 更新参数 self.optimizer.step()
+				
+	
+videoFeatureExtractor:	# 继承了 basicClassifier
+	__init__:
+		指定一堆参数。
+	build_network:
+		# VideoFeatureExtractorNet 是写在同一.py文件中的一个类
+		self.network = VideoFeatureExtractorNet(self.number_of_classes)
+	
+
+另：
+DatasetBasic：	# DatasetVideo 的父类
+	__init__: 
+	
+	__getitem__:	
+		pytorch 的 Dataset 类必须实现的方法，调用一次返回一个样本
+	
+	__len__:
+		pytorch 的 Dataset 类必须实现的方法，调用时返回训练集总样本数
+	
+	_get_data_list:
+		根据参数 subset 决定获取训练/验证/测试集中的哪个。
+		然后将相应的文件目录中的文件名列表获取到 self.data_list[subset][cl] 中，其中cl为具体的label类别。
+
+DatasetVideo： # 继承 DatasetBasic 
+	__init__:
+		
+
+		
+再另：
+DatasetBasic/DatasetVideo 类中的一些成员变量解释：
+	self.dataset:	# dict
+		# dict, 结构为：
+		dataset
+			'train'	# dict
+				'both' # dict
+					'color'
+						训练样本数目个样本
+						即 numpy.ndarray， 其 shape 为： [self.seq_per_class * self.nclasses] + self.input_size[mdlt]
+					'depth'
+				'labels'
+			'valid'
+				'both'
+			'test'
+				'both'
+				
+	self.data_list:
+		data_list:
+			'train'
+				各类别对应一个文件绝对路径列表
+			'valid'
+			'test'
