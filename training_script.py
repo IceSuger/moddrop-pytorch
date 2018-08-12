@@ -23,13 +23,14 @@ os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showi
 
 # from motionDetector import motionDetector
 # from audioClassifier import audioClassifier
-# from skeletonClassifier import skeletonClassifier
+from skeletonClassifier import skeletonClassifier
 from videoFeatureExtractor import videoFeatureExtractor
 from videoClassifier import videoClassifier
 # from multimodalClassifier import multimodalClassifier
 
 from datasetVideoClassifier import DatasetVideoClassifier
 from datasetVideoFeatureExtractor import DatasetVideoFeatureExtractor
+from datasetSkeleton import DatasetSkeleton
 
 ''' Import the relevant classes from the util module.
 	 - skeletonClassifier trains a 3D-ConvNet using mocap data
@@ -54,7 +55,7 @@ filter_folder = 'filters/'
 	convolutional neural network
 '''
 
-cl_methods = {# 'skeleton' : skeletonClassifier,
+cl_methods = { 'skeleton' : skeletonClassifier,
               # 'motionDetector' : motionDetector,
               'video' : videoClassifier,
               'videoFeat': videoFeatureExtractor,
@@ -65,6 +66,7 @@ cl_methods = {# 'skeleton' : skeletonClassifier,
 dataset_types = {
             'video' : DatasetVideoClassifier,
             'videoFeat': DatasetVideoFeatureExtractor,
+            'skeleton': DatasetSkeleton,
             }
 
 
