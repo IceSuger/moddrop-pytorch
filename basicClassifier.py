@@ -126,7 +126,7 @@ class basicClassifier(object):
 
         # step 3: criterion and optimizer
         self.criterion = nn.CrossEntropyLoss()
-        self.lr = 0.001
+        self.lr = 0.02 # 0.001
         self.optimizer = torch.optim.SGD(model.parameters(), lr=self.lr, weight_decay=1-0.9998, nesterov=True, momentum=0.8)
 
         # visdom show line of loss

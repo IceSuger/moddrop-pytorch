@@ -22,7 +22,7 @@ import sys
 os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showing anything.
 
 # from motionDetector import motionDetector
-# from audioClassifier import audioClassifier
+from audioClassifier import audioClassifier
 from skeletonClassifier import skeletonClassifier
 from videoFeatureExtractor import videoFeatureExtractor
 from videoClassifier import videoClassifier
@@ -31,6 +31,7 @@ from videoClassifier import videoClassifier
 from datasetVideoClassifier import DatasetVideoClassifier
 from datasetVideoFeatureExtractor import DatasetVideoFeatureExtractor
 from datasetSkeleton import DatasetSkeleton
+from datasetAudio import DatasetAudio
 
 ''' Import the relevant classes from the util module.
 	 - skeletonClassifier trains a 3D-ConvNet using mocap data
@@ -59,7 +60,7 @@ cl_methods = { 'skeleton' : skeletonClassifier,
               # 'motionDetector' : motionDetector,
               'video' : videoClassifier,
               'videoFeat': videoFeatureExtractor,
-              # 'audio' : audioClassifier,
+              'audio' : audioClassifier,
               # 'multimodal' : multimodalClassifier
               }
 
@@ -67,6 +68,7 @@ dataset_types = {
             'video' : DatasetVideoClassifier,
             'videoFeat': DatasetVideoFeatureExtractor,
             'skeleton': DatasetSkeleton,
+            'audio': DatasetAudio,
             }
 
 
