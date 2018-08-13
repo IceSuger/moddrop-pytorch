@@ -12,7 +12,7 @@ from videoFeatureExtractor import videoFeatureExtractor
 from videoFeatureExtractor import VideoFeatureExtractorNet
 
 
-class videoClassifierNet(nn.Module):
+class VideoClassifierNet(nn.Module):
     def __init__(self, num_of_classes, extractorPath=None):
         super().__init__()
         self.num_of_classes = num_of_classes
@@ -25,19 +25,19 @@ class videoClassifierNet(nn.Module):
         self.left_network = VideoFeatureExtractorNet(num_of_classes)
         self.right_network = VideoFeatureExtractorNet(num_of_classes)
 
-        print('self.left_network.children() is :')
-        for idx, m in enumerate(self.left_network.children()):
-            print(idx, '->', m)
+        # print('self.left_network.children() is :')
+        # for idx, m in enumerate(self.left_network.children()):
+        #     print(idx, '->', m)
 
         # 然后加载预训练的模型
         extractor_dict = torch.load(extractorPath)
         self.left_network.load_state_dict(extractor_dict)
         self.right_network.load_state_dict(extractor_dict)
 
-        print('======== after load weights ============')
-        print('self.left_network.children() is :')
-        for idx, m in enumerate(self.left_network.named_children()):
-            print(idx, '->', m)
+        # print('======== after load weights ============')
+        # print('self.left_network.children() is :')
+        # for idx, m in enumerate(self.left_network.named_children()):
+        #     print(idx, '->', m)
 
         # 然后去掉最后的层
         # extractor_dict = {k:v for k, v in extractor_dict.items() if not k in ['']}3
@@ -48,24 +48,26 @@ class videoClassifierNet(nn.Module):
         # self.right_network = nn.Sequential(*list(self.right_network.named_children())[:-4])
 
         # 加上新的融合层(先在 forward 中完成concat，即torch.cat)
-        self.fc3_and_output = nn.Sequential(
+        self.fc3 = nn.Sequential(
             nn.Dropout(p=.0),
             # todo
             nn.Linear(450*2, 84),
             nn.Tanh(),
             nn.BatchNorm1d(84),
+        )
 
+        self.output = nn.Sequential(
             nn.Dropout(.0),
             nn.Linear(84, self.num_of_classes),
             nn.Softmax(dim=1),
             nn.BatchNorm1d(self.num_of_classes)
         )
 
-        print('videoClassifierNet is :')
-        # print(self.state_dict())
-        # print(self.named_modules())
-        for idx, m in enumerate(self.named_modules()):
-            print(idx, '->', m)
+        # print('videoClassifierNet is :')
+        # # print(self.state_dict())
+        # # print(self.named_modules())
+        # for idx, m in enumerate(self.named_modules()):
+        #     print(idx, '->', m)
 
 
     def forward(self, x):
@@ -92,7 +94,8 @@ class videoClassifierNet(nn.Module):
 
         x = torch.cat([x0, x1], 1)
 
-        x = self.fc3_and_output(x)
+        x = self.fc3(x)
+        x = self.output(x)
 
         return x
 
@@ -174,6 +177,6 @@ class videoClassifier(videoFeatureExtractor):
             self.batch_size = batch_size
 
         # 构建网络，在这里 new 一个 Net 对象
-        self.network = videoClassifierNet(self.number_of_classes, self.extractorPath)
+        self.network = VideoClassifierNet(self.number_of_classes, self.extractorPath)
         self.model = self.network
         return self.network

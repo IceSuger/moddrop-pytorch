@@ -9,7 +9,7 @@ os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showi
 
 from basicClassifier import basicClassifier
 
-class SkeletonExtractorNet(nn.Module):
+class SkeletonClassifierNet(nn.Module):
     def __init__(self, num_of_classes, dlength):
         """
 
@@ -189,7 +189,7 @@ class skeletonClassifier(basicClassifier):
             self.batch_size = batch_size
 
         # 构建网络，在这里 new 一个 Net 对象
-        self.network = SkeletonExtractorNet(self.number_of_classes, self.dlength)
+        self.network = SkeletonClassifierNet(self.number_of_classes, self.dlength)
         self.model = self.network
         return self.network
 

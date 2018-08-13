@@ -9,7 +9,7 @@ os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showi
 
 from basicClassifier import basicClassifier
 
-class AudioExtractorNet(nn.Module):
+class AudioClassifierNet(nn.Module):
     def __init__(self, num_of_classes):
         """
 
@@ -59,11 +59,11 @@ class AudioExtractorNet(nn.Module):
             nn.BatchNorm1d(self.num_of_classes)
         )
 
-        print('audioClassifierNet is :')
-        # print(self.state_dict())
-        # print(self.named_modules())
-        for idx, m in enumerate(self.named_modules()):
-            print(idx, '->', m)
+        # print('audioClassifierNet is :')
+        # # print(self.state_dict())
+        # # print(self.named_modules())
+        # for idx, m in enumerate(self.named_modules()):
+        #     print(idx, '->', m)
 
 
 
@@ -156,7 +156,7 @@ class audioClassifier(basicClassifier):
             self.batch_size = batch_size
 
         # 构建网络，在这里 new 一个 Net 对象
-        self.network = AudioExtractorNet(self.number_of_classes)
+        self.network = AudioClassifierNet(self.number_of_classes)
         self.model = self.network
         return self.network
 

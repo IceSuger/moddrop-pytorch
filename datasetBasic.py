@@ -47,9 +47,9 @@ class DatasetBasic(data.Dataset):
             for mdlt in self.hand_list[hnd]:
                 self.dataset[subset][hnd][mdlt] = numpy.zeros([self.seq_per_class \
                                                                * self.nclasses] + self.input_size[mdlt])
-                print(f'self.dataset[subset][hnd][mdlt] size is : {self.dataset[subset][hnd][mdlt].shape}')
+                print(f'self.dataset[{subset}][{hnd}][{mdlt}] size is : {self.dataset[subset][hnd][mdlt].shape}')
         self.dataset[subset]['labels'] = numpy.zeros((self.seq_per_class * self.nclasses,))
-        print(f"self.dataset[subset]['labels'] size is : {self.dataset[subset]['labels'].shape}")
+        print(f"self.dataset[{subset}]['labels'] size is : {self.dataset[subset]['labels'].shape}")
 
         # [Xiao] [Debug]
         print('dataset_basic, __init__')
@@ -62,6 +62,8 @@ class DatasetBasic(data.Dataset):
         self._get_data_list('valid')
         # self._load_dataset('valid')
         self._get_data_list('train')
+
+        # print(f'self.data_list[{subset}][{class_number}] is : {self.data_list[subset][class_number]}')
 
         # Loading the data
         while sample < self.nclasses * self.seq_per_class:
@@ -76,7 +78,9 @@ class DatasetBasic(data.Dataset):
                 seq_number = random.randint(0, data_sample['min_length'] -
                                             self.step * (self.nframes - 1) - 1)
                 ifloaded = False
+                # print(f'self.hand_list keys: {self.hand_list.keys()}')
                 for hnd in self.hand_list:  # ['both']
+                    # print(f'self.hand_list[{hnd}] : {self.hand_list[hnd]}')
                     for mdlt in self.hand_list[hnd]:    # ['color', 'depth']
                         self.dataset[subset][hnd][mdlt][sample], ifl = \
                             self._get_stblock(data_sample, hnd, mdlt, seq_number)   # self.dataset[subset][hnd][mdlt] 是一个numpy array，见上面numpy.zeros那块初始化
@@ -172,6 +176,7 @@ class DatasetBasic(data.Dataset):
             print('Unknown subset')
 
         self.data_list[subset] = {}
+        # print(f'In _get_data_list, folder is {folder}, search_line is: {self.search_line}')
         for cl in range(self.nclasses):
             self.data_list[subset][cl] = glob.glob(folder + self.search_line % (cl))
 

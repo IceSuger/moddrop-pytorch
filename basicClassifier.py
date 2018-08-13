@@ -179,9 +179,13 @@ class basicClassifier(object):
                 input = data
                 target = label.to(torch.int64)
 
-                # input = input.cuda()
-                # target = target.cuda()
-                input, target = input.to(self.device), target.to(self.device)
+                # [Xiao] 如果是多模态的输入，需要区别对待
+                if not isinstance(input, dict):
+                    # 若当前的输入是 torch.tensor ，说明不是最终的多模态输入，可以直接上GPU
+                    input, target = input.to(self.device), target.to(self.device)
+                else:
+                    # 若是字典，说明是多模态输入，这里先将label上GPU，其他的部分在输入model.forward()中分别取出来作为tensor再上GPU
+                    target = target.to(self.device)
 
                 # print(f'input.shape is : {input.shape}')
                 # print(f'target.shape is : {target.shape}')
@@ -208,9 +212,9 @@ class basicClassifier(object):
 
                 # if ii % 10 == 0:
                 #     vis.plot('loss', loss)
-                vis.line(X=torch.Tensor([ii + epoch*len(train_loader)]), Y=torch.Tensor([loss]), win=win, update='append', name='train_loss')
-                # vis.line(X=t.Tensor([ii]), Y=t.Tensor([ii]), win=win, update='append')
-                # vis.updateTrace(X=numpy.array([ii]), Y=numpy.array(loss.data), win=win, name='train_loss')
+
+                # vis.line(X=torch.Tensor([ii + epoch*len(train_loader)]), Y=torch.Tensor([loss]), win=win, update='append', name='train_loss')
+
 
             # 计算验证集上的指标及可视化
             val_loss = self.val(model, val_loader)
@@ -272,7 +276,10 @@ class basicClassifier(object):
 
         for ii, data in enumerate(dataloader):
             input, label = data
-            val_input = input.to(self.device)
+            if not isinstance(input, dict):
+                val_input = input.to(self.device)
+            else:
+                val_input = input
             val_label = label.to(self.device)
             score = model(val_input)
             losses.append(self.criterion(score, val_label).data)

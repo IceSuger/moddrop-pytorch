@@ -4,6 +4,7 @@ from PIL import Image
 from torch.utils import data
 # from torchvision import transforms
 import pandas as pd
+from collections import OrderedDict
 import numpy
 import random
 from datasetBasic import DatasetBasic
@@ -22,6 +23,7 @@ class DatasetVideoClassifier(DatasetBasic):
         """
         search_line = "*_r_color_g%02d*.pickle"
 
+        hand_list = OrderedDict()
         modality_list = ['color', 'depth']
         for hnd in ['right', 'left']:
             hand_list[hnd] = modality_list

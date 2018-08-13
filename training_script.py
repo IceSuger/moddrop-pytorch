@@ -26,12 +26,13 @@ from audioClassifier import audioClassifier
 from skeletonClassifier import skeletonClassifier
 from videoFeatureExtractor import videoFeatureExtractor
 from videoClassifier import videoClassifier
-# from multimodalClassifier import multimodalClassifier
+from multimodalClassifier import multimodalClassifier
 
 from datasetVideoClassifier import DatasetVideoClassifier
 from datasetVideoFeatureExtractor import DatasetVideoFeatureExtractor
 from datasetSkeleton import DatasetSkeleton
 from datasetAudio import DatasetAudio
+from datasetMultimodal import DatasetMultimodal
 
 ''' Import the relevant classes from the util module.
 	 - skeletonClassifier trains a 3D-ConvNet using mocap data
@@ -61,7 +62,7 @@ cl_methods = { 'skeleton' : skeletonClassifier,
               'video' : videoClassifier,
               'videoFeat': videoFeatureExtractor,
               'audio' : audioClassifier,
-              # 'multimodal' : multimodalClassifier
+              'multimodal' : multimodalClassifier
               }
 
 dataset_types = {
@@ -69,6 +70,7 @@ dataset_types = {
             'videoFeat': DatasetVideoFeatureExtractor,
             'skeleton': DatasetSkeleton,
             'audio': DatasetAudio,
+            'multimodal': DatasetMultimodal
             }
 
 

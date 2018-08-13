@@ -25,7 +25,7 @@ class DatasetSkeleton(DatasetBasic):
         self.stats_file = filter_folder + 'skeleton_stats'
         self._load_stats()
 
-
+        hand_list = {}
         modality_list = ['mocap']
         hand_list['both'] = modality_list
         DatasetBasic.__init__(self, input_folder, modality, subset, hand_list, seq_per_class, nclasses, input_size, step, nframes, modality_list, search_line, block_size=36)

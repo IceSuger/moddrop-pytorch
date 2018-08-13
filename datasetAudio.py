@@ -22,6 +22,7 @@ class DatasetAudio(DatasetBasic):
         """
         search_line = "*_g%02d*.pickle"
 
+        hand_list = {}
         modality_list = ['audio']
         hand_list['both'] = modality_list
         DatasetBasic.__init__(self, input_folder, modality, subset, hand_list, seq_per_class, nclasses, input_size, step, nframes, modality_list, search_line, block_size=36)
