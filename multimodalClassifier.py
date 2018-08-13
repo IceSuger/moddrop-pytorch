@@ -80,6 +80,8 @@ class MultimodalNet(nn.Module):
 
 
 
+
+
     def forward(self, x):
         print(f'Type of multimodal input is : {type(x)}')
         print(f'In multimodal, x keys are: {x.keys()}')
@@ -219,6 +221,7 @@ class multimodalClassifier(basicClassifier):
         self.pretrainedPaths['mocap'] = pretrainedFolder + 'skeletonClassifier.pth'
         self.pretrainedPaths['audio'] = pretrainedFolder + 'audioClassifier.pth'
         self.pretrainedPaths['videoFeat'] = pretrainedFolder + 'videoFeatureExtractor.pth'
+        self.pretrainedPaths['multimodal'] = pretrainedFolder + 'multimodalClassifier.pth'
 
 
 
@@ -269,6 +272,8 @@ class multimodalClassifier(basicClassifier):
         # 构建网络，在这里 new 一个 Net 对象
         self.network = MultimodalNet(self.number_of_classes, pretrainedPaths=self.pretrainedPaths)
         self.model = self.network
+
+
         return self.network
 
 

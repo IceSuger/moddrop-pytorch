@@ -73,6 +73,9 @@ class basicClassifier(object):
 
         self.modality = modality
 
+        # 决定训练/验证/测试时是否可用GPU
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 
     def train_torch(self, datasetTypeCls, learning_rate_value=None, learning_rate_decay=None, num_epochs=5000):
@@ -142,7 +145,7 @@ class basicClassifier(object):
         )
 
         # step 4: go to GPU
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        # self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")  # 这一句放到init方法中了
         model.to(self.device)
 
 
@@ -290,9 +293,51 @@ class basicClassifier(object):
         loss = sum(losses) / len(losses)
         return loss
 
+    def test_torch(self, datasetTypeCls):
+        test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 200,
+                                  self.nclasses, self.input_size, self.step, self.nframes)
+        test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=56)
+        self.model.to(self.device)
+
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            # for data in test_loader:
+            #     images, labels = data
+            #     outputs = net(images)
+            #     _, predicted = torch.max(outputs.data, 1)
+            #     total += labels.size(0)
+            #     correct += (predicted == labels).sum().item()
+
+            for ii, data in enumerate(test_loader):
+                input, label = data
+                if not isinstance(input, dict):
+                    val_input = input.to(self.device)
+                else:
+                    val_input = input
+                val_label = label.to(self.device)
+                score = self.model(val_input)
+                # print(f'score is: {score.data}')
+                # print(f'score.data.shape is: {score.data.shape}')
+                predicted = torch.argmax(score.data, dim=1)
+                total += label.size(0)
+                correct += sum(predicted == val_label).item()
+                # losses.append(self.criterion(score, val_label).data)
+
+        # print('Accuracy of the network on valid set as the test set: %d %%' % (
+        #         100 * correct / total))
+        print(f'Accuracy over the {total} samples in validset(as testset) is {(100 * correct / total)}')
 
     def save_model(self, name = None):
         if name is None:
             name = 'checkpoints/' + self.model_name + '.pth'
         torch.save(self.network.state_dict(), name)
         return name
+
+    def load_weights(self, name = None):
+        if name is None:
+            name = 'checkpoints/' + self.model_name + '.pth'
+
+        extractor_dict = torch.load(name)
+        self.network.load_state_dict(extractor_dict)
+        # self.video_network = nn.Sequential(OrderedDict(list(self.video_network.named_children())))
