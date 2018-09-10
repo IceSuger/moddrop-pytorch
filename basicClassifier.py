@@ -10,6 +10,8 @@ from torch.utils.data import DataLoader
 from utils.visualize import Visualizer
 import glob
 import visdom
+import pandas as pd
+from entropyEvaluating import softmax
 
 import os
 os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showing anything.
@@ -294,13 +296,17 @@ class basicClassifier(object):
         return loss
 
     def test_torch(self, datasetTypeCls):
-        test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 200,
+        test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 589,
                                   self.nclasses, self.input_size, self.step, self.nframes)
+        # test_data = datasetTypeCls(self.input_folder, self.modality, 'train', self.hand_list, 700,
+        #                            self.nclasses, self.input_size, self.step, self.nframes)
         test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=56)
         self.model.to(self.device)
 
         correct = 0
         total = 0
+        predicted_to_save = numpy.zeros((1,21))
+        labels_to_save = []
         with torch.no_grad():
             # for data in test_loader:
             #     images, labels = data
@@ -320,13 +326,28 @@ class basicClassifier(object):
                 # print(f'score is: {score.data}')
                 # print(f'score.data.shape is: {score.data.shape}')
                 predicted = torch.argmax(score.data, dim=1)
+                # predicted_to_save.extend(score.data.cpu().numpy())  # For saving as csv, as the features into RF.
+                predicted_to_save = numpy.concatenate((predicted_to_save, softmax(score.data.cpu().numpy())), axis=0)
+                # print(f'score.data is: \n{score.data}')
+                # print(f'score.data is: \n{score.data.cpu().numpy()}')
+                # print(f'score.data shape is: \n{score.data.cpu().numpy().shape}')
+                print(f'predicted_to_save shape is : {predicted_to_save.shape}')
                 total += label.size(0)
+                labels_to_save.extend(label.data.numpy())
                 correct += sum(predicted == val_label).item()
                 # losses.append(self.criterion(score, val_label).data)
 
         # print('Accuracy of the network on valid set as the test set: %d %%' % (
         #         100 * correct / total))
         print(f'Accuracy over the {total} samples in validset(as testset) is {(100 * correct / total)}')
+
+        # Save as csv
+        # pd.Series(predicted_to_save).to_csv('results/'+ 'valid_prob/' + 'predicted_'+self.model_name+'.csv')
+        # pd.Series(labels_to_save).to_csv('results/'+ 'valid_prob/' + 'labels_' + self.model_name + '.csv')
+        # df_to_save = pd.DataFrame(pd.concat([pd.DataFrame(predicted_to_save), pd.DataFrame(labels_to_save)], axis=1))
+        # df_to_save.to_csv('results/'+self.model_name)
+        pd.DataFrame(predicted_to_save[1:], columns=range(21)).to_csv('results/' + 'valid_prob/' + 'predicted_' + self.model_name + '.csv')
+        pd.Series(labels_to_save).to_csv('results/' + 'valid_prob/' + 'labels_' + self.model_name + '.csv')
 
     def save_model(self, name = None):
         if name is None:
