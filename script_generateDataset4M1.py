@@ -2,8 +2,30 @@
 1. generate damaged multimodal dataset and QoUs over this dataset
 2. generate labels
 """
+from multimodalClassifier import multimodalClassifier
+from datasetMultimodal import DatasetMultimodal
+from datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
 
-# 1.
+from torch.utils.data import DataLoader
+import pickle
+import os
+
+def testExistAndCreateDir(s):
+    path = os.path.join(os.getcwd(), s)
+    if not os.path.isdir(path):
+        os.mkdir(path)
+
+source_folder = '/home/xiaoyunlong/downloads/DeepGesture/Montalbano/'
+'''
+	Location of the dataset (Chalearn 2014) which has been pre-processed.
+'''
+
+filter_folder = 'filters/'
+classifier = multimodalClassifier(step = 4,
+                                 input_folder = source_folder,
+                                 filter_folder = filter_folder)
+
+# 1. generate damaged multimodal dataset and QoUs over this dataset
 
 """
 for s in D0:
@@ -20,12 +42,42 @@ for s in D0:
         # save to disk
         cPickle(_s, QoU, label_of_s, u, if_s_name_available_then_set_it_here)
 """
+# Consts
+r = 8
 
-# 2.
+
+train_data = DatasetMultimodal(classifier.input_folder, '', 'train', classifier.hand_list,
+                               classifier.seq_per_class,
+                               classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
+train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
+
+for ii, (data, label) in enumerate(train_loader):
+    for u in range(r):
+        _s = {}
+        QoU = []
+        for mdlt in data.keys():
+            for dmg_func in dmg_functions:
+                _s[mdlt] = dmg_func(data[mdlt])
+
+            for score_func in score_functions:
+                QoU.append(score_func(_s[mdlt]))
+
+        # save to disk
+        damaged_multimodal = {}
+        damaged_multimodal['data'] = _s
+        damaged_multimodal['QoU'] = QoU
+        damaged_multimodal['label'] = label
+        filename = label + '_' + str(ii) + '_' + str(u)
+        testExistAndCreateDir('damaged_multimodal/')
+        pickle.dump(damaged_multimodal, open('damaged_multimodal/' + filename, 'wb'))
+
+
+# 2. generate labels
 
 """
 for _s, QoUs in DataLoader(dataset_generated_above):
-    s_probs = set()
+    # s_probs = set()
+    Set_probs = []
     Set_modality = getSubsets([modalities])
     for subset in Set_modality:
         probs, result = M0(mask(_s, subset))
@@ -48,6 +100,29 @@ for _s, QoUs in DataLoader(dataset_generated_above):
     # or save in memory
     df(dtypes = {'subset_best': str, others: float})
 """
+dataset_damaged_multimodal = DatasetOfDamagedMultimodal()
+dataset_generated_above = DataLoader(dataset_damaged_multimodal)
+
+for ii, (_s, label, QoU) in enumerate(dataset_generated_above):
+    Set_probs = []
+    modalities = _s.keys()
+    Set_modality = getSubsets([modalities])
+
+    for subset in Set_modality:
+        probs, result = M0(mask(_s, subset))
+        Set_probs.append((probs, label, result, subset))
+
+    Set_probs.sort(key=lambda x: (x[1]!=x[2], H(x[0])))
+    subset_best = Set_probs[0][3]
+
+    sample_for_M1 = {}
+    sample_for_M1['QoU'] = QoU
+    sample_for_M1['subset_best'] = subset_best
+    filename = label + '_' + str(ii)
+    testExistAndCreateDir('train_for_M1/')
+    pickle.dump(sample_for_M1, open('train_for_M1/' + filename, 'wb'))
+
+
 
 # 3. Train M1
 #
@@ -55,6 +130,7 @@ for _s, QoUs in DataLoader(dataset_generated_above):
 """
 
 """
+
 
 # 4. Use M1
 #
