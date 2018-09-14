@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d118e74c-c27c-4f71-8a50-182950ed7dd6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/data_quality/DamageFunctions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datasetOfDamagedMultimodal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/script_generateDataset4M1_pseudoCode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/script_generateDataset4M1.py" beforeDir="false" afterPath="$PROJECT_DIR$/script_generateDataset4M1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_quality/QualityMetric.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_quality/QualityMetric.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,22 +19,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="training_script.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/training_script.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1879">
-              <caret line="111" column="16" selection-start-line="111" selection-end-line="111" selection-end-column="16" />
-              <folding>
-                <element signature="e#760#769#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="basicClassifier.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/basicClassifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
+            <state relative-caret-position="2567">
               <caret line="166" column="12" selection-start-line="166" selection-start-column="12" selection-end-line="166" selection-end-column="61" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
@@ -49,7 +34,7 @@
       <file leaf-file-name="datasetBasic.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasetBasic.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1683">
+            <state relative-caret-position="51">
               <caret line="12" column="31" selection-end-line="184" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
@@ -61,12 +46,10 @@
       <file leaf-file-name="script_generateDataset4M1.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1101">
-              <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
+            <state relative-caret-position="424">
+              <caret line="130" selection-start-line="130" selection-end-line="130" />
               <folding>
                 <element signature="e#93#146#0" expanded="true" />
-                <element signature="e#100#108#1" />
-                <element signature="e#2077#2752#1" />
               </folding>
             </state>
           </provider>
@@ -84,20 +67,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QualityMetric.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="QualityMetric.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data_quality/QualityMetric.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="714">
+              <caret line="42" column="20" lean-forward="true" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DamageFunctions.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DamageFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data_quality/DamageFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
             </state>
           </provider>
         </entry>
@@ -105,8 +88,8 @@
       <file leaf-file-name="datasetOfDamagedMultimodal.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasetOfDamagedMultimodal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-205">
-              <caret line="20" column="47" lean-forward="true" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+            <state relative-caret-position="51">
+              <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -117,10 +100,22 @@
       <file leaf-file-name="datasetMultimodal.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasetMultimodal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="79" lean-forward="true" selection-end-line="109" />
+            <state relative-caret-position="493">
+              <caret line="92" column="52" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="datasetVideoClassifier.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasetVideoClassifier.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="509">
+              <caret line="63" column="54" lean-forward="true" selection-start-line="63" selection-start-column="54" selection-end-line="63" selection-end-column="54" />
+              <folding>
+                <element signature="e#0#17#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -129,7 +124,7 @@
       <file leaf-file-name="datasetSkeleton.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasetSkeleton.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-18">
+            <state relative-caret-position="1377">
               <caret line="93" selection-start-line="93" selection-end-line="93" />
             </state>
           </provider>
@@ -179,15 +174,15 @@
         <option value="$PROJECT_DIR$/datasetAudio.py" />
         <option value="$PROJECT_DIR$/datasetBasic.py" />
         <option value="$PROJECT_DIR$/datasetVideoClassifier.py" />
-        <option value="$PROJECT_DIR$/datasetMultimodal.py" />
         <option value="$PROJECT_DIR$/multimodalClassifier.py" />
         <option value="$PROJECT_DIR$/testing_script.py" />
         <option value="$PROJECT_DIR$/entropyEvaluating.py" />
         <option value="$PROJECT_DIR$/basicClassifier.py" />
-        <option value="$PROJECT_DIR$/data_quality/QualityMetric.py" />
         <option value="$PROJECT_DIR$/datasetOfDamagedMultimodal.py" />
         <option value="$PROJECT_DIR$/script_generateDataset4M1.py" />
         <option value="$PROJECT_DIR$/data_quality/DamageFunctions.py" />
+        <option value="$PROJECT_DIR$/datasetMultimodal.py" />
+        <option value="$PROJECT_DIR$/data_quality/QualityMetric.py" />
       </list>
     </option>
   </component>
@@ -361,7 +356,14 @@
       <option name="project" value="LOCAL" />
       <updated>1536561001673</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="v1.0.1 增加了M1部分思路的伪代码的实现">
+      <created>1536633810773</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1536633810773</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -388,9 +390,9 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32925472" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,7 +407,8 @@
     <MESSAGE value="v0.4 Multimodal Classifier added. Validation loss is ~0.167(nclass = 21)." />
     <MESSAGE value="v0.5 Testing added. (See the valid set as test set, and calculate the accuracy.)" />
     <MESSAGE value="v1.0 增加了M1部分思路的伪代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.0 增加了M1部分思路的伪代码" />
+    <MESSAGE value="v1.0.1 增加了M1部分思路的伪代码的实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.0.1 增加了M1部分思路的伪代码的实现" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -413,6 +416,13 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/data_quality/QualityMetric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/datasetBasic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2907">
@@ -447,9 +457,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2771">
           <caret line="170" column="54" selection-end-line="181" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -478,9 +485,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1734">
           <caret line="103" selection-start-line="103" selection-end-line="104" selection-end-column="3" />
-          <folding>
-            <element signature="e#760#769#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -535,9 +539,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2771">
           <caret line="170" column="54" lean-forward="true" selection-end-line="181" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -566,9 +567,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="21" column="92" selection-start-line="21" selection-start-column="92" selection-end-line="21" selection-end-column="92" />
-          <folding>
-            <element signature="e#760#769#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -655,13 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/datasetVideoClassifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-155">
-          <caret line="6" column="35" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2018.1/system/remote_sources/-916635062/-38687215/torch/nn/modules/module.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -694,9 +685,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2771">
           <caret line="170" column="54" selection-end-line="181" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -714,9 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/script_generateDataset4M1_pseudoCode.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/multimodalClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1932">
@@ -731,15 +716,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1879">
           <caret line="111" column="16" selection-start-line="111" selection-end-line="111" selection-end-column="16" />
-          <folding>
-            <element signature="e#760#769#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/basicClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
+        <state relative-caret-position="2567">
           <caret line="166" column="12" selection-start-line="166" selection-start-column="12" selection-end-line="166" selection-end-column="61" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
@@ -763,49 +745,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/datasetSkeleton.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-18">
+        <state relative-caret-position="1377">
           <caret line="93" selection-start-line="93" selection-end-line="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datasetMultimodal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="79" lean-forward="true" selection-end-line="109" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/datasetBasic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1683">
+        <state relative-caret-position="51">
           <caret line="12" column="31" selection-end-line="184" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datasetOfDamagedMultimodal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-205">
-          <caret line="20" column="47" lean-forward="true" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1101">
-          <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
-          <folding>
-            <element signature="e#93#146#0" expanded="true" />
-            <element signature="e#100#108#1" />
-            <element signature="e#2077#2752#1" />
           </folding>
         </state>
       </provider>
@@ -820,17 +770,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_quality/QualityMetric.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data_quality/DamageFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasetOfDamagedMultimodal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="130" selection-start-line="130" selection-end-line="130" />
+          <folding>
+            <element signature="e#93#146#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasetMultimodal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="92" column="52" selection-start-line="92" selection-start-column="52" selection-end-line="92" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasetVideoClassifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="509">
+          <caret line="63" column="54" lean-forward="true" selection-start-line="63" selection-start-column="54" selection-end-line="63" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_quality/QualityMetric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="42" column="20" lean-forward="true" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
         </state>
       </provider>
     </entry>
