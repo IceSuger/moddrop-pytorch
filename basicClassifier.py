@@ -165,22 +165,6 @@ class basicClassifier(object):
             losses = []
 
             for ii, (data, label) in enumerate(train_loader):
-            # for ii, data in enumerate(train_loader):
-
-
-                # print(label)
-                # if(ii == 15):
-                # print(len(data))
-                # print(data)
-                # vis.images(data[0][0], win='train_data_loader_color', opts=dict(title='SHOW IMGS!', caption='Clearlove7777.'))
-                # vis.images(data[0][1], win='train_data_loader_depth', opts=dict(title='SHOW IMGS!', caption='Clearlove7777.'))
-                # vis.text(str(label))
-
-                # print(label)
-
-                # break
-                # vis.images(data[0], win='test_data_loader', opts=dict(title='SHOW IMGS!', caption='Clearlove7777.'))
-                # 训练吧兄弟！
                 input = data
                 target = label.to(torch.int64)
 
@@ -200,7 +184,7 @@ class basicClassifier(object):
                 self.optimizer.zero_grad()
                 score = model(input)
                 # print(f'score shape is: {score.shape}')
-                loss = self.criterion(score, target)
+                loss = self.criterion(score, target)    # score 即为长度等于 nclasses 的“概率”向量， target 即为单一值（类别的编号）
 
                 loss.backward()
                 self.optimizer.step()

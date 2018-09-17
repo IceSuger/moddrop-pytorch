@@ -62,3 +62,13 @@ def entropy(labels, base=None):
         ent -= i * log(i, base)
 
     return ent
+
+
+def entropyOnProbs(probs, base=e):
+    ent = 0.
+
+    # Compute entropy
+    for i in probs:
+        ent -= i * log(i, base)
+
+    return ent

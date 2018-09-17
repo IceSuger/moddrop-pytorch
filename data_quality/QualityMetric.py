@@ -1,6 +1,10 @@
 import numpy as np
 
 class DataQuality():
+    def getMetricFuncs(self):
+        return [self.std,
+                self.SNR,
+                self.integrity]
     '''
 
     就 Chalearn 2014 数据集而言，输入 X 都是单个模态的 stblock。
@@ -35,7 +39,7 @@ class DataQuality():
         '''
         missingCnt = 0
         shape = X.shape
-        for frame in shape[0]:
+        for frame in range(shape[0]):
             fr = X[frame]
             if np.max(fr) == 0 and  np.min(fr) == 0:
                 missingCnt += 1
