@@ -13,6 +13,8 @@ from torch.utils.data import DataLoader
 import pickle
 import os
 import itertools
+import torch
+import numpy as np
 
 
 def testExistAndCreateDir(s):
@@ -42,7 +44,7 @@ def mask(sample, subset):
     sample = sample.copy()
     for key in sample.keys():
         if key not in subset:
-            sample[key] = noise.MaskingNoise(sample[key], 0)
+            sample[key] = noise.MaskingNoise(sample[key], 0).float() # .astype(np.float32)
     return sample
 
 source_folder = '/home/xiaoyunlong/downloads/DeepGesture/Montalbano/'
@@ -136,30 +138,53 @@ for _s, QoUs in DataLoader(dataset_generated_above):
     # or save in memory
     df(dtypes = {'subset_best': str, others: float})
 """
-dataset_damaged_multimodal = DatasetOfDamagedMultimodal()
-dataset_generated_above = DataLoader(dataset_damaged_multimodal)
+dataset_damaged_multimodal = DatasetOfDamagedMultimodal(os.path.join(os.getcwd(), 'damaged_multimodal/'))
+dataset_generated_above = DataLoader(dataset_damaged_multimodal, batch_size=1, shuffle=False, num_workers=8)
 
-M0 = multimodalClassifier
+# 预备下面要用的方法
+M0 = multimodalClassifier(step = 4,
+                                 input_folder = source_folder,
+                                 filter_folder = filter_folder)
 H = entropyOnProbs  # 根据概率向量求熵
 
-for ii, (_s, label, QoU) in enumerate(dataset_generated_above):
-    Set_probs = []
-    modalities = _s.keys()
-    Set_modality = getSubsets(list(modalities))
+# 预备好M0，加载已训练的权重，进入预测模式（非训练模式，一方面保证权重不更新，一方面保证batchnorm可以在batchsize为1时正常工作）并挪上GPU
+M0.build_network() # build the model
+M0.load_weights()
+M0.model.eval()
+M0.model.to(M0.device)
 
-    for subset in Set_modality:
-        probs, result = M0(mask(_s, subset))    # probs 即为模型输出的 score（见 basicClassifier.py 中 test 相关方法）
-        Set_probs.append((probs, label, result, subset))
+with torch.no_grad():
+    for ii, (_s, label, QoU) in enumerate(dataset_generated_above):
+        label = label.data.cpu().numpy()
 
-    Set_probs.sort(key=lambda x: (x[1]!=x[2], H(x[0])))
-    subset_best = Set_probs[0][3]
+        n = len(dataset_generated_above)
+        print(f'ii: {ii}, {ii/n}')
 
-    sample_for_M1 = {}
-    sample_for_M1['QoU'] = QoU
-    sample_for_M1['subset_best'] = subset_best
-    filename = label + '_' + str(ii)
-    testExistAndCreateDir('train_for_M1/')
-    pickle.dump(sample_for_M1, open('train_for_M1/' + filename, 'wb'))
+        Set_probs = []
+        modalities = _s.keys()
+        Set_modality = getSubsets(list(modalities))
+
+        # # DEBUG
+        # print(f'_s type: ')
+
+        # # DEBUG
+        # for mdlt in _s.keys():
+        #     _s[mdlt] = _s[mdlt].unsqueeze(0)
+
+        for subset in Set_modality:
+            probs = M0.model(mask(_s, subset))    # probs 即为模型输出的 score（见 basicClassifier.py 中 test 相关方法）
+            result = torch.argmax(probs.data, dim=1)
+            Set_probs.append((probs.data.cpu().numpy()[0], label, result, subset))
+
+        Set_probs.sort(key=lambda x: (x[1]!=x[2], H(x[0])))
+        subset_best = Set_probs[0][3]
+
+        sample_for_M1 = {}
+        sample_for_M1['QoU'] = QoU
+        sample_for_M1['subset_best'] = subset_best
+        filename = str(label) + '_' + str(ii)
+        testExistAndCreateDir('train_for_M1/')
+        pickle.dump(sample_for_M1, open('train_for_M1/' + filename, 'wb'))
 
 
 

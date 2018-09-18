@@ -83,20 +83,23 @@ class MultimodalNet(nn.Module):
 
 
     def forward(self, x):
-        print(f'Type of multimodal input is : {type(x)}')
-        print(f'In multimodal, x keys are: {x.keys()}')
-        print(f'x is : {len(x["mocap"])}')
+        # print(f'Type of multimodal input is : {type(x)}')
+        # print(f'In multimodal, x keys are: {x.keys()}')
+        # print(f'x is : {len(x["mocap"])}')
         # x = x.squeeze()
         # print(f'In multimodal, after squeeze(), x size is: {x.shape}')
 
+        # print(f"Before going to GPU, type is: {x['video'].dtype}")
+        # print(f"Before going to GPU, type is: {x['mocap'].dtype}")
+        # print(f"Before going to GPU, type is: {x['mocap'].dtype}")
         # x = x.view(x.size(0), -1)
         x_video = x['video'].to(self.device)
         x_mocap = x['mocap'].to(self.device)
         x_audio = x['audio'].to(self.device)
 
-        print(f'In multimodal, x_video size is: {x_video.shape}')
-        print(f'In multimodal, x_mocap size is: {x_mocap.shape}')
-        print(f'In multimodal, x_audio size is: {x_audio.shape}')
+        # print(f'In multimodal, x_video size is: {x_video.shape}, type is: {x_video.dtype}')
+        # print(f'In multimodal, x_mocap size is: {x_mocap.shape}, type is: {x_mocap.dtype}')
+        # print(f'In multimodal, x_audio size is: {x_audio.shape}, type is: {x_audio.dtype}')
 
         x_video = self.videoForward(x_video)
         x_mocap = self.mocapForward(x_mocap)
@@ -113,11 +116,11 @@ class MultimodalNet(nn.Module):
 
     def videoForward(self, x):
         x = x.permute(1, 0, 2, 3, 4, 5)
-        print(f'In video classifier, x size is: {x.shape}')
+        # print(f'In video classifier, x size is: {x.shape}')
         x0 = x[:2].permute(1, 0, 2, 3, 4, 5)
         x1 = x[2:].permute(1, 0, 2, 3, 4, 5)
 
-        print(f'In video classifier, after permutation, x0 size is: {x0.shape}')
+        # print(f'In video classifier, after permutation, x0 size is: {x0.shape}')
 
         # x0 = self.right_network.forward(x0)
         # x1 = self.left_network.forward(x1)
@@ -144,8 +147,8 @@ class MultimodalNet(nn.Module):
         x1 = x[1].permute(0, 2, 1, 3, 4)
         x0 = network.block1_color(x0)
         x1 = network.block1_depth(x1)
-        x0 = x0.squeeze()
-        x1 = x1.squeeze()
+        x0 = x0.squeeze(2)
+        x1 = x1.squeeze(2)
         x0 = network.block2_color(x0)
         x1 = network.block2_depth(x1)
         x0 = x0.view(x0.size(0), -1)
@@ -156,7 +159,14 @@ class MultimodalNet(nn.Module):
         return x
 
     def mocapForward(self, x):
-        x = x.squeeze()
+
+        if x.shape[0] == 1:
+            # 若 batch size == 1, 则把第一维再补回来
+            x = x.squeeze()
+            x = x.unsqueeze(0)
+        else:
+            x = x.squeeze()
+
         # print(f'In Skeleton, after squeeze(), x size is: {x.shape}')
 
         x = x.view(x.size(0), -1)

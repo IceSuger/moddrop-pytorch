@@ -36,11 +36,12 @@ class DataQuality():
         X: numpy.ndarray 例如尺寸 (5, 36, 36)
         如果某帧缺失，则相应帧的所有像素值应该全为 0
 
+        [2018-9-17 v1.2] 实际上这里的输入是 (1, 4, 5, 1, 36, 36) 这样的，应该遍历shape[2]
         '''
         missingCnt = 0
         shape = X.shape
-        for frame in range(shape[0]):
-            fr = X[frame]
+        for frame in range(shape[2]):
+            fr = X[:][:][frame]
             if np.max(fr) == 0 and  np.min(fr) == 0:
                 missingCnt += 1
         score = missingCnt / shape[0]

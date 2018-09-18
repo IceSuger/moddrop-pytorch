@@ -71,6 +71,14 @@ class Noise():
         X = mask * X
         return X
 
+    def MaskingWholeFrame(self, X, rate=0.5):
+        if self.randomly:
+            rate = np.random.random()
+
+        mask = (numpy.random.uniform(0, 1, X.shape) < rate).astype("i4")
+        X = mask * X
+        return X
+
 
 def SaltAndPepper(rate=0.3):
     # Salt and pepper noise

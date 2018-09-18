@@ -65,6 +65,16 @@ def entropy(labels, base=None):
 
 
 def entropyOnProbs(probs, base=e):
+    """
+
+    :param probs: numpy.ndarray, shape is M * N, M rows of vectors (length is N) of probs.
+    :param base:
+    :return:    M * 1, each row is a scalar, representing the entropy of probs in that row.
+    """
+    # print(type(probs))
+    # print(probs.shape)
+    probs = softmax(probs)
+
     ent = 0.
 
     # Compute entropy
