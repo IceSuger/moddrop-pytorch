@@ -13,7 +13,8 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
-
+from datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
+from datasetSelectedMultimodal import DatasetSelectedMultimodal
 
 __docformat__ = 'restructedtext en'
 
@@ -68,7 +69,9 @@ cl_methods = { 'skeleton' : skeletonClassifier,
               'video' : videoClassifier,
               'videoFeat': videoFeatureExtractor,
               'audio' : audioClassifier,
-              'multimodal' : multimodalClassifier
+              'multimodal' : multimodalClassifier,
+               'LQ_multimodal': multimodalClassifier,
+               'selected_LQ_multimodal': multimodalClassifier
               }
 
 dataset_types = {
@@ -76,50 +79,43 @@ dataset_types = {
             'videoFeat': DatasetVideoFeatureExtractor,
             'skeleton': DatasetSkeleton,
             'audio': DatasetAudio,
-            'multimodal': DatasetMultimodal
+            'multimodal': DatasetMultimodal,
+            'LQ_multimodal': DatasetOfDamagedMultimodal,
+            'selected_LQ_multimodal': DatasetSelectedMultimodal
             }
 
 
-'''
-	Select a classifier and temporal sampling 'step' size.
-'''
+def commonPartOfTheTesting(cl_mode, step = 4, clf = None):
+    """
+    两种模式（带和不带数据选择模块）下的测试流程的公共部分。
+    :param cl_mode: 数据集的模态
+    :return:
+    """
 
-if len(sys.argv) < 2:
-    print("Usage: {0} classifier step".format(sys.argv[0]))
-    exit(1)
-else:
-    cl_mode = sys.argv[1]
-    if not cl_mode == 'motionDetector':
-        step = int(sys.argv[2])
-    else:
-        step = 1
-        # if motionDetector is selected, set step=1
+    #try:
+    classifier = cl_methods[cl_mode](step = step,
+                                     input_folder = source_folder,
+                                     filter_folder = filter_folder)#,
+                                     # pretrained = True) # 设为True，从而在初始化网络时，自动加载权重
+    dataset_type_cls = dataset_types[cl_mode]
 
-if not cl_mode in cl_methods.keys():
-    print('Unknown classifier. Options:', cl_methods.keys())
-    exit(1)
+    classifier.build_network() # build the model
 
-do_lmdb = False
-if len(sys.argv) > 3:
-  do_lmdb = (sys.argv[3] == 'lmdb')
+    classifier.load_weights()
+    # classifier.train_torch(dataset_type_cls)
+    res = classifier.test_torch(dataset_type_cls)
 
-if not step in [1, 2, 3, 4]:
-    print('"Step" can take the following values: [ 1 | 2 | 3 | 4 ]')
-    exit(1)
+    return res
 
-''' Initialize a classifier
-'''
+def testWithoutDataSelection():
+    cl_mode = 'LQ_multimodal'
+    return commonPartOfTheTesting(cl_mode)
 
+def testWithDataSelection(clf):
+    """
 
-#try:
-classifier = cl_methods[cl_mode](step = step,
-                                 input_folder = source_folder,
-                                 filter_folder = filter_folder)#,
-                                 # pretrained = True) # 设为True，从而在初始化网络时，自动加载权重
-dataset_type_cls = dataset_types[cl_mode]
-
-classifier.build_network() # build the model
-
-classifier.load_weights()
-# classifier.train_torch(dataset_type_cls)
-classifier.test_torch(dataset_type_cls)
+    :param clf: 用于完成数据选择的分类器 phi_s
+    :return:
+    """
+    cl_mode = 'selected_LQ_multimodal'
+    return commonPartOfTheTesting(cl_mode, clf)

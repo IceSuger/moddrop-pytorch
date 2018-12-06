@@ -57,58 +57,61 @@ classifier = multimodalClassifier(step = 4,
                                  input_folder = source_folder,
                                  filter_folder = filter_folder)
 
-# # 1. generate damaged multimodal dataset and QoUs over this dataset
-#
-# """
-# for s in D0:
-#     for u in range(r):  # randomly get r damaged data sample
-#         _s = {}
-#         QoU = []
-#         for mdlt in s:
-#             for dmg_dimension in dmg_functions:
-#                 _s[mdlt] = dmg_func(s[mdlt])
-#
-#             for score_func in score_funcs:
-#                 QoU.append(score_func(_s[mdlt]))
-#
-#         # save to disk
-#         cPickle(_s, QoU, label_of_s, u, if_s_name_available_then_set_it_here)
-# """
-# # Consts
-# r = 8   # 单条原多模态数据，生成 r 条被破坏记录
-#
-#
-# train_data = DatasetMultimodal(classifier.input_folder, '', 'train', classifier.hand_list,
-#                                classifier.seq_per_class,
-#                                classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
-# train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
-#
-# dmg_functions = Noise().getDmgFunctions()
-# score_functions = DataQuality().getMetricFuncs()
-#
-# for ii, (data, label) in enumerate(train_loader):
-#     n = len(train_loader)
-#     print(f'ii: {ii}, {ii/n}')
-#
-#     for u in range(r):
-#         _s = {}
-#         QoU = []
-#         for mdlt in data.keys():
-#             for dmg_func in dmg_functions:
-#                 _s[mdlt] = dmg_func(data[mdlt].data.numpy()[0])
-#
-#             for score_func in score_functions:
-#                 QoU.append(score_func(_s[mdlt]))
-#
-#         # save to disk
-#         damaged_multimodal = {}
-#         damaged_multimodal['data'] = _s
-#         damaged_multimodal['QoU'] = QoU
-#         damaged_multimodal['label'] = label
-#         filename = str(label.data) + '_' + str(ii) + '_' + str(u)
-#         testExistAndCreateDir('damaged_multimodal/')
-#         pickle.dump(damaged_multimodal, open('damaged_multimodal/' + filename, 'wb'))
+# 1. generate damaged multimodal dataset and QoUs over this dataset
 
+"""
+for s in D0:
+    for u in range(r):  # randomly get r damaged data sample
+        _s = {}
+        QoU = []
+        for mdlt in s:
+            for dmg_dimension in dmg_functions:
+                _s[mdlt] = dmg_func(s[mdlt])
+
+            for score_func in score_funcs:
+                QoU.append(score_func(_s[mdlt]))
+
+        # save to disk
+        cPickle(_s, QoU, label_of_s, u, if_s_name_available_then_set_it_here)
+"""
+def generateLQDataset(r = 8, subset = 'train'):
+    # # Consts
+    # r = 8   # 单条原多模态数据，生成 r 条被破坏记录
+    #
+
+    train_data = DatasetMultimodal(classifier.input_folder, '', subset, classifier.hand_list,
+                                   classifier.seq_per_class,
+                                   classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
+    train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
+
+    dmg_functions = Noise().getDmgFunctions()
+    score_functions = DataQuality().getMetricFuncs()
+
+    for ii, (data, label) in enumerate(train_loader):
+        n = len(train_loader)
+        print(f'ii: {ii}, {ii/n}')
+
+        for u in range(r):
+            _s = {}
+            QoU = []
+            for mdlt in data.keys():
+                for dmg_func in dmg_functions:
+                    _s[mdlt] = dmg_func(data[mdlt].data.numpy()[0])
+
+                for score_func in score_functions:
+                    QoU.append(score_func(_s[mdlt]))
+
+            # save to disk
+            damaged_multimodal = {}
+            damaged_multimodal['data'] = _s
+            damaged_multimodal['QoU'] = QoU
+            damaged_multimodal['label'] = label # 这里的label，是原始多模态任务中的label，如手势类别
+            filename = str(label.data) + '_' + str(ii) + '_' + str(u)
+            # testExistAndCreateDir('damaged_multimodal/')
+            # pickle.dump(damaged_multimodal, open('damaged_multimodal/' + filename, 'wb'))
+            path = 'LowQuality_'+str(r)+'_times/' + subset + '/'
+            testExistAndCreateDir(path) # 原始高质量数据集的r倍数量的样本数的低质量数据
+            pickle.dump(damaged_multimodal, open(path + filename, 'wb'))
 
 # 2. generate labels
 
@@ -138,53 +141,60 @@ for _s, QoUs in DataLoader(dataset_generated_above):
     # or save in memory
     df(dtypes = {'subset_best': str, others: float})
 """
-dataset_damaged_multimodal = DatasetOfDamagedMultimodal(os.path.join(os.getcwd(), 'damaged_multimodal/'))
-dataset_generated_above = DataLoader(dataset_damaged_multimodal, batch_size=1, shuffle=False, num_workers=8)
+def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_R_root = 'D_R'):
+    path = 'LowQuality_' + str(r) + '_times/' + train_valid_test + '/'
+    path_D_R = path_D_R_root + '/' + train_valid_test + '/'
 
-# 预备下面要用的方法
-M0 = multimodalClassifier(step = 4,
-                                 input_folder = source_folder,
-                                 filter_folder = filter_folder)
-H = entropyOnProbs  # 根据概率向量求熵
+    # dataset_damaged_multimodal = DatasetOfDamagedMultimodal(os.path.join(os.getcwd(), 'damaged_multimodal/'))
+    dataset_damaged_multimodal = DatasetOfDamagedMultimodal(os.path.join(os.getcwd(), path))
+    dataset_generated_above = DataLoader(dataset_damaged_multimodal, batch_size=1, shuffle=False, num_workers=8)
 
-# 预备好M0，加载已训练的权重，进入预测模式（非训练模式，一方面保证权重不更新，一方面保证batchnorm可以在batchsize为1时正常工作）并挪上GPU
-M0.build_network() # build the model
-M0.load_weights()
-M0.model.eval()
-M0.model.to(M0.device)
+    # 预备下面要用的方法
+    M0 = multimodalClassifier(step = 4,
+                                     input_folder = source_folder,
+                                     filter_folder = filter_folder)
+    H = entropyOnProbs  # 根据概率向量求熵
 
-with torch.no_grad():
-    for ii, (_s, label, QoU) in enumerate(dataset_generated_above):
-        label = label.data.cpu().numpy()
+    # 预备好M0，加载已训练的权重，进入预测模式（非训练模式，一方面保证权重不更新，一方面保证batchnorm可以在batchsize为1时正常工作）并挪上GPU
+    M0.build_network() # build the model
+    M0.load_weights()
+    M0.model.eval()
+    M0.model.to(M0.device)
 
-        n = len(dataset_generated_above)
-        print(f'ii: {ii}, {ii/n}')
+    with torch.no_grad():
+        for ii, (_s, label, QoU) in enumerate(dataset_generated_above):
+            label = label.data.cpu().numpy()
 
-        Set_probs = []
-        modalities = _s.keys()
-        Set_modality = getSubsets(list(modalities))
+            n = len(dataset_generated_above)
+            print(f'ii: {ii}, {ii/n}')
 
-        # # DEBUG
-        # print(f'_s type: ')
+            Set_probs = []
+            modalities = _s.keys()
+            Set_modality = getSubsets(list(modalities))
 
-        # # DEBUG
-        # for mdlt in _s.keys():
-        #     _s[mdlt] = _s[mdlt].unsqueeze(0)
+            # # DEBUG
+            # print(f'_s type: ')
 
-        for subset in Set_modality:
-            probs = M0.model(mask(_s, subset))    # probs 即为模型输出的 score（见 basicClassifier.py 中 test 相关方法）
-            result = torch.argmax(probs.data, dim=1)
-            Set_probs.append((probs.data.cpu().numpy()[0], label, result, subset))
+            # # DEBUG
+            # for mdlt in _s.keys():
+            #     _s[mdlt] = _s[mdlt].unsqueeze(0)
 
-        Set_probs.sort(key=lambda x: (x[1]!=x[2], H(x[0])))
-        subset_best = Set_probs[0][3]
+            for subset in Set_modality:
+                probs = M0.model(mask(_s, subset))    # probs 即为模型输出的 score（见 basicClassifier.py 中 test 相关方法）
+                result = torch.argmax(probs.data, dim=1)
+                Set_probs.append((probs.data.cpu().numpy()[0], label, result, subset))
 
-        sample_for_M1 = {}
-        sample_for_M1['QoU'] = QoU
-        sample_for_M1['subset_best'] = subset_best
-        filename = str(label) + '_' + str(ii)
-        testExistAndCreateDir('train_for_M1/')
-        pickle.dump(sample_for_M1, open('train_for_M1/' + filename, 'wb'))
+            Set_probs.sort(key=lambda x: (x[1]!=x[2], H(x[0])))
+            subset_best = Set_probs[0][3]
+
+            sample_for_M1 = {}
+            sample_for_M1['QoU'] = QoU.data.cpu().numpy()[0]
+            sample_for_M1['subset_best'] = subset_best
+            filename = str(label) + '_' + str(ii)
+            # testExistAndCreateDir('train_for_M1/')
+            # pickle.dump(sample_for_M1, open('train_for_M1/' + filename, 'wb'))
+            testExistAndCreateDir(path_D_R)
+            pickle.dump(sample_for_M1, open(path_D_R + filename, 'wb'))
 
 
 

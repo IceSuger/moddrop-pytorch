@@ -156,9 +156,7 @@ class DatasetBasic(data.Dataset):
 
     def _get_data_list(self, subset):
         """
-        !!!WON'T BE NEEDED FOR LMDB DATASETS.
-
-        Function to retrieve list of training data filenames
+        Function to retrieve list of training/validating/testing data filenames.
 
         :type subset: string
         :param subset: string representing 'train', 'validation' or 'test' subsets

@@ -49,7 +49,7 @@ class DatasetOfDamagedMultimodal(data.Dataset):
             #
             #     self.dataset.append( sample )
 
-    def __getitem__(self, ind):
+    def _my_getitem__(self, ind):
         """
 
 
@@ -64,6 +64,10 @@ class DatasetOfDamagedMultimodal(data.Dataset):
                 sample['data'][mdlt] = sample['data'][mdlt].astype(numpy.float32)
         # _s, label, QoU
         return sample['data'], sample['label'], sample['QoU']
+
+    def __getitem__(self, ind):
+        data, label, QoU = self._my_getitem__(ind)
+        return data, label
 
     def __len__(self):
         return len(self.file_list)

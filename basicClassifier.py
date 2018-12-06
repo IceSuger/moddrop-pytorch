@@ -279,13 +279,16 @@ class basicClassifier(object):
         loss = sum(losses) / len(losses)
         return loss
 
-    def test_torch(self, datasetTypeCls):
+    def test_torch(self, datasetTypeCls, phi_s=None):
         test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 589,
-                                  self.nclasses, self.input_size, self.step, self.nframes)
+                                  self.nclasses, self.input_size, self.step, self.nframes, phi_s)
         # test_data = datasetTypeCls(self.input_folder, self.modality, 'train', self.hand_list, 700,
         #                            self.nclasses, self.input_size, self.step, self.nframes)
+        # test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=0)
         test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=56)
         self.model.to(self.device)
+        # 把模型设为验证模式
+        self.model.eval()
 
         correct = 0
         total = 0
@@ -332,6 +335,69 @@ class basicClassifier(object):
         # df_to_save.to_csv('results/'+self.model_name)
         pd.DataFrame(predicted_to_save[1:], columns=range(21)).to_csv('results/' + 'valid_prob/' + 'predicted_' + self.model_name + '.csv')
         pd.Series(labels_to_save).to_csv('results/' + 'valid_prob/' + 'labels_' + self.model_name + '.csv')
+
+        # 返回准确率
+        return (100 * correct / total)
+
+
+    def test_torch_modality_selection(self, datasetTypeCls):
+        test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 589,
+                                  self.nclasses, self.input_size, self.step, self.nframes)
+        # test_data = datasetTypeCls(self.input_folder, self.modality, 'train', self.hand_list, 700,
+        #                            self.nclasses, self.input_size, self.step, self.nframes)
+        test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=56)
+        self.model.to(self.device)
+
+        # 把模型设为验证模式
+        self.model.eval()
+
+        correct = 0
+        total = 0
+        predicted_to_save = numpy.zeros((1,21))
+        labels_to_save = []
+        with torch.no_grad():
+            # for data in test_loader:
+            #     images, labels = data
+            #     outputs = net(images)
+            #     _, predicted = torch.max(outputs.data, 1)
+            #     total += labels.size(0)
+            #     correct += (predicted == labels).sum().item()
+
+            for ii, data in enumerate(test_loader):
+                input, label = data
+                if not isinstance(input, dict):
+                    val_input = input.to(self.device)
+                else:
+                    val_input = input
+                val_label = label.to(self.device)
+                score = self.model(val_input)
+                # print(f'score is: {score.data}')
+                # print(f'score.data.shape is: {score.data.shape}')
+                predicted = torch.argmax(score.data, dim=1)
+                # predicted_to_save.extend(score.data.cpu().numpy())  # For saving as csv, as the features into RF.
+                predicted_to_save = numpy.concatenate((predicted_to_save, softmax(score.data.cpu().numpy())), axis=0)
+                # print(f'score.data is: \n{score.data}')
+                # print(f'score.data is: \n{score.data.cpu().numpy()}')
+                # print(f'score.data shape is: \n{score.data.cpu().numpy().shape}')
+                print(f'predicted_to_save shape is : {predicted_to_save.shape}')
+                total += label.size(0)
+                labels_to_save.extend(label.data.numpy())
+                correct += sum(predicted == val_label).item()
+                # losses.append(self.criterion(score, val_label).data)
+
+        # print('Accuracy of the network on valid set as the test set: %d %%' % (
+        #         100 * correct / total))
+        print(f'Accuracy over the {total} samples in validset(as testset) is {(100 * correct / total)}')
+
+        # Save as csv
+        # pd.Series(predicted_to_save).to_csv('results/'+ 'valid_prob/' + 'predicted_'+self.model_name+'.csv')
+        # pd.Series(labels_to_save).to_csv('results/'+ 'valid_prob/' + 'labels_' + self.model_name + '.csv')
+        # df_to_save = pd.DataFrame(pd.concat([pd.DataFrame(predicted_to_save), pd.DataFrame(labels_to_save)], axis=1))
+        # df_to_save.to_csv('results/'+self.model_name)
+        pd.DataFrame(predicted_to_save[1:], columns=range(21)).to_csv('results/' + 'valid_prob/' + 'predicted_' + self.model_name + '.csv')
+        pd.Series(labels_to_save).to_csv('results/' + 'valid_prob/' + 'labels_' + self.model_name + '.csv')
+
+
 
     def save_model(self, name = None):
         if name is None:
