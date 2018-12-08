@@ -1,33 +1,49 @@
-import torch as t
-import os
-from PIL import Image
-from torch.utils import data
 # from torchvision import transforms
-import pandas as pd
-from collections import OrderedDict
 import numpy
 import random
-from datasetBasic import DatasetBasic
+from datasets.datasetBasic import DatasetBasic
 import re
 import pickle
 import glob
 import os
 os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showing anything.
 
-class DatasetVideoClassifier(DatasetBasic):
+class DatasetVideoFeatureExtractor(DatasetBasic):
 
     def __init__(self, input_folder, modality, subset, hand_list, seq_per_class, nclasses, input_size, step, nframes):
         """
         :type subset: string
 		:param subset: string representing 'train', 'validation' or 'test' subsets
         """
-        search_line = "*_r_color_g%02d*.pickle"
-
-        hand_list = OrderedDict()
         modality_list = ['color', 'depth']
-        for hnd in ['right', 'left']:
-            hand_list[hnd] = modality_list
-        DatasetBasic.__init__(self, input_folder, modality, subset, hand_list, seq_per_class, nclasses, input_size, step, nframes, modality_list, search_line, block_size=36)
+        hand_list['both'] = modality_list
+        DatasetBasic.__init__(self, input_folder, modality, subset, hand_list, seq_per_class, nclasses, input_size, step, nframes, modality_list, block_size=36)
+        # self.subset = subset
+        # self.hand_list = hand_list
+        # self.seq_per_class = seq_per_class
+        # self.nclasses = nclasses
+        # self.input_size = input_size
+        # self.step = step
+        # self.nframes = nframes
+        #
+        # # self.block_size = 36
+        #
+        # # self.dataset = {}
+        # # self.dataset['train'] = {}
+        # # self.dataset['valid'] = {}
+        # # self.dataset['test'] = {}
+        # # self.data_list = {}
+        #
+        # # Paths
+        # self.search_line = "*_g%02d*.pickle"
+        # self.input_folder = input_folder
+        # self.train_folder = self.input_folder + modality + '/train/'
+        # self.valid_folder = self.input_folder + modality + '/valid/'
+        # self.test_folder = self.input_folder + modality + '/test/'
+        #
+        # self.modality_list = ['color', 'depth']
+        # self.hand_list['both'] = self.modality_list
+        # self.number_of_classes = 21
 
 
     def prenormalize(self, x):
@@ -82,27 +98,27 @@ class DatasetVideoClassifier(DatasetBasic):
         return data_sample
 
 
-    # def _get_data_list(self, subset):
-    #     """
-    #     重写了父类的该方法
-    #
-    #     :type subset: string
-    #     :param subset: string representing 'train', 'validation' or 'test' subsets
-    #     """
-    #     # self.data_list = data_list
-    #     # self.search_line = search_line
-    #
-    #     if subset == 'train':
-    #         folder = self.train_folder
-    #     elif subset == 'valid':
-    #         folder = self.valid_folder
-    #     elif subset == 'test':
-    #         folder = self.test_folder
-    #     else:
-    #         print('Unknown subset')
-    #
-    #     self.data_list[subset] = {}
-    #     for cl in range(self.nclasses):
-    #         list_right = glob.glob(folder + "*r%02d*.pickle" % (cl))
-    #         list_left = glob.glob(folder + "*l%02d.pickle" % (cl))
-    #         self.data_list[subset][cl] = list_right + list_left
+    def _get_data_list(self, subset):
+        """
+        重写了父类的该方法
+
+        :type subset: string
+        :param subset: string representing 'train', 'validation' or 'test' subsets
+        """
+        # self.data_list = data_list
+        # self.search_line = search_line
+
+        if subset == 'train':
+            folder = self.train_folder
+        elif subset == 'valid':
+            folder = self.valid_folder
+        elif subset == 'test':
+            folder = self.test_folder
+        else:
+            print('Unknown subset')
+
+        self.data_list[subset] = {}
+        for cl in range(self.nclasses):
+            list_right = glob.glob(folder + "*r%02d*.pickle" % (cl))
+            list_left = glob.glob(folder + "*l%02d.pickle" % (cl))
+            self.data_list[subset][cl] = list_right + list_left

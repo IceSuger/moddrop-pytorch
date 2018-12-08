@@ -91,7 +91,7 @@ class VideoFeatureExtractorNet(nn.Module):
         :return:
         '''
         # # 输入x的size为：torch.Size([32, 5, 1, 320, 180]) ，其中32为batch_size；5为连续5帧构成一个volume，故视为一个输入为5个通道；1是一个输入；320,180为高，宽
-        print(f'In VideoFeat, x size is: {x.shape}')
+        # print(f'In VideoFeat, x size is: {x.shape}')
         x = x.permute(1, 0, 2, 3, 4, 5)
         # print(f'x size_after_permutation is: {x.shape}')
         # # x = x.squeeze()

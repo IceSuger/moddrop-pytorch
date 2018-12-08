@@ -78,11 +78,11 @@ class VideoClassifierNet(nn.Module):
         # # 输入x的size为：torch.Size([batchsize, handcnt, color&depth(即2), 5, 1, 320, 180]) ，其中32为batch_size；5为连续5帧构成一个volume，故视为一个输入为5个通道；1是一个输入；320,180为高，宽
 
         x = x.permute(1, 0, 2, 3, 4, 5)
-        print(f'In video classifier, x size is: {x.shape}')
+        # print(f'In video classifier, x size is: {x.shape}')
         x0 = x[:2].permute(1, 0, 2, 3, 4, 5)
         x1 = x[2:].permute(1, 0, 2, 3, 4, 5)
 
-        print(f'In video classifier, after permutation, x0 size is: {x0.shape}')
+        # print(f'In video classifier, after permutation, x0 size is: {x0.shape}')
 
         # x0 = self.right_network.forward(x0)
         # x1 = self.left_network.forward(x1)

@@ -2,14 +2,17 @@ import torch
 import collections
 import numpy
 import time
-from datasetBasic import DatasetBasic
-from datasetVideoFeatureExtractor import DatasetVideoFeatureExtractor
+
+from datasetsOfLowQualityData.datasetLQAudio import DatasetLQAudio
+from datasetsOfLowQualityData.datasetLQSkeleton import DatasetLQSkeleton
+from datasetsOfLowQualityData.datasetLQVideoClassifier import DatasetLQVideoClassifier
+from datasetsOfLowQualityData.datasetLQVideoFeatureExtractor import DatasetLQVideoFeatureExtractor
+from datasetsOfLowQualityData.datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
+from datasetsOfLowQualityData.datasetSelectedMultimodal import DatasetSelectedMultimodal
 from torch import nn
 from torch.utils.data import DataLoader
 # from torch.autograd import Variable as V
 from utils.visualize import Visualizer
-import glob
-import visdom
 import pandas as pd
 from entropyEvaluating import softmax
 
@@ -80,7 +83,16 @@ class basicClassifier(object):
 
 
 
-    def train_torch(self, datasetTypeCls, learning_rate_value=None, learning_rate_decay=None, num_epochs=5000):
+    def train_torch(self, datasetTypeCls, learning_rate_value=None, learning_rate_decay=None, num_epochs=5000, early_stop_epochs=20):
+        """
+
+        :param datasetTypeCls:
+        :param learning_rate_value:
+        :param learning_rate_decay:
+        :param num_epochs:
+        :param early_stop_epochs: 连续这么多个epoch上，val_loss都没有降低，则提前终止训练
+        :return:
+        """
         # Load dataset
 
         self.saved_params = []
@@ -114,11 +126,16 @@ class basicClassifier(object):
         #                                           self.nclasses, self.input_size, self.step, self.nframes)
         # val_data = DatasetVideoFeatureExtractor(self.input_folder, self.modality, 'valid', self.hand_list, 200,
         #                                         self.nclasses, self.input_size, self.step, self.nframes)
-        train_data = datasetTypeCls(self.input_folder, self.modality, 'train', self.hand_list,
-                                                  self.seq_per_class,
-                                                  self.nclasses, self.input_size, self.step, self.nframes)
-        val_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 200,
-                                                self.nclasses, self.input_size, self.step, self.nframes)
+        if datasetTypeCls in [DatasetOfDamagedMultimodal, DatasetLQAudio,  DatasetLQVideoClassifier, DatasetLQVideoFeatureExtractor, DatasetLQSkeleton]:
+            # print(f'In basicClassifier.py, df = {df}')
+            train_data = datasetTypeCls(self.input_folder, train_valid_test='train')
+            val_data = datasetTypeCls(self.input_folder, train_valid_test='valid')
+        else:
+            train_data = datasetTypeCls(self.input_folder, self.modality, 'train', self.hand_list,
+                                                      self.seq_per_class,
+                                                      self.nclasses, self.input_size, self.step, self.nframes)
+            val_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 200,
+                                                    self.nclasses, self.input_size, self.step, self.nframes)
 
         print('Dataset prepared.')
 
@@ -157,6 +174,7 @@ class basicClassifier(object):
         #     # break
         # print('HH=======25-20947489THRLGIHRSGHRNKGNREOSG========')
         best_val_loss = self.nclasses
+        epochs_no_better_val_loss = 0
 
         for epoch in range(num_epochs):
 
@@ -211,6 +229,12 @@ class basicClassifier(object):
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
                 self.save_model()
+                epochs_no_better_val_loss = 0
+            else:
+                # 若验证loss没有降低，则累计到 early_stop_epochs 个epoch之后，就提前停止
+                epochs_no_better_val_loss += 1
+                if epochs_no_better_val_loss >= early_stop_epochs:
+                    break
             # vis.plot('val_loss', val_loss)
 
             vis.line(X=torch.Tensor([epoch]), Y=torch.Tensor([sum(losses) / len(losses)]), win=win1, update='append',
@@ -279,13 +303,17 @@ class basicClassifier(object):
         loss = sum(losses) / len(losses)
         return loss
 
-    def test_torch(self, datasetTypeCls, phi_s=None):
-        test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 589,
+    def test_torch(self, datasetTypeCls, phi_s=None, df=None):
+        if datasetTypeCls == DatasetOfDamagedMultimodal or datasetTypeCls == DatasetSelectedMultimodal:
+            # print(f'In basicClassifier.py, df = {df}')
+            test_data = datasetTypeCls(self.input_folder, train_valid_test='valid', phi_s=phi_s, QoU2delta_df=df)
+        else:
+            test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 589,
                                   self.nclasses, self.input_size, self.step, self.nframes, phi_s)
         # test_data = datasetTypeCls(self.input_folder, self.modality, 'train', self.hand_list, 700,
         #                            self.nclasses, self.input_size, self.step, self.nframes)
         # test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=0)
-        test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=56)
+        test_loader = DataLoader(test_data, batch_size=1, shuffle=False, num_workers=1)
         self.model.to(self.device)
         # 把模型设为验证模式
         self.model.eval()

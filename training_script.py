@@ -28,11 +28,11 @@ from videoFeatureExtractor import videoFeatureExtractor
 from videoClassifier import videoClassifier
 from multimodalClassifier import multimodalClassifier
 
-from datasetVideoClassifier import DatasetVideoClassifier
-from datasetVideoFeatureExtractor import DatasetVideoFeatureExtractor
-from datasetSkeleton import DatasetSkeleton
-from datasetAudio import DatasetAudio
-from datasetMultimodal import DatasetMultimodal
+from datasets.datasetVideoClassifier import DatasetVideoClassifier
+from datasets.datasetVideoFeatureExtractor import DatasetVideoFeatureExtractor
+from datasets.datasetSkeleton import DatasetSkeleton
+from datasets.datasetAudio import DatasetAudio
+from datasets.datasetMultimodal import DatasetMultimodal
 
 ''' Import the relevant classes from the util module.
 	 - skeletonClassifier trains a 3D-ConvNet using mocap data

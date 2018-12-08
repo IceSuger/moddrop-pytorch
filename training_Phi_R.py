@@ -13,6 +13,10 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
+from datasetsOfLowQualityData.datasetLQAudio import DatasetLQAudio
+from datasetsOfLowQualityData.datasetLQSkeleton import DatasetLQSkeleton
+from datasetsOfLowQualityData.datasetLQVideoClassifier import DatasetLQVideoClassifier
+from datasetsOfLowQualityData.datasetLQVideoFeatureExtractor import DatasetLQVideoFeatureExtractor
 from datasetsOfLowQualityData.datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
 from datasetsOfLowQualityData.datasetSelectedMultimodal import DatasetSelectedMultimodal
 from lqMultimodalClassifier import lqMultimodalClassifier
@@ -22,9 +26,6 @@ __docformat__ = 'restructedtext en'
 import os
 
 os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showing anything.
-
-import torch
-torch.multiprocessing.set_sharing_strategy('file_system')
 
 # from motionDetector import motionDetector
 from audioClassifier import audioClassifier
@@ -48,12 +49,6 @@ from datasets.datasetMultimodal import DatasetMultimodal
 	   This classifier implements late-fusion using a shared-hidden
 	   layer
 '''
-import torch
-torch.manual_seed(1) # 设定随机数种子
-if torch.cuda.is_available():
-    torch.cuda.manual_seed(1)
-
-torch.backends.cudnn.deterministic=True
 
 # source_folder = '/mnt/data/dramacha/data_preprocessedv2/'
 source_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_2_times/'
@@ -75,7 +70,12 @@ cl_methods = { 'skeleton' : skeletonClassifier,
               'audio' : audioClassifier,
               'multimodal' : multimodalClassifier,
                'LQ_multimodal': lqMultimodalClassifier,
-               'selected_LQ_multimodal': lqMultimodalClassifier
+               'selected_LQ_multimodal': lqMultimodalClassifier,
+
+            'LQ_skeleton' : skeletonClassifier,
+              'LQ_video' : videoClassifier,
+              'LQ_videoFeat': videoFeatureExtractor,
+              'LQ_audio' : audioClassifier
               }
 
 dataset_types = {
@@ -85,11 +85,15 @@ dataset_types = {
             'audio': DatasetAudio,
             'multimodal': DatasetMultimodal,
             'LQ_multimodal': DatasetOfDamagedMultimodal,
-            'selected_LQ_multimodal': DatasetSelectedMultimodal
+            'selected_LQ_multimodal': DatasetSelectedMultimodal,
+
+            'LQ_skeleton' : DatasetLQSkeleton,
+              'LQ_video' : DatasetLQVideoClassifier,
+              'LQ_videoFeat': DatasetLQVideoFeatureExtractor,
+              'LQ_audio' : DatasetLQAudio
             }
 
-
-def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None):
+def trainingLQClassifier(cl_mode, step = 4, clf = None, df = None):
     """
     两种模式（带和不带数据选择模块）下的测试流程的公共部分。
     :param cl_mode: 数据集的模态
@@ -104,27 +108,15 @@ def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None):
     dataset_type_cls = dataset_types[cl_mode]
 
     classifier.build_network() # build the model
+    classifier.train_torch(dataset_type_cls)
 
-    classifier.load_weights()
-    # classifier.train_torch(dataset_type_cls)
-    # print(f'In testing_DataSelection_or_not.py, df = {df}')
-    res = classifier.test_torch(dataset_type_cls, phi_s=clf, df=df)
+    # classifier.load_weights()
+    # # classifier.train_torch(dataset_type_cls)
+    # # print(f'In testing_DataSelection_or_not.py, df = {df}')
+    # res = classifier.test_torch(dataset_type_cls, phi_s=clf, df=df)
 
-    return res
+    return classifier
 
-def testWithoutDataSelection():
-    cl_mode = 'LQ_multimodal'
-    return commonPartOfTheTesting(cl_mode)
 
-def testWithDataSelection(clf, df):
-    """
 
-    :param clf: 用于完成数据选择的分类器 phi_s
-    :param df: 保存了 QoU->delta 的表，且其中的 df.cc.cat.categories 为根据输出的数字返回相应的模态子集的映射表
-    :return:
-    """
-    cl_mode = 'selected_LQ_multimodal'
-    # print(f'clf = {clf}')
-    # print(f'df = {df}')
 
-    return commonPartOfTheTesting(cl_mode, clf=clf, df=df)

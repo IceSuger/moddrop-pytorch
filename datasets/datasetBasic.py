@@ -130,9 +130,9 @@ class DatasetBasic(data.Dataset):
         # [Xiao] [Debug]
         # print(self.dataset)
 
-        # print(f'hand_list keys: {self.hand_list.keys()}')
+        print(f'hand_list keys: {self.hand_list.keys()}')
         # print(f"hand_list['left'] : {self.hand_list['left']}")
-
+        print(f"hand_list['both'] : {self.hand_list['both']}")
         # Append data from all channels
 
         for hnd in self.hand_list:
@@ -147,6 +147,10 @@ class DatasetBasic(data.Dataset):
             label = self.dataset[subset]['labels'][ind]
             # print(label)
         # return inputs, label
+        # print(f'In datasetBasic.py, inputs = {inputs}')
+        print(f'inputs[0].shape = {inputs[0].shape}')
+        print(f'len(inputs) = {len(inputs)}')
+        print(f'type(inputs) = {type(inputs)}')
         return torch.tensor(inputs), int(label)
         # [以前是这样的，现在不是了。]this is a list of tuples of size (batch_size, channel=1, input_size)
 

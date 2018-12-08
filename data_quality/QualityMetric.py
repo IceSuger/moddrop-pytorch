@@ -39,12 +39,27 @@ class DataQuality():
         [2018-9-17 v1.2] 实际上这里的输入是 (1, 4, 5, 1, 36, 36) 这样的，应该遍历shape[2]
         '''
         missingCnt = 0
+        # X = X.unsqueeze(0) # [2018-12-6 v2.0] 不知道为啥，第一个维度的1没了....自己手动补上来吧先。
         shape = X.shape
-        for frame in range(shape[2]):
-            fr = X[:][:][frame]
+
+        # print(f"X is: {X}")
+        # print(f"X shape is {X.shape}, shape[1] = {shape[1]}")
+        # print(f"X[:] shape is {X[:].shape}")
+        # print(f"X[:][:] shape is {X[:][:].shape}")
+
+        X = X.copy()
+        X = np.reshape(X, (shape[0]*shape[1], -1))
+
+        # print(f"X shape is {X.shape}, shape[1] = {shape[1]}")
+
+        for frame in range(shape[1]): # [2018-12-6 v2.0] 不知道为啥，第一个维度的1没了....
+            # print(f'Now, frame = {frame} !!!')
+        # for frame in range(shape[1]):
+        #     fr = X[:][:][frame]
+            fr = X[frame]
             if np.max(fr) == 0 and  np.min(fr) == 0:
                 missingCnt += 1
-        score = missingCnt / shape[0]
+        score = missingCnt / shape[1]
         return score
 
 

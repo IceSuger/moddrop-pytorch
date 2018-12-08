@@ -1,15 +1,9 @@
-import torch as t
-import os
-from PIL import Image
-from torch.utils import data
 # from torchvision import transforms
-import pandas as pd
 import numpy
 import random
-from datasetBasic import DatasetBasic
+from datasets.datasetBasic import DatasetBasic
 import re
 import pickle
-import glob
 import os
 os.environ['http_proxy'] = ''   # This line for preventing Visdom from not showing anything.
 

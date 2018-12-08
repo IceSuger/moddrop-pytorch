@@ -2,9 +2,10 @@
 1. generate damaged multimodal dataset and QoUs over this dataset
 2. generate labels
 """
+from datasetsOfLowQualityData.datasetOfDmgedMultimodalAndQoU import DatasetOfDamagedMultimodalAndQoU
+from lqMultimodalClassifier import lqMultimodalClassifier
 from multimodalClassifier import multimodalClassifier
-from datasetMultimodal import DatasetMultimodal
-from datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
+from datasets.datasetMultimodal import DatasetMultimodal
 from data_quality.QualityMetric import DataQuality
 from data_quality.DamageFunctions import Noise
 from entropyEvaluating import entropyOnProbs
@@ -14,13 +15,13 @@ import pickle
 import os
 import itertools
 import torch
-import numpy as np
 
 
 def testExistAndCreateDir(s):
     path = os.path.join(os.getcwd(), s)
     if not os.path.isdir(path):
-        os.mkdir(path)
+        # os.mkdir(path)
+        os.makedirs(path)
 
 def getSubsets(features):
     """
@@ -146,11 +147,11 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_R_root = 'D_R'):
     path_D_R = path_D_R_root + '/' + train_valid_test + '/'
 
     # dataset_damaged_multimodal = DatasetOfDamagedMultimodal(os.path.join(os.getcwd(), 'damaged_multimodal/'))
-    dataset_damaged_multimodal = DatasetOfDamagedMultimodal(os.path.join(os.getcwd(), path))
-    dataset_generated_above = DataLoader(dataset_damaged_multimodal, batch_size=1, shuffle=False, num_workers=8)
+    dataset_damaged_multimodal_and_qou = DatasetOfDamagedMultimodalAndQoU(os.path.join(os.getcwd(), path), train_valid_test)
+    dataset_generated_above = DataLoader(dataset_damaged_multimodal_and_qou, batch_size=1, shuffle=False, num_workers=8)
 
     # 预备下面要用的方法
-    M0 = multimodalClassifier(step = 4,
+    M0 = lqMultimodalClassifier(step = 4,
                                      input_folder = source_folder,
                                      filter_folder = filter_folder)
     H = entropyOnProbs  # 根据概率向量求熵
@@ -188,7 +189,7 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_R_root = 'D_R'):
             subset_best = Set_probs[0][3]
 
             sample_for_M1 = {}
-            sample_for_M1['QoU'] = QoU.data.cpu().numpy()[0]
+            sample_for_M1['QoU'] = QoU#.data.cpu().numpy()[0]
             sample_for_M1['subset_best'] = subset_best
             filename = str(label) + '_' + str(ii)
             # testExistAndCreateDir('train_for_M1/')
