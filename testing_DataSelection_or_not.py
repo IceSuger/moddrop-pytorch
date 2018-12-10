@@ -13,6 +13,7 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
+from CONSTS import R
 from datasetsOfLowQualityData.datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
 from datasetsOfLowQualityData.datasetSelectedMultimodal import DatasetSelectedMultimodal
 from lqMultimodalClassifier import lqMultimodalClassifier
@@ -56,7 +57,7 @@ if torch.cuda.is_available():
 torch.backends.cudnn.deterministic=True
 
 # source_folder = '/mnt/data/dramacha/data_preprocessedv2/'
-source_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_2_times/'
+source_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_' + str(R) + '_times/'
 '''
 	Location of the dataset (Chalearn 2014) which has been pre-processed.
 '''

@@ -22,8 +22,15 @@ class DatasetOfDamagedMultimodal(data.Dataset):
 
         self.file_path = self.input_folder + train_valid_test + '/'
         self.file_list = glob.glob(self.file_path + search_line)
+
+        # 用于给 __len__ 方法返回数据集的大小
+        self.file_list_len = len(self.file_list)
+        if train_valid_test != 'train':
+            self.file_list_len //= 2
+
         self.dataset = []
 
+        print(f'DatasetOfDamagedMultimodal, self.file_path = {self.file_path}')
         # n = len(self.file_list)
         # pct = n // 100
         # i = 0
@@ -65,4 +72,5 @@ class DatasetOfDamagedMultimodal(data.Dataset):
         return data, label[0]
 
     def __len__(self):
-        return len(self.file_list)
+        # return len(self.file_list)
+        return self.file_list_len

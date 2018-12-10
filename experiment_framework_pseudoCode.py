@@ -1,5 +1,6 @@
 """
 """
+from CONSTS import R
 from script_generateDataset4M1 import generateLQDataset, generateDeltaStar
 from testing_DataSelection_or_not import testWithoutDataSelection, testWithDataSelection
 from training_Phi_R import trainingLQClassifier
@@ -12,9 +13,9 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 # print("=================================")
 # print("== 1. LQ dataset generating... ==")
 # print("=================================")
-
-# generateLQDataset(r=2, subset='train')
-# generateLQDataset(r=2, subset='valid')
+#
+# # generateLQDataset(r=R, subset='train')
+# generateLQDataset(r=R, subset='valid')
 #
 # print("=================================")
 # print("== 1. LQ dataset generated. =====")
@@ -34,10 +35,10 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 # print("== 3. Phi_r training. ===========")
 # print("=================================")
 # # 先挨个训练单模态的组件
-# mdlts = [#'LQ_skeleton',
-#          # 'LQ_videoFeat',
-#          # 'LQ_video',
-#          # 'LQ_audio',
+# mdlts = ['LQ_skeleton',
+#          'LQ_videoFeat',
+#          'LQ_video',
+#          'LQ_audio',
 #          'LQ_multimodal']
 # for mdlt in mdlts:
 #     trainingLQClassifier(cl_mode=mdlt)
@@ -66,8 +67,8 @@ print("=================================")
 print("== 5. DeltaStar generating..... =")
 print("=================================")
 
-generateDeltaStar(r=2, train_valid_test='train', path_D_R_root='D_R')
-generateDeltaStar(r=2, train_valid_test='valid', path_D_R_root='D_R')
+# generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root='D_Q')
+generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root='D_Q')
 
 print("=================================")
 print("== 5. DeltaStar generated. ======")
@@ -79,8 +80,7 @@ print("=================================")
 print("== 6. Phi_s training... =========")
 print("=================================")
 
-# 调用脚本 training_Phi_s.py 中的函数
-df = readFilesAndFormTheDataframeAndWriteToDisk(path_D_R_root='D_R', train_valid_test='train', result_file_name = 'QoU_to_deltaStar.csv')
+df = readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root='D_Q', train_valid_test='train', result_file_name = 'QoU_to_deltaStar.csv')
 clf = trainAndTest_Phi_s(df)
 
 print("=================================")

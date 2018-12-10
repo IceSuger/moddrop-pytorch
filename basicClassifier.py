@@ -83,7 +83,7 @@ class basicClassifier(object):
 
 
 
-    def train_torch(self, datasetTypeCls, learning_rate_value=None, learning_rate_decay=None, num_epochs=5000, early_stop_epochs=20):
+    def train_torch(self, datasetTypeCls, learning_rate_value=None, learning_rate_decay=None, num_epochs=5000, early_stop_epochs=30):
         """
 
         :param datasetTypeCls:
@@ -115,7 +115,7 @@ class basicClassifier(object):
 
 
         # [Xiao]
-        vis = Visualizer('xiao-moddrop')
+        vis = Visualizer('xiao-moddrop-LQ')
 
         # step 1: setup model
         model = self.model
@@ -178,11 +178,15 @@ class basicClassifier(object):
 
         for epoch in range(num_epochs):
 
+            print(f'CURRENT EPOCH: {epoch}')
 
             # In each epoch, we do a full pass over the training data:
             losses = []
 
+            train_loader_len = len(train_loader)
             for ii, (data, label) in enumerate(train_loader):
+                print(f'ii = {ii}, percentage: {ii/train_loader_len}')
+
                 input = data
                 target = label.to(torch.int64)
 
@@ -222,6 +226,7 @@ class basicClassifier(object):
 
                 # vis.line(X=torch.Tensor([ii + epoch*len(train_loader)]), Y=torch.Tensor([loss]), win=win, update='append', name='train_loss')
 
+            print(f'Computation over epoch {epoch} is OK.')
 
             # 计算验证集上的指标及可视化
             val_loss = self.val(model, val_loader)
@@ -236,6 +241,7 @@ class basicClassifier(object):
                 if epochs_no_better_val_loss >= early_stop_epochs:
                     break
             # vis.plot('val_loss', val_loss)
+            print(f'Validation over epoch {epoch} is OK.')
 
             vis.line(X=torch.Tensor([epoch]), Y=torch.Tensor([sum(losses) / len(losses)]), win=win1, update='append',
                      name='mean_train_loss_per_epoch')
@@ -287,7 +293,13 @@ class basicClassifier(object):
 
         losses = []
 
+        dataloaderLen = len(dataloader)
         for ii, data in enumerate(dataloader):
+            if ii > 150:    # 不跑完整个valid集，太多了。跑150*42个样本就行了
+                break
+
+            print(f'Validation ii = {ii}, percentage: {ii/dataloaderLen}')
+
             input, label = data
             if not isinstance(input, dict):
                 val_input = input.to(self.device)

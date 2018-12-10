@@ -7,8 +7,8 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import preprocessing
 
 
-def readFilesAndFormTheDataframeAndWriteToDisk(path_D_R_root = 'D_R', train_valid_test='train', result_file_name = 'QoU_to_deltaStar.csv'):
-    root = '/home/xiaoyunlong/code/moddrop-pytorch/' + path_D_R_root + '/' + train_valid_test + '/'
+def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_valid_test='train', result_file_name = 'QoU_to_deltaStar.csv'):
+    root = '/home/xiaoyunlong/code/moddrop-pytorch/' + path_D_Q_root + '/' + train_valid_test + '/'
     search_line = '*'
     data = []
 
@@ -36,6 +36,8 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_R_root = 'D_R', train_vali
 
     # 将 二维list 转为 df
     df = pd.DataFrame(data)
+    print(df.head())
+    print(df.describe())
     # 将 label 转为数值，加在最后一列
     df['cc'] = pd.Categorical(df[9])
     df['code'] = df.cc.cat.codes

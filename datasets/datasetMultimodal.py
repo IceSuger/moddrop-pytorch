@@ -15,16 +15,22 @@ class DatasetMultimodal(DatasetBasic):
         :type subset: string
 		:param subset: string representing 'train', 'validation' or 'test' subsets
         """
+
+        if subset == 'train':
+            self.seq_per_class = seq_per_class
+        else:   # valid or test
+            self.seq_per_class = seq_per_class // 10
+
         # 各模态数据集类
         self.datasetTypes = {
             'color': DatasetVideoClassifier(input_folder, 'color', subset, hand_list,
-                                                  seq_per_class,
+                                            self.seq_per_class,
                                                   nclasses, input_size, step, nframes),
             'mocap': DatasetSkeleton(input_folder, 'mocap', subset, hand_list,
-                                                  seq_per_class,
+                                     self.seq_per_class,
                                                   nclasses, input_size, step, nframes),
             'audio': DatasetAudio(input_folder, 'audio', subset, hand_list,
-                                                  seq_per_class,
+                                  self.seq_per_class,
                                                   nclasses, input_size, step, nframes),
         }
 
@@ -35,7 +41,6 @@ class DatasetMultimodal(DatasetBasic):
         hand_list['left'] = ['color', 'depth']
         hand_list['both'] = ['mocap', 'audio']
 
-        self.seq_per_class = seq_per_class
         self.nclasses = nclasses
         self.subset = subset
 

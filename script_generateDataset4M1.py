@@ -142,9 +142,9 @@ for _s, QoUs in DataLoader(dataset_generated_above):
     # or save in memory
     df(dtypes = {'subset_best': str, others: float})
 """
-def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_R_root = 'D_R'):
-    path = 'LowQuality_' + str(r) + '_times/' + train_valid_test + '/'
-    path_D_R = path_D_R_root + '/' + train_valid_test + '/'
+def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = 'D_R'):
+    path = 'LowQuality_' + str(r) + '_times/'# + train_valid_test + '/'
+    path_D_Q = path_D_Q_root + '/' + train_valid_test + '/'
 
     # dataset_damaged_multimodal = DatasetOfDamagedMultimodal(os.path.join(os.getcwd(), 'damaged_multimodal/'))
     dataset_damaged_multimodal_and_qou = DatasetOfDamagedMultimodalAndQoU(os.path.join(os.getcwd(), path), train_valid_test)
@@ -161,6 +161,8 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_R_root = 'D_R'):
     M0.load_weights()
     M0.model.eval()
     M0.model.to(M0.device)
+
+    print(f'dataset_generated_above length = {len(dataset_generated_above)}')
 
     with torch.no_grad():
         for ii, (_s, label, QoU) in enumerate(dataset_generated_above):
@@ -194,8 +196,8 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_R_root = 'D_R'):
             filename = str(label) + '_' + str(ii)
             # testExistAndCreateDir('train_for_M1/')
             # pickle.dump(sample_for_M1, open('train_for_M1/' + filename, 'wb'))
-            testExistAndCreateDir(path_D_R)
-            pickle.dump(sample_for_M1, open(path_D_R + filename, 'wb'))
+            testExistAndCreateDir(path_D_Q)
+            pickle.dump(sample_for_M1, open(path_D_Q + filename, 'wb'))
 
 
 

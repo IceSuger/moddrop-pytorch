@@ -7,9 +7,9 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         :type subset: string
         :param subset: string representing 'train', 'validation' or 'test' subsets
         """
-        super().__init__(root)
+        super().__init__(root, train_valid_test=train_valid_test)
         self.phi_s = phi_s
-        self.file_list_len = len(self.file_list)
+        # self.file_list_len = len(self.file_list)
         self.QoU2delta_df = QoU2delta_df
         # print(f'QoU2delta_df = {QoU2delta_df}')
         self.table_susbetCode_to_subsetCategory = self.init_table_susbetCode_to_subsetCategory(QoU2delta_df.cc.cat.categories)
@@ -20,8 +20,8 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         selectedData = self.selectData(data, QoU)
         return selectedData, label
 
-    def __len__(self):
-        return self.file_list_len
+    # def __len__(self):
+    #     return self.file_list_len
 
     def init_table_susbetCode_to_subsetCategory(self, categories):
         tmpList = categories.tolist()
