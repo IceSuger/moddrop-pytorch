@@ -51,9 +51,8 @@ from datasets.datasetMultimodal import DatasetMultimodal
 	   layer
 '''
 
-# source_folder = '/mnt/data/dramacha/data_preprocessedv2/'
-# source_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_2_times/'
-source_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_' + str(R) + '_times/'
+# source_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_' + str(R) + '_times/'     # For training with LQ dataset
+source_folder = '/home/xiaoyunlong/downloads/DeepGesture/Montalbano/'                           # For training with HQ dataset
 '''
 	Location of the dataset (Chalearn 2014) which has been pre-processed.
 '''

@@ -35,6 +35,7 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 # print("== 3. Phi_r training. ===========")
 # print("=================================")
 # # 先挨个训练单模态的组件
+# # 再训练多模态的 phi_r
 # mdlts = ['LQ_skeleton',
 #          'LQ_videoFeat',
 #          'LQ_video',
@@ -50,8 +51,6 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 # print("== 3. Phi_r trained. ============")
 # print("=================================")
 
-
-# 再训练多模态的 phi_r
 
 """
 4. 数据评价，得到相应的 QoU

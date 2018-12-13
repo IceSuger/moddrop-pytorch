@@ -39,7 +39,8 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_vali
     print(df.head())
     print(df.describe())
     # 将 label 转为数值，加在最后一列
-    df['cc'] = pd.Categorical(df[9])
+    origin_label_column_number = len(df.columns) - 1
+    df['cc'] = pd.Categorical(df[origin_label_column_number])
     df['code'] = df.cc.cat.codes
 
     # 写文件
@@ -62,10 +63,19 @@ def trainAndTest_Phi_s(df):
     n = len(df)
     train_len = int(n * split_rate)
 
-    X = df.iloc[:train_len,:9]
-    y = df.iloc[:train_len,11]
-    test_X = df.iloc[train_len:,:9]
-    test_y = df.iloc[train_len:,11]
+    label_column_number = len(df.columns) - 1
+    last_feature_column_number = label_column_number - 2
+    print(f'label_column_number = {label_column_number}, last_feature_column_number = {last_feature_column_number}')
+
+    # X = df.iloc[:train_len,:9]
+    # y = df.iloc[:train_len,11]
+    # test_X = df.iloc[train_len:,:9]
+    # test_y = df.iloc[train_len:,11]
+
+    X = df.iloc[:train_len, :last_feature_column_number]
+    y = df.iloc[:train_len, label_column_number]
+    test_X = df.iloc[train_len:, :last_feature_column_number]
+    test_y = df.iloc[train_len:, label_column_number]
 
     # 做标准化
     scaler = preprocessing.Normalizer()
@@ -73,6 +83,7 @@ def trainAndTest_Phi_s(df):
     test_X = scaler.transform(test_X)
 
     clf = GradientBoostingClassifier()
+    # clf = RandomForestClassifier()
     clf.fit(X, y)
 
     print(clf.feature_importances_)

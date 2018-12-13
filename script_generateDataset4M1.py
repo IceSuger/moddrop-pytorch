@@ -2,6 +2,8 @@
 1. generate damaged multimodal dataset and QoUs over this dataset
 2. generate labels
 """
+import shutil
+
 from datasetsOfLowQualityData.datasetOfDmgedMultimodalAndQoU import DatasetOfDamagedMultimodalAndQoU
 from lqMultimodalClassifier import lqMultimodalClassifier
 from multimodalClassifier import multimodalClassifier
@@ -16,12 +18,20 @@ import os
 import itertools
 import torch
 
+from testing_DataSelection_or_not import testWithoutDataSelection, testWithDataSelection
+
 
 def testExistAndCreateDir(s):
     path = os.path.join(os.getcwd(), s)
     if not os.path.isdir(path):
         # os.mkdir(path)
         os.makedirs(path)
+
+def testExistAndRemoveDir(s):
+    path = os.path.join(os.getcwd(), s)
+    if os.path.isdir(path):
+        # os.mkdir(path)
+        shutil.rmtree(path)
 
 def getSubsets(features):
     """
@@ -111,6 +121,108 @@ def generateLQDataset(r = 8, subset = 'train'):
             # testExistAndCreateDir('damaged_multimodal/')
             # pickle.dump(damaged_multimodal, open('damaged_multimodal/' + filename, 'wb'))
             path = 'LowQuality_'+str(r)+'_times/' + subset + '/'
+            testExistAndCreateDir(path) # 原始高质量数据集的r倍数量的样本数的低质量数据
+            pickle.dump(damaged_multimodal, open(path + filename, 'wb'))
+
+
+def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = None):
+    # # Consts
+    # r = 8   # 单条原多模态数据，生成 r 条被破坏记录
+    """
+    【注意】phi_s 是用各种随机的破坏程度得到的各种各样的质量评分向量对应的 D_Q 训练出来的！且是固定的。
+
+    遍历破坏方式 dmg_func in dmg_funcs：
+            遍历破坏程度 degree = 0, 10, 20, ..., 100:
+                    遍历被污染模态子集 delta：
+                            2.1 LQ_dataset = dmg_func(delta, degree, HQ_dataset)
+                            2.2 不经过数据选择模块，跑 test
+                            2.3 经过数据选择模块，跑 test
+    """
+
+    # 预先准备好需要的东西
+    train_data = DatasetMultimodal(classifier.input_folder, '', subset, classifier.hand_list,
+                                   classifier.seq_per_class,
+                                   classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
+    train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
+    _s, _ = train_data.__getitem__(0)  # 随便取一个样本，主要是为了取其模态集合，为了下面遍历其幂集
+
+    modalities = _s.keys()
+    Set_modality = getSubsets(list(modalities))
+
+    dmg_functions = Noise().getDmgFunctions()
+
+    res_file_name = 'experiment1_results.txt'
+
+    # 开始
+    dmg_func_cnt = 0
+    for dmg_func in dmg_functions:
+        dmg_func_cnt += 1
+        degree_cnt = 0
+        for degree in range(1, 11):
+            degree_cnt += 1
+            degree *= 0.1
+            delta_cnt = 0
+            for delta in Set_modality:
+                delta_cnt += 1
+                # 2.0 先清空现有数据
+                testExistAndRemoveDir('Expr1/')
+
+                # 2.1
+                # 一次性的，生成的数据跑一遍测试，就删掉。都存在同一个路径。
+                generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delta, train_loader)
+
+                # 2.2
+                accuracy_no_data_selection = testWithoutDataSelection()
+
+                # 2.3
+                accuracy_with_data_selection = testWithDataSelection(clf, df)
+
+                # 2.4
+                # 将结果写到文件
+                res_file = open(res_file_name, 'a')
+                res_file.write(f'dmg_func:{dmg_func.__name__}\tdegree:{degree}\tdelta:{delta}, accuracy_with_data_selection:{accuracy_with_data_selection}, \taccuracy_no_data_selection:{accuracy_no_data_selection}\n')
+                res_file.close()
+
+                # 2.5
+                # 汇报一下进度
+                print(f'FINISHED: dmg_func:{dmg_func_cnt} / {len(dmg_functions)}, degree:{degree_cnt} / 10, delta:{delta_cnt} / {len(Set_modality)}')
+
+def generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delta, data_loader):
+
+    dmg_functions = Noise().getDmgFunctions()
+    score_functions = DataQuality().getMetricFuncs()
+
+    n = len(data_loader)
+    for ii, (data, label) in enumerate(data_loader):
+        print(
+            f'dmg_func:{dmg_func.__name__}\tdegree:{degree}\tdelta:{delta}, \tii: {ii}, {ii/n}')
+
+        for u in range(r):
+            _s = {}  # data.copy()
+            QoU = []
+
+            # 先破坏，再评分。破坏是对delta对应的模态
+            for mdlt in data.keys():
+                if mdlt in delta:
+                    _s[mdlt] = dmg_func(X = data[mdlt].data.numpy()[0],  rate = degree)
+                else:
+                    _s[mdlt] = data[mdlt].data.numpy()[0]
+
+            # 先破坏，再评分。评分是对所有模态，破坏是对delta对应的模态
+            for mdlt in data.keys():
+                for score_func in score_functions:
+                    QoU.append(score_func(_s[mdlt]))
+
+            # save to disk
+            damaged_multimodal = {}
+            damaged_multimodal['data'] = _s
+            damaged_multimodal['QoU'] = QoU
+            damaged_multimodal['label'] = label # 这里的label，是原始多模态任务中的label，如手势类别
+            filename = str(label.data) + '_' + str(ii) + '_' + str(u) + '_' + dmg_func.__name__ + '_' + str(degree) + "'".join(delta)
+
+            # path = 'LowQuality_'+str(r)+'_times/' + subset + '/'
+            path = 'Expr1/' + 'valid' + '/'
+
             testExistAndCreateDir(path) # 原始高质量数据集的r倍数量的样本数的低质量数据
             pickle.dump(damaged_multimodal, open(path + filename, 'wb'))
 

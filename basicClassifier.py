@@ -321,11 +321,11 @@ class basicClassifier(object):
             test_data = datasetTypeCls(self.input_folder, train_valid_test='valid', phi_s=phi_s, QoU2delta_df=df)
         else:
             test_data = datasetTypeCls(self.input_folder, self.modality, 'valid', self.hand_list, 589,
-                                  self.nclasses, self.input_size, self.step, self.nframes, phi_s)
+                                  self.nclasses, self.input_size, self.step, self.nframes)
         # test_data = datasetTypeCls(self.input_folder, self.modality, 'train', self.hand_list, 700,
         #                            self.nclasses, self.input_size, self.step, self.nframes)
         # test_loader = DataLoader(test_data, batch_size=42, shuffle=False, num_workers=0)
-        test_loader = DataLoader(test_data, batch_size=1, shuffle=False, num_workers=1)
+        test_loader = DataLoader(test_data, batch_size=1, shuffle=False, num_workers=0)
         self.model.to(self.device)
         # 把模型设为验证模式
         self.model.eval()
@@ -358,7 +358,7 @@ class basicClassifier(object):
                 # print(f'score.data is: \n{score.data}')
                 # print(f'score.data is: \n{score.data.cpu().numpy()}')
                 # print(f'score.data shape is: \n{score.data.cpu().numpy().shape}')
-                print(f'predicted_to_save shape is : {predicted_to_save.shape}')
+                # print(f'predicted_to_save shape is : {predicted_to_save.shape}')
                 total += label.size(0)
                 labels_to_save.extend(label.data.numpy())
                 correct += sum(predicted == val_label).item()

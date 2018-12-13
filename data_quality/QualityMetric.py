@@ -4,7 +4,8 @@ class DataQuality():
     def getMetricFuncs(self):
         return [self.std,
                 self.SNR,
-                self.integrity]
+                self.integrity,
+                self.zeroRate]
     '''
 
     就 Chalearn 2014 数据集而言，输入 X 都是单个模态的 stblock。
@@ -13,12 +14,17 @@ class DataQuality():
         '''
         标准差
         '''
+        # print(f'In std QoU func, type(X)={type(X)}, X.shape={X.shape}')
         return np.std(X, ddof=1) # ddof = 1, 计算的是样本标准差，该参数默认为0，计算总体标准差
 
     def SNR(self, X):
         '''
         信噪比
         '''
+        std = np.std(X)
+        if std is None or std == 0 or np.mean(X) is None:
+            return 0    # 非法时直接返回0，不知道合不合理。暂时这么做吧，反正数据评价这块，目前整体都不太靠谱。
+
         return np.mean(X) / np.std(X)
 
     def integrity(self, X):
@@ -62,7 +68,14 @@ class DataQuality():
         score = missingCnt / shape[1]
         return score
 
-
+    def zeroRate(self, X):
+        '''
+        零值占比
+        :param X:
+        :return:
+        '''
+        zeroCnt = ((X == 0) * 1).sum()
+        return zeroCnt / X.size
 
 
 

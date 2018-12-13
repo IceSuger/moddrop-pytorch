@@ -48,7 +48,7 @@ class Noise():
         # X[:, drop[sep / 2:]] = 1
         # return X
 
-    def GaussianNoise(self, X, sd=0.5):
+    def GaussianNoise(self, X, rate=None):
         '''
 
         :param X:
@@ -58,6 +58,10 @@ class Noise():
         # Injecting small gaussian noise
         if self.randomly:
             rate = np.random.random()
+
+        if rate is None:
+            sd = 0.5
+        else:
             sd = rate * np.max(X)
 
         X += numpy.random.normal(0, sd, X.shape)
@@ -71,13 +75,13 @@ class Noise():
         X = mask * X
         return X
 
-    def MaskingWholeFrame(self, X, rate=0.5):
-        if self.randomly:
-            rate = np.random.random()
-
-        mask = (numpy.random.uniform(0, 1, X.shape) < rate).astype("i4")
-        X = mask * X
-        return X
+    # def MaskingWholeFrame(self, X, rate=0.5):
+    #     if self.randomly:
+    #         rate = np.random.random()
+    #
+    #     mask = (numpy.random.uniform(0, 1, X.shape) < rate).astype("i4")
+    #     X = mask * X
+    #     return X
 
 
 def SaltAndPepper(rate=0.3):

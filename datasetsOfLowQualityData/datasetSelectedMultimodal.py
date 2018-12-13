@@ -49,6 +49,7 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         4. 返回 selectedData
         """
         # 1.
+        # print(f'QoU={QoU}')
         subsetCode = self.phi_s.predict(np.array(QoU).reshape(1, -1))[0]
         # print(f'subsetCode = {subsetCode}')
         # 2.

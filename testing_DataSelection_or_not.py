@@ -56,8 +56,9 @@ if torch.cuda.is_available():
 
 torch.backends.cudnn.deterministic=True
 
-# source_folder = '/mnt/data/dramacha/data_preprocessedv2/'
-source_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_' + str(R) + '_times/'
+source_data_folder = '/home/xiaoyunlong/code/moddrop-pytorch/LowQuality_' + str(R) + '_times/'     # For training with LQ dataset
+# source_folder = '/home/xiaoyunlong/downloads/DeepGesture/Montalbano/'                           # For training with HQ dataset
+
 '''
 	Location of the dataset (Chalearn 2014) which has been pre-processed.
 '''
@@ -90,12 +91,14 @@ dataset_types = {
             }
 
 
-def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None):
+def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None, source_folder = None):
     """
     两种模式（带和不带数据选择模块）下的测试流程的公共部分。
     :param cl_mode: 数据集的模态
     :return:
     """
+    if source_folder is None:   # 如果不传入这个参数
+        source_folder = source_data_folder  # 就用该文件开头声明的变量
 
     #try:
     classifier = cl_methods[cl_mode](step = step,
@@ -113,9 +116,13 @@ def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None):
 
     return res
 
+def testHQWithoutDataSelection():
+    cl_mode = 'multimodal'
+    return commonPartOfTheTesting(cl_mode, source_folder='/home/xiaoyunlong/downloads/DeepGesture/Montalbano/')
+
 def testWithoutDataSelection():
     cl_mode = 'LQ_multimodal'
-    return commonPartOfTheTesting(cl_mode)
+    return commonPartOfTheTesting(cl_mode, source_folder='Expr1/')
 
 def testWithDataSelection(clf, df):
     """
@@ -128,4 +135,5 @@ def testWithDataSelection(clf, df):
     # print(f'clf = {clf}')
     # print(f'df = {df}')
 
-    return commonPartOfTheTesting(cl_mode, clf=clf, df=df)
+    return commonPartOfTheTesting(cl_mode, clf=clf, df=df, source_folder='Expr1/')
+
