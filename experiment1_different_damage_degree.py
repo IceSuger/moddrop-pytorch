@@ -41,28 +41,28 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 
 ########################################################################################
 
-# print("=================================")
-# print("== 1.2 LQ generating... =========")
-# print("=================================")
-#
-# generateLQDataset(r=R, subset='train')
-# generateLQDataset(r=R, subset='valid')
-#
-# print("=================================")
-# print("== 1.2 LQ generated. =========")
-# print("=================================")
-#
-# ########################################################################################
-#
-# print("=================================")
-# print("== 1.3 DeltaStar generating..... =")
-# print("=================================")
-#
-# generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root='D_Q')
-# generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root='D_Q')
-#
-# print("=================================")
-# print("== 1.3 DeltaStar generated. ======")
+print("=================================")
+print("== 1.2 LQ generating... =========")
+print("=================================")
+
+generateLQDataset(r=R, subset='train')
+generateLQDataset(r=R, subset='valid')
+
+print("=================================")
+print("== 1.2 LQ generated. =========")
+print("=================================")
+
+########################################################################################
+
+print("=================================")
+print("== 1.3 DeltaStar generating..... =")
+print("=================================")
+
+generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root='D_Q')
+generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root='D_Q')
+
+print("=================================")
+print("== 1.3 DeltaStar generated. ======")
 
 ########################################################################################
 
@@ -89,4 +89,4 @@ print("=================================")
                         2.2 不经过数据选择模块，跑 test
                         2.3 经过数据选择模块，跑 test
 """
-generateLQDataset_for_experiment1(clf=clf, df=df)
+# generateLQDataset_for_experiment1(clf=clf, df=df)

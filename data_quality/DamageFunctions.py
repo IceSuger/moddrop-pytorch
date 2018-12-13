@@ -32,6 +32,7 @@ class Noise():
         # Salt and pepper noise
         if self.randomly:
             rate = np.random.random()
+            print(f'Noise.randomly is TRUE. In SaltAndPepper, rate={rate}')
 
         drop = numpy.random.uniform(0, 1, X.shape)
         z = numpy.where(drop < 0.5 * rate)

@@ -95,12 +95,13 @@ def generateLQDataset(r = 8, subset = 'train'):
                                    classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
     train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
 
-    dmg_functions = Noise().getDmgFunctions()
+    dmg_functions = Noise(randomly=True).getDmgFunctions()
     score_functions = DataQuality().getMetricFuncs()
 
     for ii, (data, label) in enumerate(train_loader):
         n = len(train_loader)
-        print(f'ii: {ii}, {ii/n}')
+        if ii % 100 == 0:
+            print(f'ii: {ii}, {ii/n}')
 
         for u in range(r):
             _s = {}
