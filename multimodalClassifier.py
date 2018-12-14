@@ -235,43 +235,6 @@ class multimodalClassifier(basicClassifier):
 
 
 
-    # !!!!some functions are not copyed here.
-
-    # def _get_stblock(self, data_input, hnd, mdlt, start_frame=None):
-    #     goodness = False
-    #     if start_frame is None:
-    #         start_frame = random.randint(0, len(data_input['min_length']) - self.step * (self.nframes - 1) - 1)
-    #     stblock = numpy.zeros([self.nframes, self.block_size, self.block_size])
-    #     for ii in range(self.nframes):
-    #         v = data_input[hnd][mdlt][start_frame + ii * self.step]
-    #         mm = abs(numpy.ma.maximum(v))
-    #         if mm > 0.:
-    #             # normalize to zero mean, unit variance,
-    #             # concatenate in spatio-temporal blocks
-    #             stblock[ii] = self.prenormalize(v)
-    #             goodness = True
-    #     return stblock, goodness
-    #
-    # def _load_file(self, file_name, data_sample=None):
-    #     if data_sample is None:
-    #         data_sample = {}
-    #     for hnd in self.hand_list:
-    #         data_sample[hnd] = {}
-    #         for mdlt in self.modality_list:
-    #             if not hnd == 'both':
-    #                 for ind in ['a', 'l', 'r']:
-    #                     file_name = re.sub('_' + ind + '_', '_' + hnd[0] + '_', file_name)
-    #             for mdl in ['color', 'depth', 'mocap', 'descr', 'audio']:
-    #                 file_name = re.sub(mdl, mdlt, file_name)
-    #             with open(file_name, 'rb') as f:
-    #                 [data_sample[hnd][mdlt]] = pickle.load(f)
-    #                 print([data_sample[hnd][mdlt]])
-    #             if not 'min_length' in data_sample:
-    #                 data_sample['min_length'] = len(data_sample[hnd][mdlt])
-    #             else:
-    #                 data_sample['min_length'] = min(data_sample['min_length'], len(data_sample[hnd][mdlt]))
-    #     return data_sample
-
     # [Xiao]
     def build_network(self, input_var = None, batch_size = None):
         if not input_var is None:

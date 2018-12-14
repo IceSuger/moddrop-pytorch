@@ -4,7 +4,8 @@
 import gc
 
 from CONSTS import R, PATH_D_Q_ROOT
-from script_generateDataset4M1 import generateLQDataset, generateDeltaStar, generateLQDataset_for_experiment1
+from script_generateDataset4M1 import generateLQDataset, generateDeltaStar, generateLQDataset_for_experiment1, \
+    generateLQDataset_for_experiment2
 from testing_DataSelection_or_not import testWithoutDataSelection, testHQWithoutDataSelection
 from training_Phi_R import trainingLQClassifier
 from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndTest_Phi_s
@@ -89,4 +90,9 @@ print("=================================")
                         2.2 不经过数据选择模块，跑 test
                         2.3 经过数据选择模块，跑 test
 """
-generateLQDataset_for_experiment1(clf=clf, df=df)
+# generateLQDataset_for_experiment1(clf=clf, df=df)
+
+"""
+EXPERIMENT 2 
+"""
+generateLQDataset_for_experiment2(clf=clf, df=df)

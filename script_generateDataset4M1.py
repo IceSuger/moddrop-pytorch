@@ -4,6 +4,9 @@
 """
 import shutil
 
+import pandas as pd
+
+from datasetsOfLowQualityData.datasetDmgedMultimodalSelectedDelta import DatasetDmgedMultimodalSelectedDelta
 from datasetsOfLowQualityData.datasetOfDmgedMultimodalAndQoU import DatasetOfDamagedMultimodalAndQoU
 from lqMultimodalClassifier import lqMultimodalClassifier
 from multimodalClassifier import multimodalClassifier
@@ -190,7 +193,6 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
 
 def generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delta, data_loader):
 
-    dmg_functions = Noise().getDmgFunctions()
     score_functions = DataQuality().getMetricFuncs()
 
     n = len(data_loader)
@@ -226,6 +228,106 @@ def generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delt
 
             testExistAndCreateDir(path) # 原始高质量数据集的r倍数量的样本数的低质量数据
             pickle.dump(damaged_multimodal, open(path + filename, 'wb'))
+
+
+def predictDeltas(clf, df, dmg_func, degree, delta):
+    """
+    由 DatasetDmgedMultimodalSelectedDelta 读取一遍新生成的 valid set，从而得到相应 valid set 上样本们对应的模态筛选子集 delta 们，并存入相应的 csv 文件
+    :param clf:
+    :param df:
+    :param dmg_func: 用于命名结果csv文件
+    :param degree: 用于命名结果csv文件
+    :param delta: 用于命名结果csv文件
+    :return:
+    """
+    '''
+    1. DatasetDmgedMultimodalSelectedDelta(self.input_folder, train_valid_test='valid', phi_s=phi_s, QoU2delta_df=df)
+    2. 遍历dataset，取item存df
+    3. 保存df到csv
+    '''
+    # 1
+    dataset = DatasetDmgedMultimodalSelectedDelta('Expr1/', train_valid_test='valid', phi_s=clf, QoU2delta_df=df)
+    data_loader = DataLoader(dataset, batch_size=1, shuffle=False, num_workers=0)
+
+    # 2
+    df_list = []
+    n = len(data_loader)
+    for ii, (subsetCategory, QoU) in enumerate(data_loader):
+        print(
+            f'dmg_func:{dmg_func.__name__}\tdegree:{degree}\tdelta:{delta}, \tii: {ii}, {ii/n}')
+
+        df_list.append([subsetCategory, QoU])
+
+    # 3
+    filename = f'{dmg_func.__name__}-{degree}-{delta}.csv'
+    root = 'predicted_deltas/'
+    df = pd.DataFrame(df_list)
+    df.to_csv(root+filename, sep='\t', header=False, index=False)
+
+
+def generateLQDataset_for_experiment2(r = 8, subset = 'valid', clf = None, df = None):
+    """
+    这个方法是为了看：(dmg_func, dmg_degree, dmg_delta) 对应生成的 valid set 上，phi_s 预测出的模态选择 delta 的分布情况。
+    看看是否理想，以及不理想的话怎么调整。
+    :param r:
+    :param subset:
+    :param clf:
+    :param df:
+    :return:
+    """
+    # # Consts
+    # r = 8   # 单条原多模态数据，生成 r 条被破坏记录
+    """
+    【注意】phi_s 是用各种随机的破坏程度得到的各种各样的质量评分向量对应的 D_Q 训练出来的！且是固定的。
+
+    遍历破坏方式 dmg_func in dmg_funcs：
+            遍历破坏程度 degree = 0, 10, 20, ..., 100:
+                    遍历被污染模态子集 delta：
+                            2.1 LQ_dataset = dmg_func(delta, degree, HQ_dataset)
+                            2.2 不经过数据选择模块，跑 test
+                            2.3 经过数据选择模块，跑 test
+    """
+
+    # 预先准备好需要的东西
+    train_data = DatasetMultimodal(classifier.input_folder, '', subset, classifier.hand_list,
+                                   classifier.seq_per_class,
+                                   classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
+    train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
+    _s, _ = train_data.__getitem__(0)  # 随便取一个样本，主要是为了取其模态集合，为了下面遍历其幂集
+
+    modalities = _s.keys()
+    Set_modality = getSubsets(list(modalities))
+
+    dmg_functions = Noise().getDmgFunctions()
+
+    res_file_name = 'experiment1_(v2.4)_results.txt'
+
+    # 开始
+    dmg_func_cnt = 0
+    for dmg_func in dmg_functions:
+        dmg_func_cnt += 1
+        degree_cnt = 0
+        for degree in range(1, 11):
+            degree_cnt += 1
+            degree *= 0.1
+            delta_cnt = 0
+            for delta in Set_modality:
+                delta_cnt += 1
+                # 2.0 先清空现有数据
+                testExistAndRemoveDir('Expr1/')
+
+                # 2.1
+                # 一次性的，生成的数据跑一遍测试，就删掉。都存在同一个路径。
+                generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delta, train_loader)
+
+                # 3.0
+                # 由 DatasetDmgedMultimodalSelectedDelta 读取一遍新生成的 valid set，从而得到相应 valid set 上样本们对应的模态筛选子集 delta 们，并存入相应的 csv 文件
+                predictDeltas(clf, df, dmg_func, degree, delta)
+
+                # 3.5
+                # 汇报一下进度
+                print(f'FINISHED: dmg_func:{dmg_func_cnt} / {len(dmg_functions)}, degree:{degree_cnt} / 10, delta:{delta_cnt} / {len(Set_modality)}')
+
 
 # 2. generate labels
 

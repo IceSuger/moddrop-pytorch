@@ -72,7 +72,7 @@ class Noise():
         if self.randomly:
             rate = np.random.random()
 
-        mask = (numpy.random.uniform(0, 1, X.shape) < rate).astype("i4")
+        mask = (numpy.random.uniform(0, 1, X.shape) > rate).astype("i4")    # v2.4 之前，这里的大于号被误写为小于号了。所以传入的rate就不再代表被遮蔽的程度，而是原数据被保留的程度
         X = mask * X
         return X
 

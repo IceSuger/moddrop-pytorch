@@ -17,7 +17,7 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
 
     def __getitem__(self, ind):
         data, label, QoU = self._my_getitem__(ind)
-        selectedData = self.selectData(data, QoU)
+        selectedData, _ = self.selectData(data, QoU)
         return selectedData, label
 
     # def __len__(self):
@@ -60,4 +60,4 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
             if not mdlt in subsetCategory:
                 selectedData[mdlt] = 0 * selectedData[mdlt]
         # 4.
-        return selectedData
+        return selectedData, subsetCategory
