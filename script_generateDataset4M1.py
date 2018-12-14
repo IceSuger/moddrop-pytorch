@@ -152,7 +152,7 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
 
     dmg_functions = Noise().getDmgFunctions()
 
-    res_file_name = 'experiment1_results.txt'
+    res_file_name = 'experiment1_(v2.3)_results.txt'
 
     # 开始
     dmg_func_cnt = 0
@@ -282,7 +282,8 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = 'D_R'):
             label = label.data.cpu().numpy()
 
             n = len(dataset_generated_above)
-            print(f'ii: {ii}, {ii/n}')
+            if ii % 100 == 0:
+                print(f'ii: {ii}, {ii/n}')
 
             Set_probs = []
             modalities = _s.keys()
