@@ -22,48 +22,49 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 # print("=================================")
 # # 先挨个训练单模态的组件
 # # 再训练多模态的 phi_r
-# mdlts = ['skeleton',
-#          'videoFeat',
-#          'video',
-#          'audio',
-#          'multimodal']
+# mdlts = [# 'skeleton',
+#          # 'videoFeat',
+#          # 'video',
+#          # 'audio',
+#          # 'multimodal',
+#          'moddropMultimodal']
 # for mdlt in mdlts:
 #     trainingLQClassifier(cl_mode=mdlt)
 #     print("======================================")
 #     print(f"== 1.1 {mdlt} of Phi_r is trained. ==")
 #     print("======================================")
-
+#
 # # 顺便测一下准确率
 # result_no_data_selection = testHQWithoutDataSelection()
-
+#
 # print("=================================")
 # print("== 1.1 Phi_r trained. ============")
 # print("=================================")
 
 ########################################################################################
 
-# print("=================================")
-# print("== 1.2 LQ generating... =========")
-# print("=================================")
-#
-# generateLQDataset(r=R, subset='train')
-# generateLQDataset(r=R, subset='valid')
-#
-# print("=================================")
-# print("== 1.2 LQ generated. =========")
-# print("=================================")
+print("=================================")
+print("== 1.2 LQ generating... =========")
+print("=================================")
+
+generateLQDataset(r=R, subset='train')
+generateLQDataset(r=R, subset='valid')
+
+print("=================================")
+print("== 1.2 LQ generated. =========")
+print("=================================")
 
 ########################################################################################
 
-# print("=================================")
-# print("== 1.3 DeltaStar generating..... =")
-# print("=================================")
-#
-# generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root=PATH_D_Q_ROOT)
-# generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root=PATH_D_Q_ROOT)
-#
-# print("=================================")
-# print("== 1.3 DeltaStar generated. ======")
+print("=================================")
+print("== 1.3 DeltaStar generating..... =")
+print("=================================")
+
+generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root=PATH_D_Q_ROOT)
+generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root=PATH_D_Q_ROOT)
+
+print("=================================")
+print("== 1.3 DeltaStar generated. ======")
 
 ########################################################################################
 
@@ -90,9 +91,9 @@ print("=================================")
                         2.2 不经过数据选择模块，跑 test
                         2.3 经过数据选择模块，跑 test
 """
-# generateLQDataset_for_experiment1(clf=clf, df=df)
+generateLQDataset_for_experiment1(clf=clf, df=df)
 
 """
 EXPERIMENT 2 
 """
-generateLQDataset_for_experiment2(clf=clf, df=df)
+# generateLQDataset_for_experiment2(clf=clf, df=df)

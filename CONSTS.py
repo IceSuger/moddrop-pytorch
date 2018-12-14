@@ -1,2 +1,4 @@
-R = 6
+R = 5
 PATH_D_Q_ROOT = 'D_Q_exp1_1'
+
+MODDROP_RATE = 0.5

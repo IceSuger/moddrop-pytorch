@@ -18,9 +18,11 @@ from datasetsOfLowQualityData.datasetLQAudio import DatasetLQAudio
 from datasetsOfLowQualityData.datasetLQSkeleton import DatasetLQSkeleton
 from datasetsOfLowQualityData.datasetLQVideoClassifier import DatasetLQVideoClassifier
 from datasetsOfLowQualityData.datasetLQVideoFeatureExtractor import DatasetLQVideoFeatureExtractor
+from datasetsOfLowQualityData.datasetModdropMultimodal import DatasetModdropMultimodal
 from datasetsOfLowQualityData.datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
 from datasetsOfLowQualityData.datasetSelectedMultimodal import DatasetSelectedMultimodal
 from lqMultimodalClassifier import lqMultimodalClassifier
+from moddropMultimodalClassifier import moddropMultimodalClassifier
 
 __docformat__ = 'restructedtext en'
 
@@ -76,7 +78,9 @@ cl_methods = { 'skeleton' : skeletonClassifier,
             'LQ_skeleton' : skeletonClassifier,
               'LQ_video' : videoClassifier,
               'LQ_videoFeat': videoFeatureExtractor,
-              'LQ_audio' : audioClassifier
+              'LQ_audio' : audioClassifier,
+
+               'moddropMultimodal': moddropMultimodalClassifier
               }
 
 dataset_types = {
@@ -91,7 +95,9 @@ dataset_types = {
             'LQ_skeleton' : DatasetLQSkeleton,
               'LQ_video' : DatasetLQVideoClassifier,
               'LQ_videoFeat': DatasetLQVideoFeatureExtractor,
-              'LQ_audio' : DatasetLQAudio
+              'LQ_audio' : DatasetLQAudio,
+
+            'moddropMultimodal': DatasetModdropMultimodal
             }
 
 def trainingLQClassifier(cl_mode, step = 4, clf = None, df = None):

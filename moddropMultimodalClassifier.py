@@ -9,6 +9,7 @@ class moddropMultimodalClassifier(multimodalClassifier):
 
         # 加载在未经 moddrop 的数据集上已经完成训练的 multimodalClassifier 参数
         name = 'checkpoints/' + 'multimodalClassifier' + '.pth'
+        self.build_network()
         self.load_weights(name)
 
         self.model_name = 'moddropMultimodalClassifier'

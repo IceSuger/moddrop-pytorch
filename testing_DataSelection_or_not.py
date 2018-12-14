@@ -14,9 +14,11 @@
 #  MA 02110-1301, USA.
 #
 from CONSTS import R
+from datasetsOfLowQualityData.datasetModdropMultimodal import DatasetModdropMultimodal
 from datasetsOfLowQualityData.datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
 from datasetsOfLowQualityData.datasetSelectedMultimodal import DatasetSelectedMultimodal
 from lqMultimodalClassifier import lqMultimodalClassifier
+from moddropMultimodalClassifier import moddropMultimodalClassifier
 
 __docformat__ = 'restructedtext en'
 
@@ -77,7 +79,9 @@ cl_methods = { 'skeleton' : skeletonClassifier,
               'audio' : audioClassifier,
               'multimodal' : multimodalClassifier,
                'LQ_multimodal': lqMultimodalClassifier,
-               'selected_LQ_multimodal': lqMultimodalClassifier
+               'selected_LQ_multimodal': lqMultimodalClassifier,
+
+                'moddropMultimodal': moddropMultimodalClassifier
               }
 
 dataset_types = {
@@ -87,7 +91,9 @@ dataset_types = {
             'audio': DatasetAudio,
             'multimodal': DatasetMultimodal,
             'LQ_multimodal': DatasetOfDamagedMultimodal,
-            'selected_LQ_multimodal': DatasetSelectedMultimodal
+            'selected_LQ_multimodal': DatasetSelectedMultimodal,
+
+            'moddropMultimodal': DatasetModdropMultimodal
             }
 
 
@@ -117,7 +123,8 @@ def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None, source_fold
     return res
 
 def testHQWithoutDataSelection():
-    cl_mode = 'multimodal'
+    # cl_mode = 'multimodal'
+    cl_mode = 'moddropMultimodal'
     return commonPartOfTheTesting(cl_mode, source_folder='/home/xiaoyunlong/downloads/DeepGesture/Montalbano/')
 
 def testWithoutDataSelection():
