@@ -31,7 +31,8 @@ class Noise():
         # print(X.shape)
         # Salt and pepper noise
         if self.randomly:
-            rate = np.random.random()
+            # rate = np.random.random()
+            rate = np.random.uniform(0, 1)
             print(f'Noise.randomly is TRUE. In SaltAndPepper, rate={rate}')
 
         drop = numpy.random.uniform(0, 1, X.shape)
@@ -58,8 +59,8 @@ class Noise():
         '''
         # Injecting small gaussian noise
         if self.randomly:
-            rate = np.random.random()
-
+            # rate = np.random.random()
+            rate = np.random.uniform(0, 1)
         if rate is None:
             sd = 0.5
         else:
@@ -70,7 +71,8 @@ class Noise():
 
     def MaskingNoise(self, X, rate=0.5):
         if self.randomly:
-            rate = np.random.random()
+            # rate = np.random.random()
+            rate = np.random.uniform(0, 1)
 
         mask = (numpy.random.uniform(0, 1, X.shape) > rate).astype("i4")    # v2.4 之前，这里的大于号被误写为小于号了。所以传入的rate就不再代表被遮蔽的程度，而是原数据被保留的程度
         X = mask * X

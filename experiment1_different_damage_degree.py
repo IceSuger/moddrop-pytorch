@@ -3,7 +3,9 @@
 """
 import gc
 
-from CONSTS import R, PATH_D_Q_ROOT
+import pandas
+
+from CONSTS import R, PATH_D_Q_ROOT, D_Q_DATAFRAME_FILE_NAME
 from script_generateDataset4M1 import generateLQDataset, generateDeltaStar, generateLQDataset_for_experiment1, \
     generateLQDataset_for_experiment2
 from testing_DataSelection_or_not import testWithoutDataSelection, testHQWithoutDataSelection
@@ -72,8 +74,14 @@ print("=================================")
 print("== 1.4 Phi_s training... =========")
 print("=================================")
 
-df = readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root=PATH_D_Q_ROOT, train_valid_test='train', result_file_name = )
+# A. 如果 D_Q 对应的 df 还没生成，那就生成一下
+df = readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root=PATH_D_Q_ROOT, train_valid_test='train', result_file_name = D_Q_DATAFRAME_FILE_NAME)
 gc.collect()
+
+# # B. 如果该 df 文件已经存在，可以直接读取
+# QoU2Delta_star = '/home/xiaoyunlong/code/moddrop-pytorch/' + D_Q_DATAFRAME_FILE_NAME
+# df = pandas.read_csv(QoU2Delta_star)
+
 clf = trainAndTest_Phi_s(df)
 
 print("=================================")

@@ -6,7 +6,7 @@ import shutil
 
 import pandas as pd
 
-from CONSTS import EXPERIMENT_RESULT_FILE_NAME
+from CONSTS import EXPERIMENT_RESULT_FILE_NAME, LQDataset_on_subset_with_dmgfunc_at_degree_ROOT, PREDICTED_DELTAS_PATH
 from datasetsOfLowQualityData.datasetDmgedMultimodalSelectedDelta import DatasetDmgedMultimodalSelectedDelta
 from datasetsOfLowQualityData.datasetOfDmgedMultimodalAndQoU import DatasetOfDamagedMultimodalAndQoU
 from lqMultimodalClassifier import lqMultimodalClassifier
@@ -60,7 +60,7 @@ def mask(sample, subset):
     sample = sample.copy()
     for key in sample.keys():
         if key not in subset:
-            sample[key] = noise.MaskingNoise(sample[key], 0).float() # .astype(np.float32)
+            sample[key] = noise.MaskingNoise(sample[key], 1).float() # .astype(np.float32)
     return sample
 
 source_folder = '/home/xiaoyunlong/downloads/DeepGesture/Montalbano/'
@@ -172,7 +172,7 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
                 degree *= 0.1
 
                 # 2.0 先清空现有数据
-                testExistAndRemoveDir('Expr1/')
+                testExistAndRemoveDir(LQDataset_on_subset_with_dmgfunc_at_degree_ROOT)
 
                 # 2.1
                 # 一次性的，生成的数据跑一遍测试，就删掉。都存在同一个路径。
@@ -187,7 +187,9 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
                 # 2.4
                 # 将结果写到文件
                 res_file = open(res_file_name, 'a')
-                res_file.write(f'dmg_func:{dmg_func.__name__}\tdegree:{degree}\tdelta:{delta}, accuracy_with_data_selection:{accuracy_with_data_selection}, \taccuracy_no_data_selection:{accuracy_no_data_selection}\n')
+                # res_file.write(f'delta:{delta}\tdmg_func:{dmg_func.__name__}\tdegree:{degree}, accuracy_with_data_selection:{accuracy_with_data_selection}, \taccuracy_no_data_selection:{accuracy_no_data_selection}\n')
+                res_file.write(
+                    f'{delta}\t{dmg_func.__name__}\t{degree}\t{accuracy_with_data_selection}\t{accuracy_no_data_selection}\n')
                 res_file.close()
 
                 # 2.5
@@ -227,7 +229,7 @@ def generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delt
             filename = str(label.data) + '_' + str(ii) + '_' + str(u) + '_' + dmg_func.__name__ + '_' + str(degree) + "'".join(delta)
 
             # path = 'LowQuality_'+str(r)+'_times/' + subset + '/'
-            path = 'Expr1/' + 'valid' + '/'
+            path = LQDataset_on_subset_with_dmgfunc_at_degree_ROOT + 'valid' + '/'
 
             testExistAndCreateDir(path) # 原始高质量数据集的r倍数量的样本数的低质量数据
             pickle.dump(damaged_multimodal, open(path + filename, 'wb'))
@@ -249,7 +251,7 @@ def predictDeltas(clf, df, dmg_func, degree, delta):
     3. 保存df到csv
     '''
     # 1
-    dataset = DatasetDmgedMultimodalSelectedDelta('Expr1/', train_valid_test='valid', phi_s=clf, QoU2delta_df=df)
+    dataset = DatasetDmgedMultimodalSelectedDelta(LQDataset_on_subset_with_dmgfunc_at_degree_ROOT, train_valid_test='valid', phi_s=clf, QoU2delta_df=df)
     data_loader = DataLoader(dataset, batch_size=1, shuffle=False, num_workers=0)
 
     # 2
@@ -263,7 +265,9 @@ def predictDeltas(clf, df, dmg_func, degree, delta):
 
     # 3
     filename = f'{dmg_func.__name__}-{degree}-{delta}.csv'
-    root = 'predicted_deltas/'
+    root = PREDICTED_DELTAS_PATH
+    testExistAndCreateDir(root)
+
     df = pd.DataFrame(df_list)
     df.to_csv(root+filename, sep='\t', header=False, index=False)
 
@@ -306,18 +310,19 @@ def generateLQDataset_for_experiment2(r = 8, subset = 'valid', clf = None, df = 
     res_file_name = 'experiment1_(v2.4)_results.txt'
 
     # 开始
-    dmg_func_cnt = 0
-    for dmg_func in dmg_functions:
-        dmg_func_cnt += 1
-        degree_cnt = 0
-        for degree in range(1, 11):
-            degree_cnt += 1
-            degree *= 0.1
-            delta_cnt = 0
-            for delta in Set_modality:
-                delta_cnt += 1
+    delta_cnt = 0
+    for delta in Set_modality:
+        delta_cnt += 1
+        dmg_func_cnt = 0
+        for dmg_func in dmg_functions:
+            dmg_func_cnt += 1
+            degree_cnt = 0
+            for degree in range(1, 11):
+                degree_cnt += 1
+                degree *= 0.1
+
                 # 2.0 先清空现有数据
-                testExistAndRemoveDir('Expr1/')
+                testExistAndRemoveDir(LQDataset_on_subset_with_dmgfunc_at_degree_ROOT)
 
                 # 2.1
                 # 一次性的，生成的数据跑一遍测试，就删掉。都存在同一个路径。
