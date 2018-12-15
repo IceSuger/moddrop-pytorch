@@ -72,7 +72,7 @@ print("=================================")
 print("== 1.4 Phi_s training... =========")
 print("=================================")
 
-df = readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root=PATH_D_Q_ROOT, train_valid_test='train', result_file_name = 'QoU_to_deltaStar.csv')
+df = readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root=PATH_D_Q_ROOT, train_valid_test='train', result_file_name = )
 gc.collect()
 clf = trainAndTest_Phi_s(df)
 
