@@ -43,16 +43,16 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 
 ########################################################################################
 
-print("=================================")
-print("== 1.2 LQ generating... =========")
-print("=================================")
-
-generateLQDataset(r=R, subset='train')
-generateLQDataset(r=R, subset='valid')
-
-print("=================================")
-print("== 1.2 LQ generated. =========")
-print("=================================")
+# print("=================================")
+# print("== 1.2 LQ generating... =========")
+# print("=================================")
+#
+# generateLQDataset(r=R, subset='train')
+# generateLQDataset(r=R, subset='valid')
+#
+# print("=================================")
+# print("== 1.2 LQ generated. =========")
+# print("=================================")
 
 ########################################################################################
 

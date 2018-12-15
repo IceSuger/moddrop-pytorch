@@ -6,9 +6,11 @@ import shutil
 
 import pandas as pd
 
+from CONSTS import EXPERIMENT_RESULT_FILE_NAME
 from datasetsOfLowQualityData.datasetDmgedMultimodalSelectedDelta import DatasetDmgedMultimodalSelectedDelta
 from datasetsOfLowQualityData.datasetOfDmgedMultimodalAndQoU import DatasetOfDamagedMultimodalAndQoU
 from lqMultimodalClassifier import lqMultimodalClassifier
+from moddropMultimodalClassifier import moddropMultimodalClassifier
 from multimodalClassifier import multimodalClassifier
 from datasets.datasetMultimodal import DatasetMultimodal
 from data_quality.QualityMetric import DataQuality
@@ -135,9 +137,9 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
     """
     【注意】phi_s 是用各种随机的破坏程度得到的各种各样的质量评分向量对应的 D_Q 训练出来的！且是固定的。
 
-    遍历破坏方式 dmg_func in dmg_funcs：
-            遍历破坏程度 degree = 0, 10, 20, ..., 100:
-                    遍历被污染模态子集 delta：
+    遍历被污染模态子集 delta：
+        遍历破坏方式 dmg_func in dmg_funcs：
+            遍历破坏程度 degree = 0, 10, 20, ..., 100 %:
                             2.1 LQ_dataset = dmg_func(delta, degree, HQ_dataset)
                             2.2 不经过数据选择模块，跑 test
                             2.3 经过数据选择模块，跑 test
@@ -155,19 +157,20 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
 
     dmg_functions = Noise().getDmgFunctions()
 
-    res_file_name = 'experiment1_(v2.3)_results.txt'
+    res_file_name = EXPERIMENT_RESULT_FILE_NAME
 
     # 开始
-    dmg_func_cnt = 0
-    for dmg_func in dmg_functions:
-        dmg_func_cnt += 1
-        degree_cnt = 0
-        for degree in range(1, 11):
-            degree_cnt += 1
-            degree *= 0.1
-            delta_cnt = 0
-            for delta in Set_modality:
-                delta_cnt += 1
+    delta_cnt = 0
+    for delta in Set_modality:
+        delta_cnt += 1
+        dmg_func_cnt = 0
+        for dmg_func in dmg_functions:
+            dmg_func_cnt += 1
+            degree_cnt = 0
+            for degree in range(1, 11):
+                degree_cnt += 1
+                degree *= 0.1
+
                 # 2.0 先清空现有数据
                 testExistAndRemoveDir('Expr1/')
 
@@ -197,8 +200,8 @@ def generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delt
 
     n = len(data_loader)
     for ii, (data, label) in enumerate(data_loader):
-        print(
-            f'dmg_func:{dmg_func.__name__}\tdegree:{degree}\tdelta:{delta}, \tii: {ii}, {ii/n}')
+        if ii % 100 == 0:
+            print(f'dmg_func:{dmg_func.__name__}\tdegree:{degree}\tdelta:{delta}, \tii: {ii}, {ii/n}')
 
         for u in range(r):
             _s = {}  # data.copy()
@@ -357,7 +360,7 @@ for _s, QoUs in DataLoader(dataset_generated_above):
     # or save in memory
     df(dtypes = {'subset_best': str, others: float})
 """
-def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = 'D_R'):
+def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = None):
     path = 'LowQuality_' + str(r) + '_times/'# + train_valid_test + '/'
     path_D_Q = path_D_Q_root + '/' + train_valid_test + '/'
 
@@ -366,7 +369,8 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = 'D_R'):
     dataset_generated_above = DataLoader(dataset_damaged_multimodal_and_qou, batch_size=1, shuffle=False, num_workers=8)
 
     # 预备下面要用的方法
-    M0 = lqMultimodalClassifier(step = 4,
+    # [Xiao] v2.5 这里的分类器不再是 lqMultimodalClassifier 了！！！改成了 moddropMultimodalClassifier ！！！！！
+    M0 = moddropMultimodalClassifier(step = 4,
                                      input_folder = source_folder,
                                      filter_folder = filter_folder)
     H = entropyOnProbs  # 根据概率向量求熵
@@ -404,7 +408,11 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = 'D_R'):
                 Set_probs.append((probs.data.cpu().numpy()[0], label, result, subset))
 
             Set_probs.sort(key=lambda x: (x[1]!=x[2], H(x[0])))
-            subset_best = Set_probs[0][3]
+            if Set_probs[0][1] != Set_probs[0][2]:  # 如果排在第一位的这个，预测结果都和label不同，说明所有的结果都是错的，那么就取全集作为 delta_star
+                # subset_best = list(modalities).copy()
+                subset_best = []
+            else:
+                subset_best = Set_probs[0][3]
 
             sample_for_M1 = {}
             sample_for_M1['QoU'] = QoU#.data.cpu().numpy()[0]
