@@ -58,15 +58,15 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 
 ########################################################################################
 
-print("=================================")
-print("== 1.3 DeltaStar generating..... =")
-print("=================================")
-
-generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root=PATH_D_Q_ROOT)
-generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root=PATH_D_Q_ROOT)
-
-print("=================================")
-print("== 1.3 DeltaStar generated. ======")
+# print("=================================")
+# print("== 1.3 DeltaStar generating..... =")
+# print("=================================")
+#
+# generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root=PATH_D_Q_ROOT)
+# generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root=PATH_D_Q_ROOT)
+#
+# print("=================================")
+# print("== 1.3 DeltaStar generated. ======")
 
 ########################################################################################
 

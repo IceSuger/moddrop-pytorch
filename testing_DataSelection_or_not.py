@@ -13,7 +13,7 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
-from CONSTS import R
+from CONSTS import R, LQDataset_on_subset_with_dmgfunc_at_degree_ROOT
 from datasetsOfLowQualityData.datasetModdropMultimodal import DatasetModdropMultimodal
 from datasetsOfLowQualityData.datasetOfDamagedMultimodal import DatasetOfDamagedMultimodal
 from datasetsOfLowQualityData.datasetSelectedMultimodal import DatasetSelectedMultimodal
@@ -78,8 +78,8 @@ cl_methods = { 'skeleton' : skeletonClassifier,
               'videoFeat': videoFeatureExtractor,
               'audio' : audioClassifier,
               'multimodal' : multimodalClassifier,
-               'LQ_multimodal': lqMultimodalClassifier,
-               'selected_LQ_multimodal': lqMultimodalClassifier,
+               'LQ_multimodal': moddropMultimodalClassifier,    # v2.5.3.1 改过来的
+               'selected_LQ_multimodal': moddropMultimodalClassifier, # v2.5.3.1 改过来的
 
                 'moddropMultimodal': moddropMultimodalClassifier
               }
@@ -129,7 +129,7 @@ def testHQWithoutDataSelection():
 
 def testWithoutDataSelection():
     cl_mode = 'LQ_multimodal'
-    return commonPartOfTheTesting(cl_mode, source_folder='Expr1/')
+    return commonPartOfTheTesting(cl_mode, source_folder=LQDataset_on_subset_with_dmgfunc_at_degree_ROOT)
 
 def testWithDataSelection(clf, df):
     """
@@ -142,5 +142,5 @@ def testWithDataSelection(clf, df):
     # print(f'clf = {clf}')
     # print(f'df = {df}')
 
-    return commonPartOfTheTesting(cl_mode, clf=clf, df=df, source_folder='Expr1/')
+    return commonPartOfTheTesting(cl_mode, clf=clf, df=df, source_folder=LQDataset_on_subset_with_dmgfunc_at_degree_ROOT)
 

@@ -11,7 +11,7 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         self.phi_s = phi_s
         # self.file_list_len = len(self.file_list)
         self.QoU2delta_df = QoU2delta_df
-        # print(f'QoU2delta_df = {QoU2delta_df}')
+        # print(f'QoU2delta_df.head() = {QoU2delta_df.head()}')
         self.table_susbetCode_to_subsetCategory = self.init_table_susbetCode_to_subsetCategory(QoU2delta_df.cc.cat.categories)
 
 
@@ -55,9 +55,17 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         # 2.
         # print(f'self.table_susbetCode_to_subsetCategory = {self.table_susbetCode_to_subsetCategory}')
         subsetCategory = self.table_susbetCode_to_subsetCategory[subsetCode]
+
         # 3.
-        for mdlt in selectedData.keys():
-            if not mdlt in subsetCategory:
-                selectedData[mdlt] = 0 * selectedData[mdlt]
+        # print(f'subsetCategory={subsetCategory} \t len(subsetCategory)={len(subsetCategory)} \t type(subsetCategory)={type(subsetCategory)}')
+        # # if len(subsetCategory) == 0:
+        # if not subsetCategory or not subsetCategory[0]:
+        #     print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+
+        # 注意，如果预测出来的 delta 为空（或者空list），则其实对应了原来训练 phi_s 的 D_Q 里的不能被 phi_r 正确分类的样本，这种情况下，我们这里选择【保留全部模态】
+        if subsetCategory and subsetCategory[0]:
+            for mdlt in selectedData.keys():
+                 if not mdlt in subsetCategory:
+                    selectedData[mdlt] = 0 * selectedData[mdlt]
         # 4.
         return selectedData, subsetCategory

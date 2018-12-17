@@ -38,10 +38,18 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_vali
     df = pd.DataFrame(data)
     print(df.head())
     print(df.describe())
-    # 将 label 转为数值，加在最后一列
+
+    # 将 label 中的空列表（即对应于生成delta_star的过程中，phi_r没能正确分类的那些样本），都替换为模态全集
     origin_label_column_number = len(df.columns) - 1
+    df[origin_label_column_number].fillna('ALL_MODAL')
+    print(df.head())
+    print(df.describe())
+
+    # 将 label 转为数值，加在最后一列
     df['cc'] = pd.Categorical(df[origin_label_column_number])
     df['code'] = df.cc.cat.codes
+    print(df.head())
+    print(df.describe())
 
     # 写文件
     df.to_csv(result_file_name, index=False)
