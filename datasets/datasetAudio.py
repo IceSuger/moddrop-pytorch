@@ -64,18 +64,24 @@ class DatasetAudio(DatasetBasic):
         #                                     len(data_sample[hnd][mdlt]))
         # return data_sample
         for mdlt in ['/depth/', '/color/', '/mocap/']:
-            if ("realtest" in file_name):
-                audio_dir = '/audio/'
-            else:
-                audio_dir = '/audio_cleaned/'
+            audio_dir = '/audio/'
+            # if ("realtest" in file_name):
+            #     audio_dir = '/audio/'
+            # else:
+            #     audio_dir = '/audio_cleaned/'
             file_name = re.sub(mdlt, audio_dir, file_name)  # edit to rename 'audio_cleaned' when training
         for hnd in ['_r_', '_l_']:
             file_name = re.sub(hnd, '_a_', file_name)
         for suff in ['depth', 'color', 'descr']:
             file_name = re.sub(suff, 'audio', file_name)
-        if not os.path.isfile(file_name):
-            # print file_name
-            file_name = glob.glob(file_name[:-14] + '*')[0]
+        # if not os.path.isfile(file_name):
+        #     # print file_name
+        #     file_name = glob.glob(file_name[:-14] + '*')[0]
+
+        if not os.path.isfile(file_name):   # 若文件不存在，就返回 None
+            # print(f'NOT_EXIST = {file_name}')
+            return None
+
         if data_sample is None:
             data_sample = {}
         for hnd in self.hand_list:

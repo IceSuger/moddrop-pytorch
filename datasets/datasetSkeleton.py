@@ -65,24 +65,6 @@ class DatasetSkeleton(DatasetBasic):
         # return stblock, goodness
 
     def _load_file(self, file_name, data_sample=None):
-        # if data_sample is None:
-        #     data_sample = {}
-        # for hnd in self.hand_list:
-        #     data_sample[hnd] = {}
-        #     for mdlt in self.modality_list:
-        #         if not hnd == 'both':
-        #             for ind in ['a', 'l', 'r']:
-        #                 file_name = re.sub('_' + ind + '_', '_' + hnd[0] + '_', file_name)
-        #         for mdl in ['color', 'depth', 'mocap', 'descr', 'audio']:
-        #             file_name = re.sub(mdl, mdlt, file_name)
-        #         with open(file_name, 'rb') as f:
-        #             [data_sample[hnd][mdlt]] = pickle.load(f, encoding='iso-8859-1')     # ！！这个编码指定！！很重要！！
-        #             # print([data_sample[hnd][mdlt]])
-        #         if not 'min_length' in data_sample:     # min_length 是当前这个样本中，最短长度模态的帧数
-        #             data_sample['min_length'] = len(data_sample[hnd][mdlt])
-        #         else:
-        #             data_sample['min_length'] = min(data_sample['min_length'], len(data_sample[hnd][mdlt]))
-        # return data_sample
         for mdlt in ['/depth/', '/color/', '/audio/']:
             file_name = re.sub(mdlt, '/mocap/', file_name)
 
@@ -92,6 +74,10 @@ class DatasetSkeleton(DatasetBasic):
             file_name = re.sub(suff, 'descr', file_name)
 
         if data_sample is None: data_sample = {}
+
+        if not os.path.isfile(file_name):   # 若文件不存在，就返回 None
+            # print(f'NOT_EXIST = {file_name}')
+            return None
 
         for hnd in self.hand_list:
             if not hnd in data_sample:

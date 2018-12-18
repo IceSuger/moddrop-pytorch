@@ -83,7 +83,7 @@ class basicClassifier(object):
 
 
 
-    def train_torch(self, datasetTypeCls, learning_rate_value=None, learning_rate_decay=None, num_epochs=5000, early_stop_epochs=30):
+    def train_torch(self, datasetTypeCls, learning_rate_value=None, learning_rate_decay=None, num_epochs=5000, early_stop_epochs=5):
         """
 
         :param datasetTypeCls:
@@ -115,7 +115,7 @@ class basicClassifier(object):
 
 
         # [Xiao]
-        vis = Visualizer('xiao-moddrop-LQ')
+        vis = Visualizer('xiao-moddrop-v2.6')
 
         # step 1: setup model
         model = self.model
@@ -140,7 +140,7 @@ class basicClassifier(object):
         print('Dataset prepared.')
 
         # self._load_dataset('train')  # ？？
-        train_loader = DataLoader(train_data, batch_size=42, shuffle=True, num_workers=56)  # num_workers 按 CPU 逻辑核数目来。查看命令是： cat /proc/cpuinfo| grep "processor"| wc -l
+        train_loader = DataLoader(train_data, batch_size=32, shuffle=True, num_workers=4)  # num_workers 按 CPU 逻辑核数目来。查看命令是： cat /proc/cpuinfo| grep "processor"| wc -l
         val_loader = DataLoader(val_data, batch_size=42, shuffle=False, num_workers=56)
 
         print('DataLoader prepared.')
@@ -184,8 +184,10 @@ class basicClassifier(object):
             losses = []
 
             train_loader_len = len(train_loader)
+            ten_pct = train_loader_len // 10
             for ii, (data, label) in enumerate(train_loader):
-                print(f'ii = {ii}, percentage: {ii/train_loader_len}')
+                if ii % ten_pct == 0 :
+                    print(f'ii = {ii}, percentage: {ii/train_loader_len}')
 
                 input = data
                 target = label.to(torch.int64)
@@ -294,11 +296,12 @@ class basicClassifier(object):
         losses = []
 
         dataloaderLen = len(dataloader)
+        ten_pct = dataloaderLen // 10
         for ii, data in enumerate(dataloader):
-            if ii > 150:    # 不跑完整个valid集，太多了。跑150*42个样本就行了
-                break
-
-            print(f'Validation ii = {ii}, percentage: {ii/dataloaderLen}')
+            # if ii > 150:    # 不跑完整个valid集，太多了。跑150*42个样本就行了
+            #     break
+            if ii % ten_pct == 0:
+                print(f'Validation ii = {ii}, percentage: {ii/dataloaderLen}')
 
             input, label = data
             if not isinstance(input, dict):

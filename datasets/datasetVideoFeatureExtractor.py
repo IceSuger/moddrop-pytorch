@@ -88,6 +88,10 @@ class DatasetVideoFeatureExtractor(DatasetBasic):
                         file_name = re.sub('_' + ind + '_', '_' + hnd[0] + '_', file_name)
                 for mdl in ['color', 'depth', 'mocap', 'descr', 'audio']:
                     file_name = re.sub(mdl, mdlt, file_name)
+
+                if not os.path.isfile(file_name):  # 若文件不存在，就返回 None
+                    return None
+
                 with open(file_name, 'rb') as f:
                     [data_sample[hnd][mdlt]] = pickle.load(f, encoding='iso-8859-1')     # ！！这个编码指定！！很重要！！
                     # print([data_sample[hnd][mdlt]])
