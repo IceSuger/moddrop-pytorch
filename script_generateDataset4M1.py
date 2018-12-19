@@ -165,6 +165,11 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
     delta_cnt = 0
     for delta in Set_modality:
         delta_cnt += 1
+
+        # [Xiao] v2.8 只探索破坏了2种以上模态的吧
+        if len(delta) < 2:
+            continue
+
         dmg_func_cnt = 0
         for dmg_func in dmg_functions:
             dmg_func_cnt += 1
@@ -204,6 +209,10 @@ def generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delt
 
     n = len(data_loader)
     for ii, (data, label) in enumerate(data_loader):
+        # [Xiao] v2.8 跳过label为0的测试样本
+        if int(label.data) == 0:
+            continue
+
         if ii % 100 == 0:
             print(f'dmg_func:{dmg_func.__name__}\tdegree:{degree}\tdelta:{delta}, \tii: {ii}, {ii/n}')
 
@@ -228,7 +237,7 @@ def generateLQDataset_on_subset_with_dmgfunc_at_degree(r, dmg_func, degree, delt
             damaged_multimodal['data'] = _s
             damaged_multimodal['QoU'] = QoU
             damaged_multimodal['label'] = label # 这里的label，是原始多模态任务中的label，如手势类别
-            filename = str(label.data) + '_' + str(ii) + '_' + str(u) + '_' + dmg_func.__name__ + '_' + str(degree) + "'".join(delta)
+            filename = str(int(label.data)) + '_' + str(ii) + '_' + str(u) + '_' + dmg_func.__name__ + '_' + str(degree) + "'".join(delta)
 
             # path = 'LowQuality_'+str(r)+'_times/' + subset + '/'
             path = LQDataset_on_subset_with_dmgfunc_at_degree_ROOT + 'valid' + '/'

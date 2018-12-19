@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d118e74c-c27c-4f71-8a50-182950ed7dd6" name="Default" comment="">
+    <list default="true" id="d118e74c-c27c-4f71-8a50-182950ed7dd6" name="Default" comment="v2.7 在v2.6的多模态数据集基础上，重跑了整个实验。结果喜人。但猜测可能是测试集的label中，0的占比过大导致的？v2.7.1探究一下测试集和训练集的label分布情况。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CONSTS.py" beforeDir="false" afterPath="$PROJECT_DIR$/CONSTS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basicClassifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/basicClassifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_quality/DamageFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_quality/DamageFunctions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/datasetMultimodal.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/datasetMultimodal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment1_different_damage_degree.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment1_different_damage_degree.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script_generateDataset4M1.py" beforeDir="false" afterPath="$PROJECT_DIR$/script_generateDataset4M1.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,7 +15,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/moddrop_pytorch$Unnamed.coverage" NAME="training_script Coverage Results" MODIFIED="1532591744320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/moddrop_pytorch$experiment1.coverage" NAME="experiment1 Coverage Results" MODIFIED="1545127815819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/moddrop_pytorch$experiment1.coverage" NAME="experiment1 Coverage Results" MODIFIED="1545203955618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/moddrop_pytorch$experiment_whole.coverage" NAME="experiment_whole Coverage Results" MODIFIED="1544599890152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/moddrop_pytorch$training_script.coverage" NAME="training_script Coverage Results" MODIFIED="1544159064505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/moddrop_pytorch$script_generateDS4M1.coverage" NAME="script_generateDS4M1 Coverage Results" MODIFIED="1537193879631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -30,8 +26,8 @@
       <file leaf-file-name="basicClassifier.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/basicClassifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="36" column="32" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="32" />
+            <state relative-caret-position="-227">
+              <caret line="320" column="8" selection-start-line="320" selection-start-column="8" selection-end-line="320" selection-end-column="8" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -39,11 +35,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CONSTS.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CONSTS.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CONSTS.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="170">
+              <caret line="10" column="48" lean-forward="true" selection-start-line="10" selection-start-column="48" selection-end-line="10" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -51,8 +47,8 @@
       <file leaf-file-name="experiment1_different_damage_degree.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/experiment1_different_damage_degree.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="102" column="28" lean-forward="true" selection-start-line="102" selection-end-line="102" selection-end-column="33" />
+            <state relative-caret-position="662">
+              <caret line="102" column="30" selection-start-line="102" selection-end-line="102" selection-end-column="33" />
               <folding>
                 <element signature="e#9#18#0" expanded="true" />
               </folding>
@@ -81,15 +77,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QualityMetric.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data_quality/QualityMetric.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1098">
-              <caret line="72" column="12" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="datasetSkeleton.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasets/datasetSkeleton.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -99,13 +86,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="script_generateDataset4M1.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="script_generateDataset4M1.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="187" lean-forward="true" selection-start-line="187" selection-end-line="187" />
+            <state relative-caret-position="249">
+              <caret line="170" column="20" selection-start-line="170" selection-start-column="20" selection-end-line="170" selection-end-column="20" />
               <folding>
                 <element signature="e#93#106#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testing_DataSelection_or_not.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testing_DataSelection_or_not.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="305">
+              <caret line="120" column="24" selection-start-line="120" selection-start-column="24" selection-end-line="120" selection-end-column="24" />
+              <folding>
+                <element signature="e#721#790#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -214,11 +213,11 @@
         <option value="$PROJECT_DIR$/datasets/datasetVideoClassifier.py" />
         <option value="$PROJECT_DIR$/datasets/datasetSkeleton.py" />
         <option value="$PROJECT_DIR$/basicClassifier.py" />
-        <option value="$PROJECT_DIR$/CONSTS.py" />
         <option value="$PROJECT_DIR$/datasets/datasetMultimodal.py" />
         <option value="$PROJECT_DIR$/data_quality/DamageFunctions.py" />
-        <option value="$PROJECT_DIR$/script_generateDataset4M1.py" />
         <option value="$PROJECT_DIR$/experiment1_different_damage_degree.py" />
+        <option value="$PROJECT_DIR$/script_generateDataset4M1.py" />
+        <option value="$PROJECT_DIR$/CONSTS.py" />
       </list>
     </option>
   </component>
@@ -607,11 +606,19 @@
       <option name="project" value="LOCAL" />
       <updated>1545115640977</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="v2.7 在v2.6的多模态数据集基础上，重跑了整个实验。结果喜人。但猜测可能是测试集的label中，0的占比过大导致的？v2.7.1探究一下测试集和训练集的label分布情况。">
+      <created>1545199773274</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1545199773274</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1015" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="13" side_tool="true" weight="0.32925472" />
@@ -619,7 +626,7 @@
       <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32925472" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Python Console" order="12" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.35038933" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3592881" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="right" id="Remote Host" order="3" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16614583" />
@@ -668,7 +675,8 @@
     <MESSAGE value="v2.5.3 发现了！一个！重要的！bug！在 generateDeltaStar 的时候，遍历模态组合的幂集时，屏蔽模态时用了 MaskingNoise 的数据质量破坏函数来实现，但是！之前的 MaskingNoise 函数的实现中，rate 代表的是被保留的数据比例，而不是被破坏的比例。而这里在模态屏蔽时，是把传入的 rate 参数硬编码为 0 了，事实上应该改成 1 ，但之前两三个版本都没改过来！现在改过来跑跑看！" />
     <MESSAGE value="v2.5.3.1 跑完发现，还是不行。还是做选择比不做选择来得差。" />
     <MESSAGE value="v2.6.1 重新写了各个dataset类的读取数据的方法，改成顺序的了。但是，存在问题：并行读数据的线程较多时，会报 share memory ... timed out 啥的错误。并行线程少的话，又打不满 GPU。所以考虑从 v2.5 弄个新分支出来，用 破坏程度为0 的方式构建一套训练和测试数据集，并且以后都读取它们来训练和测试。这就要求：各个模态的dataset类，都得再一次改写，改为类似于现在的 DmgedMultimodalAndQoU 那种的读取方式。" />
-    <option name="LAST_COMMIT_MESSAGE" value="v2.6.1 重新写了各个dataset类的读取数据的方法，改成顺序的了。但是，存在问题：并行读数据的线程较多时，会报 share memory ... timed out 啥的错误。并行线程少的话，又打不满 GPU。所以考虑从 v2.5 弄个新分支出来，用 破坏程度为0 的方式构建一套训练和测试数据集，并且以后都读取它们来训练和测试。这就要求：各个模态的dataset类，都得再一次改写，改为类似于现在的 DmgedMultimodalAndQoU 那种的读取方式。" />
+    <MESSAGE value="v2.7 在v2.6的多模态数据集基础上，重跑了整个实验。结果喜人。但猜测可能是测试集的label中，0的占比过大导致的？v2.7.1探究一下测试集和训练集的label分布情况。" />
+    <option name="LAST_COMMIT_MESSAGE" value="v2.7 在v2.6的多模态数据集基础上，重跑了整个实验。结果喜人。但猜测可能是测试集的label中，0的占比过大导致的？v2.7.1探究一下测试集和训练集的label分布情况。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -929,16 +937,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testing_DataSelection_or_not.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="42" column="31" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
-          <folding>
-            <element signature="e#721#790#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datasets/datasetMultimodal_0.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1003,23 +1001,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CONSTS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/basicClassifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="36" column="32" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/training_Phi_R.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="433">
@@ -1054,10 +1035,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/testing_DataSelection_or_not.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="120" column="24" selection-start-line="120" selection-start-column="24" selection-end-line="120" selection-end-column="24" />
+          <folding>
+            <element signature="e#721#790#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/basicClassifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-227">
+          <caret line="320" column="8" selection-start-line="320" selection-start-column="8" selection-end-line="320" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/experiment1_different_damage_degree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="102" column="28" lean-forward="true" selection-start-line="102" selection-end-line="102" selection-end-column="33" />
+        <state relative-caret-position="662">
+          <caret line="102" column="30" selection-start-line="102" selection-end-line="102" selection-end-column="33" />
           <folding>
             <element signature="e#9#18#0" expanded="true" />
           </folding>
@@ -1066,11 +1067,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="187" lean-forward="true" selection-start-line="187" selection-end-line="187" />
+        <state relative-caret-position="249">
+          <caret line="170" column="20" selection-start-line="170" selection-start-column="20" selection-end-line="170" selection-end-column="20" />
           <folding>
             <element signature="e#93#106#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CONSTS.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="48" lean-forward="true" selection-start-line="10" selection-start-column="48" selection-end-line="10" selection-end-column="48" />
         </state>
       </provider>
     </entry>
