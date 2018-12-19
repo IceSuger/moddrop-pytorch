@@ -140,8 +140,8 @@ class basicClassifier(object):
         print('Dataset prepared.')
 
         # self._load_dataset('train')  # ？？
-        train_loader = DataLoader(train_data, batch_size=32, shuffle=True, num_workers=4)  # num_workers 按 CPU 逻辑核数目来。查看命令是： cat /proc/cpuinfo| grep "processor"| wc -l
-        val_loader = DataLoader(val_data, batch_size=42, shuffle=False, num_workers=56)
+        train_loader = DataLoader(train_data, batch_size=32, shuffle=True, num_workers=12)  # num_workers 按 CPU 逻辑核数目来。查看命令是： cat /proc/cpuinfo| grep "processor"| wc -l
+        val_loader = DataLoader(val_data, batch_size=32, shuffle=False, num_workers=12)
 
         print('DataLoader prepared.')
         # val_loader = DataLoader(self.val_data, 32)

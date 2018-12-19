@@ -95,16 +95,18 @@ def generateLQDataset(r = 8, subset = 'train'):
     # r = 8   # 单条原多模态数据，生成 r 条被破坏记录
     #
 
-    train_data = DatasetMultimodal(classifier.input_folder, '', subset, classifier.hand_list,
+    train_data = DatasetMultimodal(classifier.input_folder, 'mocap', subset, classifier.hand_list,
                                    classifier.seq_per_class,
                                    classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
-    train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
+    train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=12)
 
     dmg_functions = Noise(randomly=True).getDmgFunctions()
     score_functions = DataQuality().getMetricFuncs()
 
+    n = len(train_loader)
+    print(f'len(train_loader) = {len(train_loader)}')
     for ii, (data, label) in enumerate(train_loader):
-        n = len(train_loader)
+
         if ii % 100 == 0:
             print(f'ii: {ii}, {ii/n}')
 
@@ -146,10 +148,10 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
     """
 
     # 预先准备好需要的东西
-    train_data = DatasetMultimodal(classifier.input_folder, '', subset, classifier.hand_list,
+    train_data = DatasetMultimodal(classifier.input_folder, 'mocap', subset, classifier.hand_list,
                                    classifier.seq_per_class,
                                    classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
-    train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=56)
+    train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=12)
     _s, _ = train_data.__getitem__(0)  # 随便取一个样本，主要是为了取其模态集合，为了下面遍历其幂集
 
     modalities = _s.keys()
@@ -410,9 +412,14 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = None):
             for subset in Set_modality:
                 probs = M0.model(mask(_s, subset))    # probs 即为模型输出的 score（见 basicClassifier.py 中 test 相关方法）
                 result = torch.argmax(probs.data, dim=1)
-                Set_probs.append((probs.data.cpu().numpy()[0], label, result, subset))
+                Set_probs.append((probs.data.cpu().numpy()[0], int(label), int(result), subset))
+                # v2.7 同时记下各种模态组合对应的预测结果和熵值
+
 
             Set_probs.sort(key=lambda x: (x[1]!=x[2], H(x[0])))
+
+            # print(f'Set_probs = {Set_probs}')
+
             if Set_probs[0][1] != Set_probs[0][2]:  # 如果排在第一位的这个，预测结果都和label不同，说明所有的结果都是错的，那么就取全集作为 delta_star
                 # subset_best = list(modalities).copy()
                 subset_best = []
@@ -427,6 +434,10 @@ def generateDeltaStar(r = 8, train_valid_test = 'train', path_D_Q_root = None):
             # pickle.dump(sample_for_M1, open('train_for_M1/' + filename, 'wb'))
             testExistAndCreateDir(path_D_Q)
             pickle.dump(sample_for_M1, open(path_D_Q + filename, 'wb'))
+
+            # # v2.7(?)-暂时跳过这个版本的实现。
+            #  同时记下各种模态组合对应的预测结果和熵值，以及本来的正确类别，还有QoU、delta_star
+            # list_to_save.append(QoU.extend([]))
 
 
 

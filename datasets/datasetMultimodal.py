@@ -56,6 +56,7 @@ class DatasetMultimodal(Dataset):
 
         # 获取文件名列表
         self._get_data_list(subset)
+        # print(self.data_list)
 
         # 初始化 ind 到 文件名 的映射
         self._init_dataset()
@@ -86,6 +87,7 @@ class DatasetMultimodal(Dataset):
         self.data_list[subset] = {}
         # print(f'In _get_data_list, folder is {folder}, search_line is: {self.search_line}')
         for cl in range(self.nclasses):
+            # print(f'folder = {folder}')
             self.data_list[subset][cl] = glob.glob(folder + self.search_line % (cl))
 
     def _init_dataset(self):
