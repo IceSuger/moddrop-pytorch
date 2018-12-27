@@ -115,17 +115,13 @@ class basicClassifier(object):
 
 
         # [Xiao]
-        vis = Visualizer('xiao-moddrop-v2.6')
+        vis = Visualizer('xiao-moddrop-v3.0')
 
         # step 1: setup model
         model = self.model
         # model = model.cuda()
 
         # step 2: data\
-        # train_data = DatasetVideoFeatureExtractor(self.input_folder, self.modality, 'train', self.hand_list, self.seq_per_class,
-        #                                           self.nclasses, self.input_size, self.step, self.nframes)
-        # val_data = DatasetVideoFeatureExtractor(self.input_folder, self.modality, 'valid', self.hand_list, 200,
-        #                                         self.nclasses, self.input_size, self.step, self.nframes)
         if datasetTypeCls in [DatasetOfDamagedMultimodal, DatasetLQAudio,  DatasetLQVideoClassifier, DatasetLQVideoFeatureExtractor, DatasetLQSkeleton]:
             # print(f'In basicClassifier.py, df = {df}')
             train_data = datasetTypeCls(self.input_folder, train_valid_test='train')

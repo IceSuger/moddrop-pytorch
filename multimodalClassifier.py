@@ -93,7 +93,26 @@ class MultimodalNet(nn.Module):
         # print(f"Before going to GPU, type is: {x['mocap'].dtype}")
         # print(f"Before going to GPU, type is: {x['mocap'].dtype}")
         # x = x.view(x.size(0), -1)
-        x_video = x['video'].to(self.device)
+
+
+        # v3.0 将四个视频模态 r_color, r_depth, l_color, l_depth 合成到 video 模态
+        # tmp_video = x['r_color'].unsqueeze(0)
+        cat_list = []
+        for video_mdlt in ['r_color', 'r_depth', 'l_color', 'l_depth']:
+            # tmp_video.append(x[video_mdlt].data)
+            cat_list.append(x[video_mdlt].unsqueeze(1))
+        tmp_video = torch.cat(cat_list, 1)
+
+        # print(f'type(tmp_video) = {type(tmp_video)}')
+        # print(f'tmp_video.shape = {tmp_video.shape}')
+        # print(f'type(tmp_video[0]) = {type(tmp_video[0])}')
+        # print(f'x[""].shape = {x["r_color"].unsqueeze(0).shape}')
+
+        # tmp_video = numpy.array(tmp_video).astype(numpy.float32)
+        # tmp_video = torch.tensor(tmp_video)
+
+        # x_video = x['video'].to(self.device)
+        x_video = tmp_video.to(self.device)
         x_mocap = x['mocap'].to(self.device)
         x_audio = x['audio'].to(self.device)
 

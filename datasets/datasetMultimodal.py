@@ -2,7 +2,7 @@ import glob
 
 from torch.utils.data import Dataset
 
-from CONSTS import STEP_TO_NEXT_STBLOCK
+from CONSTS import STEP_TO_NEXT_STBLOCK, DEBUGGING
 from datasets.datasetAudio import DatasetAudio
 from datasets.datasetSkeleton import DatasetSkeleton
 from datasets.datasetVideoClassifier import DatasetVideoClassifier
@@ -86,6 +86,15 @@ class DatasetMultimodal(Dataset):
 
         self.data_list[subset] = {}
         # print(f'In _get_data_list, folder is {folder}, search_line is: {self.search_line}')
+
+        if DEBUGGING:
+            for cl in range(self.nclasses):
+                if cl == 1:
+                    self.data_list[subset][cl] = glob.glob(folder + self.search_line % (cl))
+                else:
+                    self.data_list[subset][cl] = []
+            return
+
         for cl in range(self.nclasses):
             # print(f'folder = {folder}')
             self.data_list[subset][cl] = glob.glob(folder + self.search_line % (cl))
@@ -144,7 +153,15 @@ class DatasetMultimodal(Dataset):
         file_name, start_frame, label = self.dataset[self.subset][ind]
         for mdlt in self.modality_list:
             data = self.datasetTypes[mdlt]._get_data_by_filename_and_startframe(file_name=file_name, start_frame=start_frame)
-            sample[mdlt] = data
+            if mdlt == 'video':
+                # v3.0 将视频模态拆分为四各模态： r_color, r_depth, l_color, l_depth
+                i = 0
+                for video_mdlt in ['r_color', 'r_depth', 'l_color', 'l_depth']:
+                    sample[video_mdlt] = data[i]
+                    i += 1
+            else:
+                sample[mdlt] = data
+
 
         return sample, int(label)
 
