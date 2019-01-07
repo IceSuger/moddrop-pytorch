@@ -191,6 +191,11 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
                 # 2.3
                 accuracy_with_data_selection = testWithDataSelection(clf, df)
 
+                # # [Xiao] v3.1
+                # # 2.6
+                # # 将被破坏的模态直接剔除，看看效果
+                # accuracy_direct_del_dmged_mdlts = testWithDirectDeletion()
+
                 # 2.4
                 # 将结果写到文件
                 res_file = open(res_file_name, 'a')

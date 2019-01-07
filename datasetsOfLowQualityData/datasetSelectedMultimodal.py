@@ -14,6 +14,8 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         # print(f'QoU2delta_df.head() = {QoU2delta_df.head()}')
         self.table_susbetCode_to_subsetCategory = self.init_table_susbetCode_to_subsetCategory(QoU2delta_df.cc.cat.categories)
 
+        # if type(phi_s) in [list, str]
+
 
     def __getitem__(self, ind):
         data, label, QoU = self._my_getitem__(ind)

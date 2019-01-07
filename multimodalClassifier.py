@@ -95,13 +95,25 @@ class MultimodalNet(nn.Module):
         # x = x.view(x.size(0), -1)
 
 
-        # v3.0 将四个视频模态 r_color, r_depth, l_color, l_depth 合成到 video 模态
-        # tmp_video = x['r_color'].unsqueeze(0)
-        cat_list = []
-        for video_mdlt in ['r_color', 'r_depth', 'l_color', 'l_depth']:
-            # tmp_video.append(x[video_mdlt].data)
-            cat_list.append(x[video_mdlt].unsqueeze(1))
-        tmp_video = torch.cat(cat_list, 1)
+        # # v3.0 将四个视频模态 r_color, r_depth, l_color, l_depth 合成到 video 模态
+        # # tmp_video = x['r_color'].unsqueeze(0)
+        # cat_list = []
+        # for video_mdlt in ['r_color', 'r_depth', 'l_color', 'l_depth']:
+        #     # tmp_video.append(x[video_mdlt].data)
+        #     cat_list.append(x[video_mdlt].unsqueeze(1))
+        # tmp_video = torch.cat(cat_list, 1)
+
+        # v3.0.1 将 color_video 和 depth_video 合并得到 video 模态
+        # print(f"type(x['color_video'] = {type(x['color_video'])}, shape={x['color_video'].shape}")
+        # print(f"type(x['depth_video'] = {type(x['depth_video'])}, shape={x['depth_video'].shape}")
+        x['color_video'] = x['color_video'].permute(1, 0, 2, 3, 4, 5)
+        x['depth_video'] = x['depth_video'].permute(1, 0, 2, 3, 4, 5)
+
+        tmp_video = torch.cat([x['color_video'][0].unsqueeze(0), x['depth_video'][0].unsqueeze(0), x['color_video'][1].unsqueeze(0), x['depth_video'][1].unsqueeze(0)], 0)
+
+        tmp_video = tmp_video.permute(1, 0, 2, 3, 4, 5)
+        # x['color_video'] = x['color_video'].permute(1, 0, 2, 3, 4, 5)
+        # x['depth_video'] = x['depth_video'].permute(1, 0, 2, 3, 4, 5)
 
         # print(f'type(tmp_video) = {type(tmp_video)}')
         # print(f'tmp_video.shape = {tmp_video.shape}')

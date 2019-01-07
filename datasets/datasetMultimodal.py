@@ -1,4 +1,5 @@
 import glob
+import numpy
 
 from torch.utils.data import Dataset
 
@@ -155,10 +156,23 @@ class DatasetMultimodal(Dataset):
             data = self.datasetTypes[mdlt]._get_data_by_filename_and_startframe(file_name=file_name, start_frame=start_frame)
             if mdlt == 'video':
                 # v3.0 将视频模态拆分为四各模态： r_color, r_depth, l_color, l_depth
-                i = 0
-                for video_mdlt in ['r_color', 'r_depth', 'l_color', 'l_depth']:
-                    sample[video_mdlt] = data[i]
-                    i += 1
+                # v3.0.1 视频拆成 color 和 depth
+                # cat_list_color = []
+                # cat_list_depth = []
+                # cat_list_color.append(data[0].unsqueeze(1))
+                # cat_list_color.append(data[2].unsqueeze(1))
+                # cat_list_depth.append(data[1].unsqueeze(1))
+                # cat_list_depth.append(data[3].unsqueeze(1))
+                # print(f"data.shape={data.shape}")
+
+                color = numpy.concatenate((numpy.expand_dims(data[0], axis=0), numpy.expand_dims(data[2], axis=0)), axis=0)
+                depth = numpy.concatenate((numpy.expand_dims(data[1], axis=0), numpy.expand_dims(data[3], axis=0)), axis=0)
+                sample['color_video'] = color
+                sample['depth_video'] = depth
+                # i = 0
+                # for video_mdlt in ['r_color', 'r_depth', 'l_color', 'l_depth']:
+                #     sample[video_mdlt] = data[i]
+                #     i += 1
             else:
                 sample[mdlt] = data
 

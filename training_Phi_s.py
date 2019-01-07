@@ -102,6 +102,15 @@ def trainAndTest_Phi_s(df):
     for i in range(len(pred_y)):
         if pred_y[i] == test_y.iloc[i]:
             rightCnt += 1
-    print(rightCnt / len(pred_y))   # 输出测试集上 phi_s 的准确率
+    print(f"测试集上准确率为 {rightCnt / len(pred_y)}")   # 输出测试集上 phi_s 的准确率
+
+    # v3.0.1 看看训练集上的准确率，虽然意义不大，但打出来看看。。
+    pred_y_train = clf.predict(X)
+
+    rightCnt = 0
+    for i in range(len(pred_y_train)):
+        if pred_y_train[i] == y.iloc[i]:
+            rightCnt += 1
+    print(f"训练集上准确率为 {rightCnt / len(pred_y_train)}")  # 输出训练集上 phi_s 的准确率
 
     return clf
