@@ -6,6 +6,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import preprocessing
 
+from CONSTS import DEBUGGING
+
 
 def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_valid_test='train', result_file_name = 'QoU_to_deltaStar.csv'):
     root = '/home/xiaoyunlong/code/moddrop-pytorch/' + path_D_Q_root + '/' + train_valid_test + '/'
@@ -24,6 +26,11 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_vali
         if i % pct == 0:
             print(f'i: {i}, {i/n * 100}% files found.')
         i += 1
+
+        # v3.0.2
+        if DEBUGGING:
+            if i > (2 * pct):
+                break
 
         file_path = os.path.join(root, filename)
         with open(file_path, 'rb') as f:

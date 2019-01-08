@@ -13,6 +13,8 @@ PREDICTED_DELTAS_PATH = 'predicted_deltas_v3.0.1/'
 STEP_TO_NEXT_STBLOCK = 5    # 滑动几帧，继续取下一个 stblock
 
 
+EXPR1_PARTIAL_RESULT_FOLDER_PATH = 'Expr1_partial_res_v3.0.1/'
+
 
 ###############################
 # DEBUGGING = True

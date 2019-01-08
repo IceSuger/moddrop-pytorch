@@ -12,6 +12,7 @@ from datasetsOfLowQualityData.datasetSelectedMultimodal import DatasetSelectedMu
 from torch import nn
 from torch.utils.data import DataLoader
 # from torch.autograd import Variable as V
+from utils.helpers import getDeltaStarForOneSample
 from utils.visualize import Visualizer
 import pandas as pd
 from entropyEvaluating import softmax
@@ -314,7 +315,7 @@ class basicClassifier(object):
         loss = sum(losses) / len(losses)
         return loss
 
-    def test_torch(self, datasetTypeCls, phi_s=None, df=None):
+    def test_torch(self, datasetTypeCls, phi_s=None, df=None, M0=None, H=None):
         if datasetTypeCls == DatasetOfDamagedMultimodal or datasetTypeCls == DatasetSelectedMultimodal:
             # print(f'In basicClassifier.py, df = {df}')
             test_data = datasetTypeCls(self.input_folder, train_valid_test='valid', phi_s=phi_s, QoU2delta_df=df)
@@ -333,6 +334,8 @@ class basicClassifier(object):
         total = 0
         predicted_to_save = numpy.zeros((1,21))
         labels_to_save = []
+        tmp_df = []
+        flag_if_DatasetSelectedMultimodal = False
         with torch.no_grad():
             # for data in test_loader:
             #     images, labels = data
@@ -347,6 +350,15 @@ class basicClassifier(object):
                     val_input = input.to(self.device)
                 else:
                     val_input = input
+
+                delta_star = []
+                predicted_subsetCategory = None
+                if type(label) == tuple or type(label) == list: # 针对于 DatasetSelectedMultimodal，因为这种情况下，同时在 label 中包含了 subsetCategory
+                    label, predicted_subsetCategory = label[0], label[1]    # torch.tensor(numpy.array(label[0]))
+                    # predicted_subsetCategory = label[1]
+                    flag_if_DatasetSelectedMultimodal = True
+                    delta_star = getDeltaStarForOneSample(M0, H, val_input, label)
+
                 val_label = label.to(self.device)
                 score = self.model(val_input)
                 # print(f'score is: {score.data}')
@@ -363,20 +375,28 @@ class basicClassifier(object):
                 correct += sum(predicted == val_label).item()
                 # losses.append(self.criterion(score, val_label).data)
 
+                if flag_if_DatasetSelectedMultimodal: # 针对于 DatasetSelectedMultimodal，因为这种情况下，同时在 label 中包含了 subsetCategory
+                    tmp_df.append([delta_star, predicted_subsetCategory, val_label, predicted])
+
         # print('Accuracy of the network on valid set as the test set: %d %%' % (
         #         100 * correct / total))
         print(f'Accuracy over the {total} samples in validset(as testset) is {(100 * correct / total)}')
 
-        # Save as csv
-        # pd.Series(predicted_to_save).to_csv('results/'+ 'valid_prob/' + 'predicted_'+self.model_name+'.csv')
-        # pd.Series(labels_to_save).to_csv('results/'+ 'valid_prob/' + 'labels_' + self.model_name + '.csv')
-        # df_to_save = pd.DataFrame(pd.concat([pd.DataFrame(predicted_to_save), pd.DataFrame(labels_to_save)], axis=1))
-        # df_to_save.to_csv('results/'+self.model_name)
-        pd.DataFrame(predicted_to_save[1:], columns=range(21)).to_csv('results/' + 'valid_prob/' + 'predicted_' + self.model_name + '.csv')
-        pd.Series(labels_to_save).to_csv('results/' + 'valid_prob/' + 'labels_' + self.model_name + '.csv')
+        # # Save as csv
+        # # pd.Series(predicted_to_save).to_csv('results/'+ 'valid_prob/' + 'predicted_'+self.model_name+'.csv')
+        # # pd.Series(labels_to_save).to_csv('results/'+ 'valid_prob/' + 'labels_' + self.model_name + '.csv')
+        # # df_to_save = pd.DataFrame(pd.concat([pd.DataFrame(predicted_to_save), pd.DataFrame(labels_to_save)], axis=1))
+        # # df_to_save.to_csv('results/'+self.model_name)
+        # pd.DataFrame(predicted_to_save[1:], columns=range(21)).to_csv('results/' + 'valid_prob/' + 'predicted_' + self.model_name + '.csv')
+        # pd.Series(labels_to_save).to_csv('results/' + 'valid_prob/' + 'labels_' + self.model_name + '.csv')
+
+        df_to_save = pd.DataFrame(tmp_df)
 
         # 返回准确率
-        return (100 * correct / total)
+        if flag_if_DatasetSelectedMultimodal:
+            return (100 * correct / total), df_to_save
+        else:
+            return (100 * correct / total)
 
 
     def test_torch_modality_selection(self, datasetTypeCls):

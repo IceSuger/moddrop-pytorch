@@ -6,7 +6,8 @@ import shutil
 
 import pandas as pd
 
-from CONSTS import EXPERIMENT_RESULT_FILE_NAME, LQDataset_on_subset_with_dmgfunc_at_degree_ROOT, PREDICTED_DELTAS_PATH
+from CONSTS import EXPERIMENT_RESULT_FILE_NAME, LQDataset_on_subset_with_dmgfunc_at_degree_ROOT, PREDICTED_DELTAS_PATH, \
+    EXPR1_PARTIAL_RESULT_FOLDER_PATH
 from datasetsOfLowQualityData.datasetDmgedMultimodalSelectedDelta import DatasetDmgedMultimodalSelectedDelta
 from datasetsOfLowQualityData.datasetOfDmgedMultimodalAndQoU import DatasetOfDamagedMultimodalAndQoU
 from lqMultimodalClassifier import lqMultimodalClassifier
@@ -24,44 +25,7 @@ import itertools
 import torch
 
 from testing_DataSelection_or_not import testWithoutDataSelection, testWithDataSelection
-
-
-def testExistAndCreateDir(s):
-    path = os.path.join(os.getcwd(), s)
-    if not os.path.isdir(path):
-        # os.mkdir(path)
-        os.makedirs(path)
-
-def testExistAndRemoveDir(s):
-    path = os.path.join(os.getcwd(), s)
-    if os.path.isdir(path):
-        # os.mkdir(path)
-        shutil.rmtree(path)
-
-def getSubsets(features):
-    """
-    features: list
-    """
-    subsets = []
-    for i in range(1, len(features) + 1):
-        curList = list(map(list, itertools.combinations(features, i)))
-        subsets.extend(curList)
-    return subsets
-
-noise = Noise(randomly=False)    # randomly = True, 则表示以随机程度加入各类噪声, 这里置否是为了让maskNoise能够以 rate=0 来遮蔽原始数据。
-                                 # 后面会再次创建另一个 Noise 实例，其用于随机加噪声，故其 randomly = True 。
-def mask(sample, subset):
-    '''
-    借用 Noise 类中的 mask 噪声实现对整帧的屏蔽
-    :param sample:
-    :param subset:
-    :return:
-    '''
-    sample = sample.copy()
-    for key in sample.keys():
-        if key not in subset:
-            sample[key] = noise.MaskingNoise(sample[key], 1).float() # .astype(np.float32)
-    return sample
+from utils.helpers import getSubsets, testExistAndCreateDir, testExistAndRemoveDir, mask
 
 source_folder = '/home/xiaoyunlong/downloads/DeepGesture/Montalbano/'
 '''
@@ -161,14 +125,28 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
 
     res_file_name = EXPERIMENT_RESULT_FILE_NAME
 
+
+    # v3.0.2
+    # 预备下面为每个测试样本确定其最优模态组合 deltaStar 所要用的方法
+    M0 = moddropMultimodalClassifier(step=4,
+                                     input_folder=source_folder,
+                                     filter_folder=filter_folder)
+    H = entropyOnProbs  # 根据概率向量求熵
+    # 预备好M0，加载已训练的权重，进入预测模式（非训练模式，一方面保证权重不更新，一方面保证batchnorm可以在batchsize为1时正常工作）并挪上GPU
+    M0.build_network()  # build the model
+    M0.load_weights()
+    M0.model.eval()
+    M0.model.to(M0.device)
+
+
     # 开始
     delta_cnt = 0
     for delta in Set_modality:
         delta_cnt += 1
 
-        # [Xiao] v2.8 只探索破坏了2种以上模态的吧
-        if len(delta) < 2:
-            continue
+        # # [Xiao] v2.8 只探索破坏了2种以上模态的吧
+        # if len(delta) < 2:
+        #     continue
 
         dmg_func_cnt = 0
         for dmg_func in dmg_functions:
@@ -189,7 +167,11 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
                 accuracy_no_data_selection = testWithoutDataSelection()
 
                 # 2.3
-                accuracy_with_data_selection = testWithDataSelection(clf, df)
+                accuracy_with_data_selection, df_to_save = testWithDataSelection(clf, df, (M0, H))
+
+                # 2.7   ## v3.0.2加入的这部分。将该测试集上的结果以df形式，按每行 （最优模态组合，预测模态组合，原始手势label，预测手势label） 的形式写文件
+                filename = f'{delta}=-={dmg_func.__name__}=-={degree}'
+                df_to_save.to_csv(EXPR1_PARTIAL_RESULT_FOLDER_PATH + filename)
 
                 # # [Xiao] v3.1
                 # # 2.6

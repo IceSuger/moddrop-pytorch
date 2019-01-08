@@ -13,14 +13,16 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         self.QoU2delta_df = QoU2delta_df
         # print(f'QoU2delta_df.head() = {QoU2delta_df.head()}')
         self.table_susbetCode_to_subsetCategory = self.init_table_susbetCode_to_subsetCategory(QoU2delta_df.cc.cat.categories)
+        print(f'len(self.table_susbetCode_to_subsetCategory) = {len(self.table_susbetCode_to_subsetCategory)}')
+        print(f'self.table_susbetCode_to_subsetCategory = {self.table_susbetCode_to_subsetCategory}')
 
         # if type(phi_s) in [list, str]
 
 
     def __getitem__(self, ind):
         data, label, QoU = self._my_getitem__(ind)
-        selectedData, _ = self.selectData(data, QoU)
-        return selectedData, label
+        selectedData, subsetCategory = self.selectData(data, QoU)
+        return selectedData, (label, subsetCategory)
 
     # def __len__(self):
     #     return self.file_list_len

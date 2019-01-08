@@ -97,7 +97,7 @@ dataset_types = {
             }
 
 
-def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None, source_folder = None):
+def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None, tuple_M0_and_H = None, source_folder = None):
     """
     两种模式（带和不带数据选择模块）下的测试流程的公共部分。
     :param cl_mode: 数据集的模态
@@ -118,7 +118,13 @@ def commonPartOfTheTesting(cl_mode, step = 4, clf = None, df = None, source_fold
     classifier.load_weights()
     # classifier.train_torch(dataset_type_cls)
     # print(f'In testing_DataSelection_or_not.py, df = {df}')
-    res = classifier.test_torch(dataset_type_cls, phi_s=clf, df=df)
+    if not tuple_M0_and_H is None:
+        M0 = tuple_M0_and_H[0]
+        H = tuple_M0_and_H[1]
+    else:
+        M0 = None
+        H = None
+    res = classifier.test_torch(dataset_type_cls, phi_s=clf, df=df, M0=M0, H=H)
 
     return res
 
@@ -131,7 +137,7 @@ def testWithoutDataSelection():
     cl_mode = 'LQ_multimodal'
     return commonPartOfTheTesting(cl_mode, source_folder=LQDataset_on_subset_with_dmgfunc_at_degree_ROOT)
 
-def testWithDataSelection(clf, df):
+def testWithDataSelection(clf, df, tuple_M0_and_H):
     """
 
     :param clf: 用于完成数据选择的分类器 phi_s
@@ -142,5 +148,5 @@ def testWithDataSelection(clf, df):
     # print(f'clf = {clf}')
     # print(f'df = {df}')
 
-    return commonPartOfTheTesting(cl_mode, clf=clf, df=df, source_folder=LQDataset_on_subset_with_dmgfunc_at_degree_ROOT)
+    return commonPartOfTheTesting(cl_mode, clf=clf, df=df, tuple_M0_and_H=tuple_M0_and_H, source_folder=LQDataset_on_subset_with_dmgfunc_at_degree_ROOT)
 
