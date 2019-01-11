@@ -13,8 +13,8 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         self.QoU2delta_df = QoU2delta_df
         # print(f'QoU2delta_df.head() = {QoU2delta_df.head()}')
         self.table_susbetCode_to_subsetCategory = self.init_table_susbetCode_to_subsetCategory(QoU2delta_df.cc.cat.categories)
-        print(f'len(self.table_susbetCode_to_subsetCategory) = {len(self.table_susbetCode_to_subsetCategory)}')
-        print(f'self.table_susbetCode_to_subsetCategory = {self.table_susbetCode_to_subsetCategory}')
+        # print(f'len(self.table_susbetCode_to_subsetCategory) = {len(self.table_susbetCode_to_subsetCategory)}')
+        # print(f'self.table_susbetCode_to_subsetCategory = {self.table_susbetCode_to_subsetCategory}')
 
         # if type(phi_s) in [list, str]
 
@@ -54,12 +54,14 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         """
         # 1.
         # print(f'QoU={QoU}')
-        subsetCode = self.phi_s.predict(np.array(QoU).reshape(1, -1))[0]
-        # print(f'subsetCode = {subsetCode}')
+        subsetCode = int(self.phi_s.predict(np.array(QoU).reshape(1, -1))[0])
+
         # 2.
         # print(f'self.table_susbetCode_to_subsetCategory = {self.table_susbetCode_to_subsetCategory}')
         subsetCategory = self.table_susbetCode_to_subsetCategory[subsetCode]
 
+        if subsetCode < 2:
+            print(f'subsetCode = {subsetCode}, subsetCategory = {subsetCategory}, type(subsetCategory) = {type(subsetCategory)}, len(subsetCategory) = {len(subsetCategory)}')
         # 3.
         # print(f'subsetCategory={subsetCategory} \t len(subsetCategory)={len(subsetCategory)} \t type(subsetCategory)={type(subsetCategory)}')
         # # if len(subsetCategory) == 0:

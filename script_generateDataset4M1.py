@@ -171,6 +171,7 @@ def generateLQDataset_for_experiment1(r = 8, subset = 'valid', clf = None, df = 
 
                 # 2.7   ## v3.0.2加入的这部分。将该测试集上的结果以df形式，按每行 （最优模态组合，预测模态组合，原始手势label，预测手势label） 的形式写文件
                 filename = f'{delta}=-={dmg_func.__name__}=-={degree}'
+                testExistAndCreateDir(EXPR1_PARTIAL_RESULT_FOLDER_PATH)
                 df_to_save.to_csv(EXPR1_PARTIAL_RESULT_FOLDER_PATH + filename)
 
                 # # [Xiao] v3.1

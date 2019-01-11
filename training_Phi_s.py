@@ -43,19 +43,19 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_vali
 
     # 将 二维list 转为 df
     df = pd.DataFrame(data)
-    print(df.head())
+    print(df.head(20))
     print(df.describe())
 
     # 将 label 中的空列表（即对应于生成delta_star的过程中，phi_r没能正确分类的那些样本），都替换为模态全集
     origin_label_column_number = len(df.columns) - 1
     df[origin_label_column_number].fillna('ALL_MODAL')
-    print(df.head())
+    print(df.head(20))
     print(df.describe())
 
     # 将 label 转为数值，加在最后一列
     df['cc'] = pd.Categorical(df[origin_label_column_number])
     df['code'] = df.cc.cat.codes
-    print(df.head())
+    print(df.head(20))
     print(df.describe())
 
     # 写文件
@@ -119,5 +119,24 @@ def trainAndTest_Phi_s(df):
         if pred_y_train[i] == y.iloc[i]:
             rightCnt += 1
     print(f"训练集上准确率为 {rightCnt / len(pred_y_train)}")  # 输出训练集上 phi_s 的准确率
+
+    # v3.0.3 测试集和训练集上，预测出来的结果里，有 0 吗？？
+    zeroCnt = 0
+    zeroAndRightCnt = 0
+    for i in range(len(pred_y_train)):
+        if int(pred_y_train[i]) == 0:
+            zeroCnt += 1
+            if pred_y_train[i] == y.iloc[i]:
+                zeroAndRightCnt += 1
+    print(f"训练集上预测出的0的个数为 {zeroCnt}， 其中正确的有 {zeroAndRightCnt/zeroCnt}")
+
+    zeroCnt = 0
+    zeroAndRightCnt = 0
+    for i in range(len(pred_y)):
+        if int(pred_y[i]) == 0:
+            zeroCnt += 1
+            if pred_y[i] == test_y.iloc[i]:
+                zeroAndRightCnt += 1
+    print(f"测试集上预测出的0的个数为 {zeroCnt}， 其中正确的有 {zeroAndRightCnt/zeroCnt}")
 
     return clf
