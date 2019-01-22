@@ -4,7 +4,10 @@
     <list default="true" id="d118e74c-c27c-4f71-8a50-182950ed7dd6" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CONSTS.py" beforeDir="false" afterPath="$PROJECT_DIR$/CONSTS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_quality/DamageFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_quality/DamageFunctions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/datasetMultimodal.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/datasetMultimodal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datasetsOfLowQualityData/datasetSelectedMultimodal.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasetsOfLowQualityData/datasetSelectedMultimodal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment1_different_damage_degree.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment1_different_damage_degree.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script_generateDataset4M1.py" beforeDir="false" afterPath="$PROJECT_DIR$/script_generateDataset4M1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/training_Phi_s.py" beforeDir="false" afterPath="$PROJECT_DIR$/training_Phi_s.py" afterDir="false" />
     </list>
@@ -17,7 +20,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/moddrop_pytorch$Unnamed.coverage" NAME="training_script Coverage Results" MODIFIED="1532591744320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/moddrop_pytorch$experiment1.coverage" NAME="experiment1 Coverage Results" MODIFIED="1547198098289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/moddrop_pytorch$experiment1.coverage" NAME="experiment1 Coverage Results" MODIFIED="1547215923954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/moddrop_pytorch$experiment_whole.coverage" NAME="experiment_whole Coverage Results" MODIFIED="1544599890152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/moddrop_pytorch$training_script.coverage" NAME="training_script Coverage Results" MODIFIED="1544159064505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/moddrop_pytorch$script_generateDS4M1.coverage" NAME="script_generateDS4M1 Coverage Results" MODIFIED="1537193879631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -25,20 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="datasetSelectedMultimodal.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="datasetSelectedMultimodal.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasetsOfLowQualityData/datasetSelectedMultimodal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="common.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.PyCharm2018.1/system/remote_sources/-916635062/-38687215/pandas/io/common.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="389" selection-start-line="389" selection-end-line="389" />
+            <state relative-caret-position="952">
+              <caret line="57" selection-start-line="57" selection-end-line="57" />
             </state>
           </provider>
         </entry>
@@ -46,8 +40,8 @@
       <file leaf-file-name="CONSTS.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CONSTS.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="62" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
+            <state>
+              <caret column="5" selection-start-column="5" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -55,8 +49,8 @@
       <file leaf-file-name="experiment1_different_damage_degree.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/experiment1_different_damage_degree.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="102" column="28" lean-forward="true" selection-start-line="102" selection-start-column="28" selection-end-line="102" selection-end-column="28" />
+            <state relative-caret-position="1581">
+              <caret line="102" column="21" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
               <folding>
                 <element signature="e#9#18#0" expanded="true" />
               </folding>
@@ -67,22 +61,10 @@
       <file leaf-file-name="training_Phi_s.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/training_Phi_s.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="137" column="43" selection-start-line="137" selection-start-column="43" selection-end-line="137" selection-end-column="43" />
+            <state relative-caret-position="1071">
+              <caret line="71" column="5" selection-start-line="71" selection-start-column="5" selection-end-line="71" selection-end-column="5" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="datasetMultimodal.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/datasets/datasetMultimodal.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-972">
-              <caret line="90" column="21" lean-forward="true" selection-start-line="90" selection-start-column="8" selection-end-line="90" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -91,7 +73,7 @@
       <file leaf-file-name="datasetBasic.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/datasets/datasetBasic.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
+            <state relative-caret-position="3060">
               <caret line="191" column="50" selection-start-line="191" selection-start-column="41" selection-end-line="191" selection-end-column="50" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
@@ -100,10 +82,22 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="datasetMultimodal.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasets/datasetMultimodal.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1649">
+              <caret line="105" column="102" selection-start-line="105" selection-start-column="102" selection-end-line="105" selection-end-column="102" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="testing_DataSelection_or_not.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testing_DataSelection_or_not.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
+            <state relative-caret-position="2278">
               <caret line="139" column="4" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
               <folding>
                 <element signature="e#721#790#0" expanded="true" />
@@ -115,11 +109,20 @@
       <file leaf-file-name="script_generateDataset4M1.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="173" column="71" lean-forward="true" selection-start-line="173" selection-start-column="71" selection-end-line="173" selection-end-column="71" />
+            <state relative-caret-position="1853">
+              <caret line="133" column="23" selection-start-line="133" selection-start-column="23" selection-end-line="133" selection-end-column="23" />
               <folding>
                 <element signature="e#93#106#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DamageFunctions.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/data_quality/DamageFunctions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="146">
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -200,18 +203,18 @@
         <option value="$PROJECT_DIR$/datasets/datasetAudio.py" />
         <option value="$PROJECT_DIR$/datasets/datasetVideoClassifier.py" />
         <option value="$PROJECT_DIR$/datasets/datasetSkeleton.py" />
-        <option value="$PROJECT_DIR$/data_quality/DamageFunctions.py" />
-        <option value="$PROJECT_DIR$/datasets/datasetMultimodal.py" />
         <option value="$PROJECT_DIR$/multimodalClassifier.py" />
         <option value="$PROJECT_DIR$/utils/helper_deltaStarForSingleSample.py" />
         <option value="$PROJECT_DIR$/utils/helpers.py" />
         <option value="$PROJECT_DIR$/testing_DataSelection_or_not.py" />
         <option value="$PROJECT_DIR$/basicClassifier.py" />
-        <option value="$PROJECT_DIR$/training_Phi_s.py" />
-        <option value="$PROJECT_DIR$/CONSTS.py" />
-        <option value="$PROJECT_DIR$/experiment1_different_damage_degree.py" />
-        <option value="$PROJECT_DIR$/script_generateDataset4M1.py" />
         <option value="$PROJECT_DIR$/datasetsOfLowQualityData/datasetSelectedMultimodal.py" />
+        <option value="$PROJECT_DIR$/training_Phi_s.py" />
+        <option value="$PROJECT_DIR$/data_quality/DamageFunctions.py" />
+        <option value="$PROJECT_DIR$/experiment1_different_damage_degree.py" />
+        <option value="$PROJECT_DIR$/datasets/datasetMultimodal.py" />
+        <option value="$PROJECT_DIR$/CONSTS.py" />
+        <option value="$PROJECT_DIR$/script_generateDataset4M1.py" />
       </list>
     </option>
   </component>
@@ -227,8 +230,8 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1296" />
-    <option name="height" value="976" />
+    <option name="width" value="1278" />
+    <option name="height" value="763" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -642,23 +645,28 @@
       <option name="project" value="LOCAL" />
       <updated>1546935441456</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="v3.0.2.2 试一下，在  类的 selectData 方法中加入：&#10;if subsetCode == 0:&#10;    print(f'subsetCode = {subsetCode}, subsetCategory = {subsetCategory}, type(subsetCategory) = {type(subsetCategory)}, len(subsetCategory) = {len(subsetCategory)}')&#10;看看能不能输出有0的。排除一下问题是否出在这里的code到cc的转换上。&#10;&#10;结果表明，就是他妈的预测不出来 code = 0 的类别。">
+      <created>1547199723622</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1547199723622</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1015" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="13" side_tool="true" weight="0.32925472" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32876712" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32990867" />
       <window_info anchor="bottom" id="Python Console" order="12" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.46575344" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.44063926" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="right" id="Remote Host" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15991472" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10554371" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="5" />
       <window_info anchor="right" id="SciView" order="4" />
@@ -669,9 +677,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32925472" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32876712" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32925472" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="14" weight="0.32925472" />
     </layout>
   </component>
@@ -682,7 +691,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="v0.5 Testing added. (See the valid set as test set, and calculate the accuracy.)" />
     <MESSAGE value="v1.0 增加了M1部分思路的伪代码" />
     <MESSAGE value="v1.0.1 增加了M1部分思路的伪代码的实现" />
     <MESSAGE value="v1.0.2 增加了质量评价指标的三项：标准差、信噪比、完整性" />
@@ -707,7 +715,8 @@
     <MESSAGE value="v3.0的结果出来，还是有不少是比较理想的。但也有很多不理想的。毕竟总共有189个图。&#10;下一步先看看，在破坏后的数据上，单用各种模态组合所能取得的效果。" />
     <MESSAGE value="v3.0.1 1.增加了phi_s在训练集上准确率的输出；2.将多模态重新弄成 color, depth, mocap, audio 四个。" />
     <MESSAGE value="v3.0.2 将测试时的每个样本经过 phi_s 选择的模态组合、其本身最优的模态组合（由熵确定的）、最终输出的手势类别预测结果、正确的手势label，这四项也都输出出来。&#10;便于下一步的分析：包括a. 每种破坏方式下，各种模态组合的分布比例；b.各种模态组合下，手势预测正确的比例；c.模态组合预测对了多少，等等等等。" />
-    <option name="LAST_COMMIT_MESSAGE" value="v3.0.2 将测试时的每个样本经过 phi_s 选择的模态组合、其本身最优的模态组合（由熵确定的）、最终输出的手势类别预测结果、正确的手势label，这四项也都输出出来。&#10;便于下一步的分析：包括a. 每种破坏方式下，各种模态组合的分布比例；b.各种模态组合下，手势预测正确的比例；c.模态组合预测对了多少，等等等等。" />
+    <MESSAGE value="v3.0.2.2 试一下，在  类的 selectData 方法中加入：&#10;if subsetCode == 0:&#10;    print(f'subsetCode = {subsetCode}, subsetCategory = {subsetCategory}, type(subsetCategory) = {type(subsetCategory)}, len(subsetCategory) = {len(subsetCategory)}')&#10;看看能不能输出有0的。排除一下问题是否出在这里的code到cc的转换上。&#10;&#10;结果表明，就是他妈的预测不出来 code = 0 的类别。" />
+    <option name="LAST_COMMIT_MESSAGE" value="v3.0.2.2 试一下，在  类的 selectData 方法中加入：&#10;if subsetCode == 0:&#10;    print(f'subsetCode = {subsetCode}, subsetCategory = {subsetCategory}, type(subsetCategory) = {type(subsetCategory)}, len(subsetCategory) = {len(subsetCategory)}')&#10;看看能不能输出有0的。排除一下问题是否出在这里的code到cc的转换上。&#10;&#10;结果表明，就是他妈的预测不出来 code = 0 的类别。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -918,13 +927,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_quality/DamageFunctions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datasets/datasetVideoClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="217">
@@ -974,23 +976,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/helpers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-468">
-          <caret line="29" column="40" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
-          <folding>
-            <element signature="e#43#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/multimodalClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="105" column="58" selection-start-line="105" selection-start-column="58" selection-end-line="105" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -998,9 +987,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1244">
           <caret line="82" column="23" selection-start-line="82" selection-start-column="23" selection-end-line="82" selection-end-column="23" />
-          <folding>
-            <element signature="e#37#50#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1008,75 +994,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="185">
           <caret line="318" column="77" selection-start-line="318" selection-start-column="77" selection-end-line="318" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing_DataSelection_or_not.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="139" column="4" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
-          <folding>
-            <element signature="e#721#790#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/datasets/datasetBasic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
+        <state relative-caret-position="3060">
           <caret line="191" column="50" selection-start-line="191" selection-start-column="41" selection-end-line="191" selection-end-column="50" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datasets/datasetMultimodal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-972">
-          <caret line="90" column="21" lean-forward="true" selection-start-line="90" selection-start-column="8" selection-end-line="90" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment1_different_damage_degree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="102" column="28" lean-forward="true" selection-start-line="102" selection-start-column="28" selection-end-line="102" selection-end-column="28" />
-          <folding>
-            <element signature="e#9#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/training_Phi_s.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="137" column="43" selection-start-line="137" selection-start-column="43" selection-end-line="137" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CONSTS.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="62" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="173" column="71" lean-forward="true" selection-start-line="173" selection-start-column="71" selection-end-line="173" selection-end-column="71" />
-          <folding>
-            <element signature="e#93#106#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1095,10 +1021,81 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/utils/helpers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="31" column="16" selection-start-line="31" selection-start-column="16" selection-end-line="31" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing_DataSelection_or_not.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2278">
+          <caret line="139" column="4" selection-start-line="139" selection-start-column="4" selection-end-line="139" selection-end-column="4" />
+          <folding>
+            <element signature="e#721#790#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/training_Phi_s.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="71" column="5" selection-start-line="71" selection-start-column="5" selection-end-line="71" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/datasetsOfLowQualityData/datasetSelectedMultimodal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="952">
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/datasetMultimodal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1649">
+          <caret line="105" column="102" selection-start-line="105" selection-start-column="102" selection-end-line="105" selection-end-column="102" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CONSTS.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="5" selection-start-column="5" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment1_different_damage_degree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1581">
+          <caret line="102" column="21" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
+          <folding>
+            <element signature="e#9#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script_generateDataset4M1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1853">
+          <caret line="133" column="23" selection-start-line="133" selection-start-column="23" selection-end-line="133" selection-end-column="23" />
+          <folding>
+            <element signature="e#93#106#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_quality/DamageFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
         </state>
       </provider>
     </entry>

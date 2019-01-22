@@ -103,7 +103,7 @@ class DatasetMultimodal(Dataset):
     def _init_dataset(self):
         # 遍历所有文件名
         # 遍历class_number
-        for class_number in range(self.nclasses):
+        for class_number in range(1, self.nclasses):   # v3.0.4 完成对 Phi_r 的训练之后，后面的所有实验流程都跳过第 0 类手势的数据
             # 遍历当前 class 对应的 data_list
             n = len(self.data_list[self.subset][class_number])
             ten_pct = n // 10

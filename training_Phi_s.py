@@ -6,7 +6,23 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import preprocessing
 
-from CONSTS import DEBUGGING
+from CONSTS import DEBUGGING, TOTAL_MODALITIES_STRING
+
+
+def replaceEmptyWithAllMdlts(x):
+    if x == '':
+        print('An empty string found!')
+        return True
+    return False
+
+
+def getTotalModalitiesStr(root, filename):
+    # file_path = os.path.join(root, filename)
+    # with open(file_path, 'rb') as f:
+    #     s1 = pickle.load(f, encoding='iso-8859-1')
+    #
+    # return awefe
+    return TOTAL_MODALITIES_STRING[1:-1]
 
 
 def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_valid_test='train', result_file_name = 'QoU_to_deltaStar.csv'):
@@ -16,6 +32,10 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_vali
 
     # 获取文件列表
     file_list = glob.glob(root + search_line)
+
+    # v3.0.3
+    # 获取全模态的列表
+    totalModalitiesStr = getTotalModalitiesStr(None, None)
 
     # 遍历文件列表
     n = len(file_list)
@@ -48,7 +68,8 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_vali
 
     # 将 label 中的空列表（即对应于生成delta_star的过程中，phi_r没能正确分类的那些样本），都替换为模态全集
     origin_label_column_number = len(df.columns) - 1
-    df[origin_label_column_number].fillna('ALL_MODAL')
+    # df[origin_label_column_number].fillna('ALL_MODAL')
+    df[origin_label_column_number].replace('', totalModalitiesStr, inplace=True)
     print(df.head(20))
     print(df.describe())
 

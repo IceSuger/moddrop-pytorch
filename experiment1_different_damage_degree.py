@@ -44,30 +44,30 @@ from training_Phi_s import readFilesAndFormTheDataframeAndWriteToDisk, trainAndT
 # print("=================================")
 # #
 # # #######################################################################################
+#
+print("=================================")
+print("== 1.2 LQ generating... =========")
+print("=================================")
+
+generateLQDataset(r=R, subset='train')
+generateLQDataset(r=R, subset='valid')
+
+print("=================================")
+print("== 1.2 LQ generated. =========")
+print("=================================")
+
+# #######################################################################################
 # #
-# print("=================================")
-# print("== 1.2 LQ generating... =========")
-# print("=================================")
-#
-# generateLQDataset(r=R, subset='train')
-# generateLQDataset(r=R, subset='valid')
-#
-# print("=================================")
-# print("== 1.2 LQ generated. =========")
-# print("=================================")
-#
-# # #######################################################################################
-# # #
-# print("=================================")
-# print("== 1.3 DeltaStar generating..... =")
-# print("=================================")
-#
-# generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root=PATH_D_Q_ROOT)
-# generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root=PATH_D_Q_ROOT)
-#
-# print("=================================")
-# print("== 1.3 DeltaStar generated. ======")
-# print("=================================")
+print("=================================")
+print("== 1.3 DeltaStar generating..... =")
+print("=================================")
+
+generateDeltaStar(r=R, train_valid_test='train', path_D_Q_root=PATH_D_Q_ROOT)
+generateDeltaStar(r=R, train_valid_test='valid', path_D_Q_root=PATH_D_Q_ROOT)
+
+print("=================================")
+print("== 1.3 DeltaStar generated. ======")
+print("=================================")
 
 ######################################################################################
 

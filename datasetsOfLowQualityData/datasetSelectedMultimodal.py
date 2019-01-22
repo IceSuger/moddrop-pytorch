@@ -60,8 +60,9 @@ class DatasetSelectedMultimodal(DatasetOfDamagedMultimodal):
         # print(f'self.table_susbetCode_to_subsetCategory = {self.table_susbetCode_to_subsetCategory}')
         subsetCategory = self.table_susbetCode_to_subsetCategory[subsetCode]
 
-        if subsetCode < 2:
-            print(f'subsetCode = {subsetCode}, subsetCategory = {subsetCategory}, type(subsetCategory) = {type(subsetCategory)}, len(subsetCategory) = {len(subsetCategory)}')
+        # if subsetCode < 2:
+        #     print(f'subsetCode = {subsetCode}, subsetCategory = {subsetCategory}, type(subsetCategory) = {type(subsetCategory)}, len(subsetCategory) = {len(subsetCategory)}')
+
         # 3.
         # print(f'subsetCategory={subsetCategory} \t len(subsetCategory)={len(subsetCategory)} \t type(subsetCategory)={type(subsetCategory)}')
         # # if len(subsetCategory) == 0:

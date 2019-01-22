@@ -17,8 +17,10 @@ import numpy
 
 
 class Noise():
-    def __init__(self, randomly=False):
+    def __init__(self, randomly=False, randomlyOnAndOff=False):
         self.randomly = randomly    # 进一步理论或实验探索这里随机加破坏的程度服从不同分布，是否对结果有影响？
+        self.randomlyOnAndOff = randomlyOnAndOff
+        self.randomlyOn_prob = 0.5
         self.dmg_functions = [self.SaltAndPepper,
                               self.GaussianNoise,
                               self.MaskingNoise]
@@ -34,6 +36,11 @@ class Noise():
             # rate = np.random.random()
             rate = np.random.uniform(0, 1)
             # print(f'Noise.randomly is TRUE. In SaltAndPepper, rate={rate}')
+
+        # v3.0.3
+        if self.randomlyOnAndOff:
+            if np.random.uniform(0, 1) < self.randomlyOn_prob:
+                rate = 0
 
         drop = numpy.random.uniform(0, 1, X.shape)
         z = numpy.where(drop < 0.5 * rate)
@@ -61,6 +68,12 @@ class Noise():
         if self.randomly:
             # rate = np.random.random()
             rate = np.random.uniform(0, 1)
+
+        # v3.0.3
+        if self.randomlyOnAndOff:
+            if np.random.uniform(0, 1) < self.randomlyOn_prob:
+                rate = 0
+
         if rate is None:
             sd = 0.5
         else:
@@ -73,6 +86,11 @@ class Noise():
         if self.randomly:
             # rate = np.random.random()
             rate = np.random.uniform(0, 1)
+
+        # v3.0.3
+        if self.randomlyOnAndOff:
+            if np.random.uniform(0, 1) < self.randomlyOn_prob:
+                rate = 0
 
         mask = (numpy.random.uniform(0, 1, X.shape) > rate).astype("i4")    # v2.4 之前，这里的大于号被误写为小于号了。所以传入的rate就不再代表被遮蔽的程度，而是原数据被保留的程度
         X = mask * X

@@ -5,9 +5,10 @@
 import shutil
 
 import pandas as pd
+import numpy as np
 
 from CONSTS import EXPERIMENT_RESULT_FILE_NAME, LQDataset_on_subset_with_dmgfunc_at_degree_ROOT, PREDICTED_DELTAS_PATH, \
-    EXPR1_PARTIAL_RESULT_FOLDER_PATH
+    EXPR1_PARTIAL_RESULT_FOLDER_PATH, RANDOMLY_DMG_MODALITY, RANDOMLY_NOISE_FUNCTION
 from datasetsOfLowQualityData.datasetDmgedMultimodalSelectedDelta import DatasetDmgedMultimodalSelectedDelta
 from datasetsOfLowQualityData.datasetOfDmgedMultimodalAndQoU import DatasetOfDamagedMultimodalAndQoU
 from lqMultimodalClassifier import lqMultimodalClassifier
@@ -64,12 +65,16 @@ def generateLQDataset(r = 8, subset = 'train'):
                                    classifier.nclasses, classifier.input_size, classifier.step, classifier.nframes)
     train_loader = DataLoader(train_data, batch_size=1, shuffle=False, num_workers=12)
 
-    dmg_functions = Noise(randomly=True).getDmgFunctions()
+    dmg_functions = Noise(randomly=True, randomlyOnAndOff=RANDOMLY_NOISE_FUNCTION).getDmgFunctions()
     score_functions = DataQuality().getMetricFuncs()
 
     n = len(train_loader)
     print(f'len(train_loader) = {len(train_loader)}')
     for ii, (data, label) in enumerate(train_loader):
+        # v3.0.4
+        # 直接跳过 第0类 手势的样本吧
+        if int(label.data) == 0:
+            continue
 
         if ii % 100 == 0:
             print(f'ii: {ii}, {ii/n}')
@@ -80,6 +85,11 @@ def generateLQDataset(r = 8, subset = 'train'):
             for mdlt in data.keys():
                 for dmg_func in dmg_functions:
                     _s[mdlt] = dmg_func(data[mdlt].data.numpy()[0])
+
+                # v3.0.4.1
+                if RANDOMLY_DMG_MODALITY:
+                    if np.random.uniform(0, 1) >= 0.5:
+                        _s[mdlt] = data[mdlt].data.numpy()[0]
 
                 for score_func in score_functions:
                     QoU.append(score_func(_s[mdlt]))
