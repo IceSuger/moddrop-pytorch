@@ -69,7 +69,7 @@ def readFilesAndFormTheDataframeAndWriteToDisk(path_D_Q_root = 'D_Q', train_vali
     # 将 label 中的空列表（即对应于生成delta_star的过程中，phi_r没能正确分类的那些样本），都替换为模态全集
     origin_label_column_number = len(df.columns) - 1
     # df[origin_label_column_number].fillna('ALL_MODAL')
-    df[origin_label_column_number].replace('', totalModalitiesStr, inplace=True)
+    # df[origin_label_column_number].replace('', totalModalitiesStr, inplace=True)    # v3.0.4.2 中注释掉了这一行，从而区分开两类“全模态”
     print(df.head(20))
     print(df.describe())
 
